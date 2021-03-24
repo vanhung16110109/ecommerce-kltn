@@ -5,6 +5,7 @@
     <Name>ecommerce</Name>
     <RootNamespace>ecommerce</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <SuppressPackageInstallationPrompt>True</SuppressPackageInstallationPrompt>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,6 +32,46 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="apps\account\admin.py" />
+    <Compile Include="apps\account\apps.py" />
+    <Compile Include="apps\account\migrations\__init__.py" />
+    <Compile Include="apps\account\models.py" />
+    <Compile Include="apps\account\tests.py" />
+    <Compile Include="apps\account\urls.py" />
+    <Compile Include="apps\account\views.py" />
+    <Compile Include="apps\account\__init__.py" />
+    <Compile Include="apps\chatbot\admin.py" />
+    <Compile Include="apps\chatbot\apps.py" />
+    <Compile Include="apps\chatbot\migrations\__init__.py" />
+    <Compile Include="apps\chatbot\models.py" />
+    <Compile Include="apps\chatbot\tests.py" />
+    <Compile Include="apps\chatbot\urls.py" />
+    <Compile Include="apps\chatbot\views.py" />
+    <Compile Include="apps\chatbot\__init__.py" />
+    <Compile Include="apps\checkout\admin.py" />
+    <Compile Include="apps\checkout\apps.py" />
+    <Compile Include="apps\checkout\migrations\__init__.py" />
+    <Compile Include="apps\checkout\models.py" />
+    <Compile Include="apps\checkout\tests.py" />
+    <Compile Include="apps\checkout\urls.py" />
+    <Compile Include="apps\checkout\views.py" />
+    <Compile Include="apps\checkout\__init__.py" />
+    <Compile Include="apps\home\admin.py" />
+    <Compile Include="apps\home\apps.py" />
+    <Compile Include="apps\home\migrations\__init__.py" />
+    <Compile Include="apps\home\models.py" />
+    <Compile Include="apps\home\tests.py" />
+    <Compile Include="apps\home\urls.py" />
+    <Compile Include="apps\home\views.py" />
+    <Compile Include="apps\home\__init__.py" />
+    <Compile Include="apps\product\admin.py" />
+    <Compile Include="apps\product\apps.py" />
+    <Compile Include="apps\product\migrations\__init__.py" />
+    <Compile Include="apps\product\models.py" />
+    <Compile Include="apps\product\tests.py" />
+    <Compile Include="apps\product\urls.py" />
+    <Compile Include="apps\product\views.py" />
+    <Compile Include="apps\product\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="ecommerce\__init__.py" />
     <Compile Include="ecommerce\settings.py" />
@@ -39,12 +80,27 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="apps\" />
+    <Folder Include="apps\account\" />
+    <Folder Include="apps\account\migrations\" />
+    <Folder Include="apps\chatbot\" />
+    <Folder Include="apps\chatbot\migrations\" />
+    <Folder Include="apps\checkout\" />
+    <Folder Include="apps\checkout\migrations\" />
+    <Folder Include="apps\home\" />
+    <Folder Include="apps\home\migrations\" />
+    <Folder Include="apps\product\" />
+    <Folder Include="apps\product\migrations\" />
     <Folder Include="ecommerce\" />
     <Folder Include="stactic_my_project\" />
     <Folder Include="static_cdn\" />
     <Folder Include="static_cdn\media_root\" />
     <Folder Include="static_cdn\static_root\" />
     <Folder Include="templates\" />
+    <Folder Include="templates\account\" />
+    <Folder Include="templates\chatbot\" />
+    <Folder Include="templates\checkout\" />
+    <Folder Include="templates\home\" />
+    <Folder Include="templates\product\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
