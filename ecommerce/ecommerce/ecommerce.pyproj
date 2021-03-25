@@ -6,6 +6,7 @@
     <RootNamespace>ecommerce</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <SuppressPackageInstallationPrompt>True</SuppressPackageInstallationPrompt>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -64,6 +65,14 @@
     <Compile Include="apps\home\urls.py" />
     <Compile Include="apps\home\views.py" />
     <Compile Include="apps\home\__init__.py" />
+    <Compile Include="apps\order\admin.py" />
+    <Compile Include="apps\order\apps.py" />
+    <Compile Include="apps\order\migrations\__init__.py" />
+    <Compile Include="apps\order\models.py" />
+    <Compile Include="apps\order\tests.py" />
+    <Compile Include="apps\order\urls.py" />
+    <Compile Include="apps\order\views.py" />
+    <Compile Include="apps\order\__init__.py" />
     <Compile Include="apps\product\admin.py" />
     <Compile Include="apps\product\apps.py" />
     <Compile Include="apps\product\migrations\__init__.py" />
@@ -72,6 +81,13 @@
     <Compile Include="apps\product\urls.py" />
     <Compile Include="apps\product\views.py" />
     <Compile Include="apps\product\__init__.py" />
+    <Compile Include="apps\search\admin.py" />
+    <Compile Include="apps\search\apps.py" />
+    <Compile Include="apps\search\migrations\__init__.py" />
+    <Compile Include="apps\search\models.py" />
+    <Compile Include="apps\search\tests.py" />
+    <Compile Include="apps\search\views.py" />
+    <Compile Include="apps\search\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="ecommerce\__init__.py" />
     <Compile Include="ecommerce\settings.py" />
@@ -88,8 +104,14 @@
     <Folder Include="apps\checkout\migrations\" />
     <Folder Include="apps\home\" />
     <Folder Include="apps\home\migrations\" />
+    <Folder Include="apps\order\" />
+    <Folder Include="apps\order\migrations\" />
     <Folder Include="apps\product\" />
     <Folder Include="apps\product\migrations\" />
+    <Folder Include="apps\search\" />
+    <Folder Include="apps\search\migrations\" />
+    <Folder Include="apps\search\templates\" />
+    <Folder Include="apps\search\templates\search\" />
     <Folder Include="ecommerce\" />
     <Folder Include="stactic_my_project\" />
     <Folder Include="static_cdn\" />
@@ -100,11 +122,20 @@
     <Folder Include="templates\chatbot\" />
     <Folder Include="templates\checkout\" />
     <Folder Include="templates\home\" />
+    <Folder Include="templates\order\" />
     <Folder Include="templates\product\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="apps\search\templates\search\index.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
+    <Content Include="templates\account\changepassword.html" />
+    <Content Include="templates\account\information.html" />
+    <Content Include="templates\account\login.html" />
+    <Content Include="templates\account\register.html" />
+    <Content Include="templates\chatbot\chatbot.html" />
+    <Content Include="templates\checkout\checkoutoffline.html" />
+    <Content Include="templates\checkout\checkoutonline.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.html">

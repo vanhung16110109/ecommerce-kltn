@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.chatbot',
     'apps.checkout',
     'apps.home',
+    'apps.order',
     'apps.product',
 
     #tool support
