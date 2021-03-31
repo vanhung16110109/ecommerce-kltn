@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '05ddb87d-d0bf-4599-926d-b4e9f12334ef'
+SECRET_KEY = '6c773705-9979-46c3-ac59-bc72081792f3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [
-    'apps.account',
+	'apps.account',
     'apps.chatbot',
     'apps.checkout',
     'apps.home',
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #tool support
     'ckeditor',
     'mptt',
+
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,7 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static_my_project')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'static_root')
@@ -130,7 +131,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'media_root')
 
 #Tao thu muc 'static_cdn' luu cac file duoc tai len tu trang admin
 #MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'media_root')
-
 
 #...
 SITE_ID = 1

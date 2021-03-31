@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 def order_add(request):
+
     return render(request, 'order_add.html', {})
 
 

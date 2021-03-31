@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ecommerce", "ecommerce\ecommerce.pyproj", "{5CB32986-07F1-4400-923F-2C61DBC72F38}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ecommerce", "ecommerce\ecommerce.pyproj", "{F08F4710-5797-4CF9-8F16-3C118B6221A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5CB32986-07F1-4400-923F-2C61DBC72F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CB32986-07F1-4400-923F-2C61DBC72F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CB32986-07F1-4400-923F-2C61DBC72F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CB32986-07F1-4400-923F-2C61DBC72F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F08F4710-5797-4CF9-8F16-3C118B6221A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F08F4710-5797-4CF9-8F16-3C118B6221A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F08F4710-5797-4CF9-8F16-3C118B6221A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F08F4710-5797-4CF9-8F16-3C118B6221A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F0D8FCA7-8265-48E1-9F1A-B291CFEE5DD0}
+		SolutionGuid = {6AF9CCB6-D027-4B89-A7A8-ABBD55FECED7}
 	EndGlobalSection
 EndGlobal

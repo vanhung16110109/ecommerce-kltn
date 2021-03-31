@@ -4,14 +4,13 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ecommerce</Name>
     <RootNamespace>ecommerce</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <SuppressPackageInstallationPrompt>True</SuppressPackageInstallationPrompt>
-    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>5cb32986-07f1-4400-923f-2c61dbc72f38</ProjectGuid>
+    <ProjectGuid>f08f4710-5797-4cf9-8f16-3c118b6221a9</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <StartupFile>manage.py</StartupFile>
@@ -33,61 +32,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="apps\account\admin.py" />
-    <Compile Include="apps\account\apps.py" />
-    <Compile Include="apps\account\migrations\__init__.py" />
-    <Compile Include="apps\account\models.py" />
-    <Compile Include="apps\account\tests.py" />
-    <Compile Include="apps\account\urls.py" />
-    <Compile Include="apps\account\views.py" />
-    <Compile Include="apps\account\__init__.py" />
-    <Compile Include="apps\chatbot\admin.py" />
-    <Compile Include="apps\chatbot\apps.py" />
-    <Compile Include="apps\chatbot\migrations\__init__.py" />
-    <Compile Include="apps\chatbot\models.py" />
-    <Compile Include="apps\chatbot\tests.py" />
-    <Compile Include="apps\chatbot\urls.py" />
-    <Compile Include="apps\chatbot\views.py" />
-    <Compile Include="apps\chatbot\__init__.py" />
-    <Compile Include="apps\checkout\admin.py" />
-    <Compile Include="apps\checkout\apps.py" />
-    <Compile Include="apps\checkout\migrations\__init__.py" />
-    <Compile Include="apps\checkout\models.py" />
-    <Compile Include="apps\checkout\tests.py" />
-    <Compile Include="apps\checkout\urls.py" />
-    <Compile Include="apps\checkout\views.py" />
-    <Compile Include="apps\checkout\__init__.py" />
-    <Compile Include="apps\home\admin.py" />
-    <Compile Include="apps\home\apps.py" />
-    <Compile Include="apps\home\migrations\__init__.py" />
-    <Compile Include="apps\home\models.py" />
-    <Compile Include="apps\home\tests.py" />
-    <Compile Include="apps\home\urls.py" />
-    <Compile Include="apps\home\views.py" />
-    <Compile Include="apps\home\__init__.py" />
-    <Compile Include="apps\order\admin.py" />
-    <Compile Include="apps\order\apps.py" />
-    <Compile Include="apps\order\migrations\__init__.py" />
-    <Compile Include="apps\order\models.py" />
-    <Compile Include="apps\order\tests.py" />
-    <Compile Include="apps\order\urls.py" />
-    <Compile Include="apps\order\views.py" />
-    <Compile Include="apps\order\__init__.py" />
-    <Compile Include="apps\product\admin.py" />
-    <Compile Include="apps\product\apps.py" />
-    <Compile Include="apps\product\migrations\__init__.py" />
-    <Compile Include="apps\product\models.py" />
-    <Compile Include="apps\product\tests.py" />
-    <Compile Include="apps\product\urls.py" />
-    <Compile Include="apps\product\views.py" />
-    <Compile Include="apps\product\__init__.py" />
-    <Compile Include="apps\search\admin.py" />
-    <Compile Include="apps\search\apps.py" />
-    <Compile Include="apps\search\migrations\__init__.py" />
-    <Compile Include="apps\search\models.py" />
-    <Compile Include="apps\search\tests.py" />
-    <Compile Include="apps\search\views.py" />
-    <Compile Include="apps\search\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="ecommerce\__init__.py" />
     <Compile Include="ecommerce\settings.py" />
@@ -95,63 +39,16 @@
     <Compile Include="ecommerce\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="apps\" />
-    <Folder Include="apps\account\" />
-    <Folder Include="apps\account\migrations\" />
-    <Folder Include="apps\chatbot\" />
-    <Folder Include="apps\chatbot\migrations\" />
-    <Folder Include="apps\checkout\" />
-    <Folder Include="apps\checkout\migrations\" />
-    <Folder Include="apps\home\" />
-    <Folder Include="apps\home\migrations\" />
-    <Folder Include="apps\order\" />
-    <Folder Include="apps\order\migrations\" />
-    <Folder Include="apps\product\" />
-    <Folder Include="apps\product\migrations\" />
-    <Folder Include="apps\search\" />
-    <Folder Include="apps\search\migrations\" />
-    <Folder Include="apps\search\templates\" />
-    <Folder Include="apps\search\templates\search\" />
     <Folder Include="ecommerce\" />
-    <Folder Include="stactic_my_project\" />
-    <Folder Include="static_cdn\" />
-    <Folder Include="static_cdn\media_root\" />
-    <Folder Include="static_cdn\static_root\" />
-    <Folder Include="templates\" />
-    <Folder Include="templates\account\" />
-    <Folder Include="templates\chatbot\" />
-    <Folder Include="templates\checkout\" />
-    <Folder Include="templates\home\" />
-    <Folder Include="templates\order\" />
-    <Folder Include="templates\product\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="apps\search\templates\search\index.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
-    <Content Include="templates\account\changepassword.html" />
-    <Content Include="templates\account\information.html" />
-    <Content Include="templates\account\login.html" />
-    <Content Include="templates\account\register.html" />
-    <Content Include="templates\chatbot\chatbot.html" />
-    <Content Include="templates\checkout\checkoutoffline.html" />
-    <Content Include="templates\checkout\checkoutonline.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.html">
       <SubType>WebBrowser</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Interpreter Include="env\">
-      <Id>env</Id>
-      <Version>0.0</Version>
-      <Description>env (Python 3.9 (64-bit))</Description>
-      <InterpreterPath>Scripts\python.exe</InterpreterPath>
-      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
-      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
-      <Architecture>X64</Architecture>
-    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
