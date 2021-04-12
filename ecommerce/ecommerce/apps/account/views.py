@@ -1,33 +1,127 @@
 from django.shortcuts import redirect, render
 from django.http import HttpRequest, HttpResponse
-# from django.contrib.auth import authenticate, get_user_model, login, logout, update_session_auth_hash
-# from django.contrib import messages
-# from django.contrib.auth.models import User 
-# from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import authenticate, get_user_model, login, logout, update_session_auth_hash
+from django.contrib import messages
+from apps.account.models import UserProfile
+# Create your views here.
+from django.http.response import HttpResponseRedirect
+from apps.account.forms import RegisterForm, LoginForm, ProfileUpdateForm
+from apps.product.models import Category
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 # login
 def account_login(request):
-    return render(request, 'account/login.html', {})
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            print(user)
+            login(request, user)
+            current_user = request.user
+            #userprofile = UserProfile.objects.get(user_id = current_user.id)
+            #request.session['userimage'] = userprofile.image.url
+            check = 1
+            return HttpResponseRedirect('/')
+        else:
+            check = 0
+            return render(request,'account/login.html', {'check': check})
+            return HttpResponseRedirect('/account_login')
+
+    return render(request, 'account/login.html',{})
 
 
 #register
 def account_register(request):
+    form = RegisterForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        email = form.cleaned_data.get('email')
+        new_user = User.objects.create_user(username,email,password)
+        new_user.is_staff = True        # set staff
+        new_user.save()
+        print(new_user)
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        #create data profile
+        current_user = request.user
+        data_userprofile = UserProfile()
+        data_userprofile.user_id = current_user.id
+        data_userprofile.image = "user.png"
+        data_userprofile.save()
+        userprofile = UserProfile.objects.get(user_id = current_user.id)
+        request.session['userimage'] = userprofile.image.url
+        check = 1
+        return render(request,'account/register.html', {'check': check})
+        return HttpResponseRedirect('/')
+
     return render(request, 'account/register.html', {})
 
 
 #logout
 def account_logout(request):
     logout(request)
+    print('logout success')
     return HttpResponseRedirect('/')
 
 
+#view information
+@login_required(login_url='/login')
+def account_information_view(request):
+    category = Category.objects.all()
+    current_user = request.user
+    profile = UserProfile.objects.get(user_id = current_user.id)
+    context={
+        'category':category,
+        'profile': profile
+    }
+    return render(request, 'account/information_view.html', context)
+
+
 #change information
-def account_information(request):
-    return render(request, 'account/information.html')
+@login_required(login_url='/login')
+def account_information_update(request):
+    if request.method == 'POST':
+        profile_form = ProfileUpdateForm(request.POST,request.FILES, instance=request.user.userprofile)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'Thay đổi thông tin thành công')
+            current_user = request.user
+            userprofile = UserProfile.objects.get(user_id = current_user.id)
+            request.session['userimage'] = userprofile.image.url
+            return redirect('/user')
+    else:
+        category = Category.objects.all()
+        profile_form = ProfileUpdateForm(instance=request.user.userprofile)
+        context = {
+            'category': category,
+            'profile_form': profile_form
+        }
+    return render(request, 'account/information_update.html', context)
 
 
 #change password
-def account_password(request):
-    return render(request, 'account/changepassword.html')
+@login_required(login_url='/login')
+def account_password_update(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request,'Thay đổi mật khẩu thành công')
+            return HttpResponseRedirect('/user')
+        else:   
+            messages.error(request, 'Thay đổi mật khẩu không thành công, xin vui lòng kiểm tra lại')
+            return HttpResponseRedirect('/user/password')
+    else:
+        category = Category.objects.all()
+        form = PasswordChangeForm(request.user)
+        context = {
+            'category': category,
+            'form':form
+        }
+    return render(request, 'account/changepassword.html', context)

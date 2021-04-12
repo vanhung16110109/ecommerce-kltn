@@ -1,2 +1,70 @@
+{% extends "base.html" %}
 {% load static %}
-<img src="{% static 'demo.JPG' %}" alt="My image">
+{% block title %} Đăng nhập {% endblock title %}
+
+{% block head %}
+	<link rel="stylesheet" href="{% static "" %}account/fonts/material-icon/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="{% static "" %}account/css/style.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;400;800&display=swap" rel="stylesheet">
+	<script>
+        if({{check}}==1){
+            alert("Đăng nhập thành công");
+            window.location.href="/";
+        }
+        else{
+            alert("Sai tài khoản hoặc khẩu, xin vui lòng kiểm tra lại!");
+            window.location.href="{{account_login}}";
+        }
+    </script>
+{% endblock head %}
+
+{% block body %} 
+	<div class="main">
+		<!-- Sing in  Form -->
+		<section class="sign-in">
+			<div class="container">
+				<div class="signin-content">
+					<div class="signin-image">
+						<figure><img src="{% static "" %}account/images/signin-image.jpg" alt="sing up image"></figure>
+						<h3><label for="" class="label-agree-term">Bạn chưa có tài khoản? <a href="{% url 'account_register' %}">Đăng ký ngay</a></label></h3>
+					</div>
+					<div class="signin-form">	
+						<h2 class="form-title">ĐĂNG NHẬP</h2>
+						<form method="POST" class="register-form" id="login-form">
+							{% csrf_token %}
+							<div class="form-group">
+								<label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+								<input type="text" name="username" id="username" placeholder="Tên đăng nhập"/>
+							</div>
+							<div class="form-group">
+								<label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+								<input type="password" name="password" id="password" placeholder="Mật khẩu"/>
+							</div>
+							<div class="form-group">
+								<input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+								<label for="remember-me" class="label-agree-term"><span><span></span></span>Ghi nhớ mật khẩu</label>
+							</div>
+							<div class="form-group form-button">
+								<input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+							</div>
+						</form>
+						<div class="social-login">
+							<span class="social-label"> <h3>Đăng nhập với tài khoản</h3></span>
+							<ul class="socials">
+								<li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+								<li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+								<li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+{% endblock %}
+	
+{% block script_body %}
+	<script src="{% static "" %}account/vendor/jquery/jquery.min.js"></script>
+	<script src="{% static "" %}account/js/main.js"></script>
+{% endblock %}

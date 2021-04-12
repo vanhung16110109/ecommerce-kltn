@@ -1,12 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-	
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Đăng ký {% endblock title %}
+{% block head %}
+	<link rel="stylesheet" href="{% static "" %}account/fonts/material-icon/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="{% static "" %}account/css/style.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;400;800&display=swap" rel="stylesheet">
+
+	<script>
+        if({{check}}==1){
+            alert("Đăng kí tài khoản thành công");
+            window.location.href="/";
+        }
+        else{
+            alert("Xảy ra lỗi đăng kí, xin vui lòng kiểm tra lại thông tin đăng kí!\n");
+            window.location.href="account/register";
+        }
+    </script>
+{% endblock head %}
+
+{% block body %}
+	<div class="main">
+
+		<!-- Sign up form -->
+		<section class="signup">
+			<div class="container">
+				<div class="signup-content">
+					<div class="signup-form">
+						<h2 class="form-title">ĐĂNG KÝ</h2>
+						<form method="POST" class="register-form" id="register-form">
+							{% csrf_token %}
+							<div class="form-group">
+								<label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+								<input type="text" name="username" id="username" placeholder="Vui lòng điền tên đăng ký"/>
+							</div>
+							<div class="form-group">
+								<label for="email"><i class="zmdi zmdi-email"></i></label>
+								<input type="email" name="email" id="email" placeholder="Vui lòng diền địa chỉ email"/>
+							</div>
+							<div class="form-group">
+								<label for="pass"><i class="zmdi zmdi-lock"></i></label>
+								<input type="password" name="password" id="password" placeholder="Mật khẩu của bạn"/>
+							</div>
+							<div class="form-group">
+								<label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+								<input type="password" name="password2" id="password2" placeholder="Nhập lại mật khẩu"/>
+							</div>
+							<div class="form-group">
+								<input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+								<label for="agree-term" class="label-agree-term"><span><span></span></span>Tôi đồng ý với  <a href="#" class="term-service"> Điều khoản dịch vụ</a></label>
+							</div>
+							<div class="form-group form-button">
+								<input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG KÝ"/>
+							</div>
+						</form>
+						<div class="social-login">
+							<h3><span class="social-label">Đăng kí với tài khoản ? </span></h3>
+							<ul class="socials">
+								<li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+								<li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+								<li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="signup-image">
+						<figure><img src="{% static "" %}account/images/signup-image.jpg" alt="sing up image"></figure>
+						<h3><label for="" class="label-agree-term">Bạn đã có tài khoản? <a href="{% url 'account_login' %}">Đăng nhập ngay</a></label></h3>
+					</div>
+
+				</div>
+
+			</div>
+		</section>
+
+	</div>
+{% endblock %}
+
+{% block script_body %}
+	<script src="{% static "" %}account/vendor/jquery/jquery.min.js"></script>
+	<script src="{% static "" %}account/js/main.js"></script>
+{% endblock %}

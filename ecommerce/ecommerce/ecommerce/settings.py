@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.order',
     'apps.product',
-
+	#'apps.vnlocation',
     #tool support
     'ckeditor',
     'mptt',

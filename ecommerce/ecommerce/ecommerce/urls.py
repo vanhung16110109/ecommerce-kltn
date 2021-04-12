@@ -13,7 +13,9 @@ urlpatterns = [
     path('order/', include('apps.order.urls'), name='order'),
     path('product/', include('apps.product.urls'), name='product'),
     path('', include('apps.home.urls'), name='home'),
-    path('admin/', admin.site.urls),
+	path('home/', include('apps.home.urls'), name='home'),
+    path('vnlocation/', include('apps.vnlocation.urls'), name='vnlocation'),
+	path('admin/', admin.site.urls),
 	path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

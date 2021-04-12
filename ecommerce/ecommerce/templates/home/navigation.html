@@ -1,0 +1,48 @@
+{% load static %}
+{% url 'home_page' as home_url %}
+{% url 'contact' as contact_url %}
+{% url 'about' as about_url %}
+
+<!-- NAVIGATION -->
+<div id="navigation">
+	<!-- container -->
+	<div class="container">
+		<div id="responsive-nav">
+			<!-- menu nav -->
+			<div class="menu-nav">
+				<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+				{% load mptt_tags %}
+				<ul class="menu-list" style="display: table;margin: 0 auto;">
+					{% recursetree category %}
+						<li class="dropdown dropdown-toggle">
+							{% if node.status != 'FALSE' %}
+								<!-- ĐÚNG -->
+								<a href="/category/{{ node.id }}/{{ node.slug }}" class="dropdown-toggle" {% if not node.is_leaf_node %} data-toggle="dropdown" aria-expanded="false" {% endif %}>{{ node.title }}</a>							
+								<div class="custom-menu">			
+									<div class="row">		
+										<div class="col-md-12">
+											{% if not node.is_leaf_node %}
+											<ul class="list-links">
+												<li>
+													<h3 class="list-links-title">Nhà sản xuất</h3></li>
+												<li><a href="#">{{ children }}</a></li>	
+											</ul>
+											{% endif %}
+											<hr class="hidden-md hidden-lg">
+										</div>						
+									</div>
+								</div>
+							{% elif node.status == 'FALSE' %}
+								<!-- SAI -->
+								<a href="/{{ node.slug }}" class="dropdown-toggle">{{ node.title }}</a>							
+							{% endif %}			
+						</li>
+					{% endrecursetree %}
+				</ul>
+			</div>
+			<!-- menu nav -->
+		</div>
+	</div>
+	<!-- /container -->
+</div>
+<!-- /NAVIGATION -->

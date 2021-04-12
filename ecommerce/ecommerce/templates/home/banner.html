@@ -1,0 +1,56 @@
+{% load static %}
+
+<div id="home">
+    <!-- container -->
+    <div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<!-- home wrap -->
+				<div class="home-wrap">
+					<!-- home slick -->
+					<div id="home-slick">
+						{% for rs in product_slider %}
+						<!-- banner -->
+						<!-- <div class="banner banner-1">
+							<img src="{{ rs.banner.url }}" alt="" style="width: 500px;height: 300px;">
+							<div class="banner-caption text-center">
+								<h1>{{ rs.title }}</h1>
+								<h3 class="white-color font-weak">{{ rs.price }}</h3>
+								<a href="/product/{{ rs.id }}/{{ rs.slug }}" class="primary-btn">Shop Now</a>
+							</div>
+							<h5>{{rs.description}}</h5>
+						</div> -->
+						<a href="/product/{{ rs.id }}/{{ rs.slug }}" class="banner banner-1">
+							<img src="{{ rs.banner.url }}" alt="">
+							<h5>{{rs.description}}</h5>
+						</a>
+						{% endfor %}
+					</div>
+					<!-- /home slick -->
+				</div>
+				<!-- /home wrap -->
+			</div>
+			<div class="col-md-4">
+				<!-- home wrap -->
+				<div class="home-wrap">
+					<!-- home slick -->
+					<div id="home-slick">
+						{% for rs in product_slider %}
+							<a href="/product/{{ rs.id }}/{{ rs.slug }}" class="banner banner-1">
+								<img src="{{ rs.banner.url }}" alt="">
+								<h5>{{rs.description}}</h5>
+							</a>
+						{% endfor %}
+					</div>
+					<!-- /home slick -->
+				</div>
+				<!-- /home wrap -->
+			</div>
+		</div>
+		
+    </div>
+    <!-- /container -->
+</div>
+<!-- /HOME -->
+<!-- jQuery Plugins -->
+    
