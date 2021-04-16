@@ -7,7 +7,7 @@ from apps.account.models import UserProfile
 from django.http.response import HttpResponseRedirect
 from apps.account.forms import RegisterForm, LoginForm, ProfileUpdateForm
 from apps.product.models import Category
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -19,7 +19,6 @@ def account_login(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print(user)
             login(request, user)
             current_user = request.user
             #userprofile = UserProfile.objects.get(user_id = current_user.id)
@@ -29,9 +28,9 @@ def account_login(request):
         else:
             check = 0
             return render(request,'account/login.html', {'check': check})
-            return HttpResponseRedirect('/account_login')
-
-    return render(request, 'account/login.html',{})
+            return HttpResponseRedirect('/account/login')
+        
+    return render(request, 'account/login.html',{})  
 
 
 #register
@@ -70,20 +69,20 @@ def account_logout(request):
 
 
 #view information
-@login_required(login_url='/login')
+@login_required(login_url='/account/login')
 def account_information_view(request):
     category = Category.objects.all()
     current_user = request.user
     profile = UserProfile.objects.get(user_id = current_user.id)
     context={
         'category':category,
-        'profile': profile
+        'profile': profile,
     }
-    return render(request, 'account/information_view.html', context)
+    return render(request, 'account/information.html', {})
 
 
 #change information
-@login_required(login_url='/login')
+@login_required(login_url='/account/login')
 def account_information_update(request):
     if request.method == 'POST':
         profile_form = ProfileUpdateForm(request.POST,request.FILES, instance=request.user.userprofile)
@@ -105,7 +104,7 @@ def account_information_update(request):
 
 
 #change password
-@login_required(login_url='/login')
+@login_required(login_url='/account/login')
 def account_password_update(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

@@ -1,12 +1,14 @@
 {% load static %}
-{% url 'home_page' as home_url %}
+{% url 'home' as home_url %}
+{% url 'account_information_view' as info_view %}
 {% static "home/img/logo.png" as img_logo_url %}
+{% static "account/user.png" as img_default %}
 {% url 'account_login' as login_url %}
 {% url 'account_register' as register_url %}
 {% url 'account_logout' as logout_url %}
 	<!-- HEADER -->
 	<header>
-		
+
 		<script>
 			$(function() {
 				$("#query").autocomplete({
@@ -17,45 +19,12 @@
 					minLength: 2,
 				});
 				});
-			
+
 				function AutoCompleteSelectHandler(event, ui)
 				{
 					var selectedObj = ui.item;
 				}
 		</script>
-		<!-- top Header -->
-		<!-- <div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<span>Chào mừng bạn đến với E-Shop</span>
-				</div>
-				<div class="pull-right">
-					<ul class="header-top-links">
-						<li><a href="#">Cửa hàng</a></li>
-						<li><a href="#">Bản tin</a></li>
-						<li><a href="#">Câu hỏi thường gặp</a></li>
-						<li class="dropdown default-dropdown">NGÔN NGỮ: 
-							<a class="" data-toggle="dropdown" aria-expanded="true">vietnamese <i class="fa fa-caret-down"></i></a>
-							<ul class="custom-menu">
-								<li><a href="#">Việt nam (VN)</a></li>
-								<li><a href="#">English (ENG)</a></li>
-								<li><a href="#">Russian (Ru)</a></li>
-								<li><a href="#">French (FR)</a></li>
-								<li><a href="#">Spanish (Es)</a></li>
-							</ul>
-						</li>
-						<li class="dropdown default-dropdown">TIỀN TỆ: 
-							<a class="" data-toggle="dropdown" aria-expanded="true">VND (đồng)<i class="fa fa-caret-down"></i></a>
-							<ul class="custom-menu">
-								<li><a href="#">USD ($)</a></li>
-								<li><a href="#">EUR (€)</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div> -->
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header" class="mainmenu__area sticky__header">
@@ -63,7 +32,7 @@
 				<div class="pull-left">
 					<!-- Logo -->
 					<div class="header-logo">
-						<a class="logo" href="{{ home_url }}">
+						<a class="logo" href="{{home_url}}">
 							<img src="{{ img_logo_url }}" class="img-fluid" />
 						</a>
 					</div>
@@ -72,8 +41,8 @@
 					<!-- Search -->
 					<div class="header-search">
 						<form action="/search/" method="POST">
-							{% csrf_token %}		
-							<input id="query" name="query" class="input search-input" type="text" placeholder="Nhập nội dung cần tìm kiếm">						
+							{% csrf_token %}
+							<input id="query" name="query" class="input search-input" type="text" placeholder="Nhập nội dung cần tìm kiếm">
 							<button class="search-btn"><i class="fa fa-search"></i></button>
 						</form>
 					</div>
@@ -90,7 +59,8 @@
 									</div>
 								{% else %}
 									<div class="header-btns-icon">
-										<i class="fa fa-user-o"></i>
+										<img src="{{ img_default }}" style="height: 25px;"/>
+										<!-- <i class="fa fa-user-o"></i> -->
 									</div>
 								{% endif %}
 								<strong class="text-uppercase">Khách hàng </strong>
@@ -100,11 +70,11 @@
 							{% else %}
 								<span class="text-uppercase">NO USER</span>
 							{% endif %}
-							
+
 							<ul class="custom-menu">
-								<li><a href="user"><i class="fa fa-user-o"></i>Tài khoản của tôi </a></li>
+								<li><a href="{{ info_view }}"><i class="fa fa-user-o"></i>Tài khoản của tôi </a></li>
 								<li><a href="#"><i class="fa fa-heart-o"></i>Sản phẩm yêu thích </a></li>
-								<li><a href="#"><i class="fa fa-check"></i>Thủ tục thanh toán</a></li>
+								<!-- <li><a href="#"><i class="fa fa-check"></i>Thủ tục thanh toán</a></li> -->
 								{% if request.user.is_authenticated %}
 									<li class="nav-item {% if request.path == login_url %} active {% endif %}">
 										<a href="{{ logout_url }}"><i class="fa fa-unlock-alt"></i>Đăng xuất</a>
@@ -122,8 +92,8 @@
 						<!-- /Account -->
 
 						<!-- Cart -->
-						<li class="header-cart dropdown default-dropdown" style="width: auto;">
-							<a href="/shopcart/">								
+						<li class="header-cart dropdown default-dropdown" style="width: 150px;">
+							<a href="/shopcart/">
 								{% if request.user.is_authenticated %}
 									<div class="header-btns-icon">
 										<i class="fa fa-shopping-cart"></i>

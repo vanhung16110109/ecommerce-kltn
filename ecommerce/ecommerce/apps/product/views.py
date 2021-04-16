@@ -6,11 +6,6 @@ from django.contrib import messages
 from apps.order.models import ShopCart
 
 
-# Create your views here.
-def product_detail(request):
-    return render(request, 'product_detail.html', {})
-
-
 def category_products(request, id, slug):
     category = Category.objects.all()
     products = Product.objects.filter(category_id = id)
@@ -22,7 +17,7 @@ def category_products(request, id, slug):
 
 
 def addcomment(request, id):
-    url = request.META.get('HTTP_REFERER') 
+    url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -37,7 +32,7 @@ def addcomment(request, id):
             data.save()
             messages.success(request, "Cảm ơn bạn đã gửi bình luận và đánh giá cho chúng tôi.")
             return HttpResponseRedirect(url)
-        
+
     return HttpResponseRedirect(url)
 
 
@@ -62,4 +57,4 @@ def product_detail(request, id, slug):
 		'total': total,
         'quantity': quantity,
     }
-	return render(request, './product_detail.html', context)
+	return render(request, 'product/product-detail.html', context)

@@ -1,11 +1,116 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Thông tin cá nhân {% endblock %}
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-	infor mation
-</body>
-</html>
+{% block head %}
+
+{% endblock %}
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
+{% block body %}
+
+	<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ home_page }}">Trang chủ</a></li>
+                <li class="active">Thông tin cá nhân</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}" role="alert">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endif %}
+
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="billing-details">
+						<div class="section-title">
+							<h3>Thông tin</h3>
+						</div>
+						<div class="aside">
+							<ul class="list-links">
+								<li><a href="/user">Thông tin cá nhân</a></li>
+								<li><a href="/user/orders">Đơn đặt hàng</a></li>
+								<li><a href="/user/comments">Bình luận</a></li>
+								<li><a href="/user/favorits">Yêu thích</a></li>
+								<li><a href="/user/products">Sản phẩm</a></li>
+								<li><a href="/logout">Đăng xuất</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="billing-details">
+						<div class="section-title">
+							<h3>Thông tin cá nhân</h3>
+						</div>
+						<table class="shopping-cart-table table">
+							<tr>
+								<th class="text-left">
+									<a href="/user/update" class="primary-btn">Cập nhật thông tin</a>
+									<a href="/user/password" class="primary-btn">Thay đổi mật khẩu</a>
+								</th>
+								<td><img src="{{ profile.image.url }}" style="height: 200px;"></td>
+							</tr>
+							<tr>
+								<th class="text-left">Tên: </th>
+								<th class="text-left">{{ profile.user }}</th>
+							</tr>
+							<tr>
+								<th class="text-left">Email: </th>
+								<th class="text-left">{{ profile.email }}</th>
+							</tr>
+							<tr>
+								<th class="text-left">Điện thoại: </th>
+								<th class="text-left">{{ profile.phone }}</th>
+							</tr>
+							<tr>
+								<th class="text-left">Địa chỉ: </th>
+								<th class="text-left">{{ profile.address }}</th>
+							</tr>
+							<tr>
+								<th class="text-left">Thành phố/Tỉnh thành: </th>
+								<th class="text-left">{{ profile.city }}</th>
+							</tr>
+							<tr>
+								<th class="text-left">Quốc gia: </th>
+								<th class="text-left">{{ profile.country }}</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- {{ userprofile.user }}
+
+	{{ userprofile.city }}
+
+	{{ userprofile.phone }}
+	{{ userprofile.address }}
+	{{ userprofile.city }}
+	{{ userprofile.country }}
+
+	<img src="{{ request.session.userimage }}" style="height: 150px;"/> -->
+	
+    
+{% endblock body %}
+    
+
+{% block script_body %} 
+   
+    
+{% endblock %}
