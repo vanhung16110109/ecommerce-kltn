@@ -26,6 +26,7 @@
 			<div class="container">
 				<div class="signin-content">
 					<div class="signin-image">
+						<br>
 						<figure><img src="{% static "" %}account/images/signin-image.jpg" alt="sing up image"></figure>
 						<h3><label for="" class="label-agree-term">Bạn chưa có tài khoản? <a href="{% url 'account_register' %}">Đăng ký ngay</a></label></h3>
 					</div>
@@ -41,22 +42,27 @@
 								<label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
 								<input type="password" name="password" id="password" placeholder="Mật khẩu"/>
 							</div>
-							<div class="form-group">
-								<input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-								<label for="remember-me" class="label-agree-term"><span><span></span></span>Ghi nhớ mật khẩu</label>
-							</div>
+
 							<div class="form-group form-button">
-								<input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+								<input type="submit" name="signin" id="signin" class="form-submit" value="Đăng nhập"/>
 							</div>
 						</form>
-						<div class="social-login">
+						
+						
+						<div class="forgotpassword">
+
+							<br><hr id="hrline1">
+							<br><h3><a href="#">Quên mật khẩu?</a></h3>
 							<span class="social-label"> <h3>Đăng nhập với tài khoản</h3></span>
 							<ul class="socials">
-								<li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-								<li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-								<li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+								<li><a href="{% url 'social:begin' 'facebook' %}"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+								<!-- <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li> -->
+								<li><a href="{% url 'social:begin' 'google-oauth2' %}"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
 							</ul>
+							
 						</div>
+						
+						
 					</div>
 				</div>
 			</div>

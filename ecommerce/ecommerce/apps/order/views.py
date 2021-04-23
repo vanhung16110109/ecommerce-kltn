@@ -26,7 +26,7 @@ from apps.product.models import Category, Product
 from apps.account.models import UserProfile
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/account/login')
 def addtoshopcart(request,id):
     url = request.META.get('HTTP_REFERER') 
     current_user = request.user
@@ -81,17 +81,17 @@ def shopcart(request):
         'total': total,
         'quantity': quantity
     }
-    return render(request, './shopcart_product.html', context)
+    return render(request, 'order/order-detail.html', context)
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/account/login')
 def deletefromcart(request, id):
     ShopCart.objects.filter(id=id).delete()
     messages.success(request, "Xóa sản phẩm thành công.")
-    return HttpResponseRedirect("/shopcart")
+    return HttpResponseRedirect("/order")
 
 
-
+@login_required(login_url='/account/login')
 def orderproduct(request):
 	category = Category.objects.all()
 	current_user = request.user

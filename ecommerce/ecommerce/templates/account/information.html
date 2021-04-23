@@ -2,13 +2,30 @@
 {% load static %}
 {% block title %} Thông tin cá nhân {% endblock %}
 
-{% block head %}
 
+{% block head %}
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
 {% endblock %}
 
 
 {% block header %} {% include "home/header.html" %} {% endblock %}
-{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
 
 {% block body %}
 
@@ -59,7 +76,7 @@
 						<table class="shopping-cart-table table">
 							<tr>
 								<th class="text-left">
-									<a href="/user/update" class="primary-btn">Cập nhật thông tin</a>
+									<a href="{% url 'account_information_update' %}" class="primary-btn">Cập nhật thông tin</a>
 									<a href="/user/password" class="primary-btn">Thay đổi mật khẩu</a>
 								</th>
 								<td><img src="{{ profile.image.url }}" style="height: 200px;"></td>
@@ -71,6 +88,10 @@
 							<tr>
 								<th class="text-left">Email: </th>
 								<th class="text-left">{{ profile.email }}</th>
+							</tr>
+							<tr>
+								<th class="text-left">Tên đầy đủ: </th>
+								<th class="text-left">{{ profile.fullname }}</th>
 							</tr>
 							<tr>
 								<th class="text-left">Điện thoại: </th>
@@ -94,23 +115,17 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- {{ userprofile.user }}
 
-	{{ userprofile.city }}
 
-	{{ userprofile.phone }}
-	{{ userprofile.address }}
-	{{ userprofile.city }}
-	{{ userprofile.country }}
 
-	<img src="{{ request.session.userimage }}" style="height: 150px;"/> -->
-	
-    
 {% endblock body %}
-    
 
-{% block script_body %} 
-   
-    
+
+{% block script_body %}
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
 {% endblock %}

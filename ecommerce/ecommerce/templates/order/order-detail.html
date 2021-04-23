@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Giỏ hàng {% endblock %}
+{% block description %} Thông tin giỏ hàng {% endblock %}
+{% block keywords %} Giỏ hàng {% endblock %}
+
+{% url '/category/{{ product.category.id }}/{{ product.category.slug }}' as product_category_slug_url %}
+{% block head %}
+    <!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+{% endblock %}
+
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
+
+{% block product_detail %}
+    <!-- {% if messages %}
+    {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %} -->
+    
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Trang chủ</a></li>
+                <li class="active">Giỏ hàng</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <form id="checkout-form" class="clearfix">
+                    <div class="col-md-12">
+                        <div class="order-summary clearfix">
+                            <div class="section-title">
+                                <h3 class="title">Danh sách sản phẩm trong giỏ hàng</h3>
+                            </div>
+                            <table class="shopping-cart-table table">
+                                <thead>
+                                    <tr>
+                                        <th>Tên sản phẩm</th>
+                                        <th></th>
+                                        <th class="text-center">Giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Thành tiền</th>
+                                        <th class="text-right"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rs in shopcart %}
+                                        <tr>
+                                            <td class="thumb"><img src="{{ rs.product.image.url }}"" alt=""></td>
+                                            <td class="details">
+                                                <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
+                                                
+                                            </td>
+                                            <td class="price text-center"><strong>{{ rs.product.price }}</strong></td>
+                                            <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
+                                            <td class="total text-center"><strong class="primary-color">{{ rs.amount }}.000 VND</strong></td>
+                                            <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Tổng tiền</th>
+                                        <th colspan="2" class="sub-total">{{ total }}.000 VND</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Phí vận chuyển</th>
+                                        <td colspan="2">Miễn phí</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Tổng tiền thanh toán</th>
+                                        <th colspan="2" class="total">{{ total }}.000 VND</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="pull-right">
+                                <a href="/order/orderproduct" class="primary-btn">Thanh toán</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+    
+
+    
+{% endblock product_detail %}
+    
+
+
+
+{% block script_body %} 
+    
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
+	
+{% endblock %}

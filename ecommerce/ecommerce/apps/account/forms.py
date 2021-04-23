@@ -7,6 +7,8 @@ from apps.account.models import UserProfile
 from django.forms.widgets import FileInput, Select, TextInput
 User = get_user_model()
 
+
+
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
@@ -67,6 +69,9 @@ CITY = [
 ]
 
 
+
+
+
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
@@ -74,9 +79,9 @@ class ProfileUpdateForm(forms.ModelForm):
         widgets = {
             'image': FileInput(attrs={'class':'input','placeholder':'Ảnh'}),
             'email': TextInput(attrs={'class':'input','placeholder':'Email'}),
+            'fullname': TextInput(attrs={'class':'input','placeholder':'Tên đầy đủ'}),
             'phone': TextInput(attrs={'class':'input','placeholder':'Điện thoại'}),
             'address': TextInput(attrs={'class':'input','placeholder':'Địa chỉ'}),
             'city': Select(attrs={'class':'input','placeholder':'Thành phố/Tỉnh thành'}, choices=CITY),
             'country': TextInput(attrs={'class':'input','placeholder':'Quốc gia'}),
         }
-        

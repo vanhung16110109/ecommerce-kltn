@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.product.models import Category, Product, Images, Comment, Category_Product_Detail, Product_Type_Color, Product_Type_Size
+from apps.product.models import Category, Product, Images, Comment, Category_Product_Detail, Product_Type_Color, Product_Type_Size, ProductBanner
 from mptt.admin import DraggableMPTTAdmin
 
 
@@ -103,6 +103,10 @@ class ProductColorAdmin(admin.ModelAdmin):
     list_display = ['product', 'title']
 
 
+class ProductBannerAdmin(admin.ModelAdmin):
+    list_display = ['product', 'title', 'banner']
+
+
 # Register your models here.
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Category_Product_Detail, Category_Product_DetailAdmin)
@@ -111,3 +115,4 @@ admin.site.register(Comment, CommentAdmin)
 admin.site.register(Images)
 admin.site.register(Product_Type_Color, ProductColorAdmin)
 admin.site.register(Product_Type_Size)
+admin.site.register(ProductBanner, ProductBannerAdmin)

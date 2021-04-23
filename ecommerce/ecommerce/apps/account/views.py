@@ -7,10 +7,10 @@ from apps.account.models import UserProfile
 from django.http.response import HttpResponseRedirect
 from apps.account.forms import RegisterForm, LoginForm, ProfileUpdateForm
 from apps.product.models import Category
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-
+from apps.order.models import ShopCart
 
 # login
 def account_login(request):
@@ -21,16 +21,18 @@ def account_login(request):
         if user is not None:
             login(request, user)
             current_user = request.user
-            #userprofile = UserProfile.objects.get(user_id = current_user.id)
-            #request.session['userimage'] = userprofile.image.url
+            user_id = current_user.id
+            print(user_id)
+            userprofile = UserProfile.objects.get(user_id = current_user.id)
+            request.session['userimage'] = userprofile.image.url
             check = 1
             return HttpResponseRedirect('/')
         else:
             check = 0
             return render(request,'account/login.html', {'check': check})
             return HttpResponseRedirect('/account/login')
-        
-    return render(request, 'account/login.html',{})  
+
+    return render(request, 'account/login.html',{})
 
 
 #register
@@ -73,12 +75,25 @@ def account_logout(request):
 def account_information_view(request):
     category = Category.objects.all()
     current_user = request.user
+    user_id = current_user.id
+    print(user_id)
     profile = UserProfile.objects.get(user_id = current_user.id)
+    current_user = request.user
+    image_default = "user.png"
+    shopcart = ShopCart.objects.filter(user_id=current_user.id)
+    total = 0
+    for rs in shopcart:
+        total += rs.product.price * rs.quantity
+    quantity = 0
+    for rs in shopcart:
+        quantity += rs.quantity
     context={
         'category':category,
         'profile': profile,
+        'total': total,
+        'quantity': quantity,
     }
-    return render(request, 'account/information.html', {})
+    return render(request, 'account/information.html', context)
 
 
 #change information
@@ -92,13 +107,24 @@ def account_information_update(request):
             current_user = request.user
             userprofile = UserProfile.objects.get(user_id = current_user.id)
             request.session['userimage'] = userprofile.image.url
-            return redirect('/user')
+            shopcart = ShopCart.objects.filter(user_id=current_user.id)
+            return redirect('/account/information/')
     else:
-        category = Category.objects.all()
         profile_form = ProfileUpdateForm(instance=request.user.userprofile)
+        current_user = request.user
+        user_id = current_user.id
+        print(user_id)
+        shopcart = ShopCart.objects.filter(user_id=current_user.id)
+        total = 0
+        for rs in shopcart:
+            total += rs.product.price * rs.quantity
+        quantity = 0
+        for rs in shopcart:
+            quantity += rs.quantity
         context = {
-            'category': category,
-            'profile_form': profile_form
+            'profile_form': profile_form,
+            'total': total,
+            'quantity': quantity,
         }
     return render(request, 'account/information_update.html', context)
 
@@ -113,7 +139,7 @@ def account_password_update(request):
             update_session_auth_hash(request, user)
             messages.success(request,'Thay đổi mật khẩu thành công')
             return HttpResponseRedirect('/user')
-        else:   
+        else:
             messages.error(request, 'Thay đổi mật khẩu không thành công, xin vui lòng kiểm tra lại')
             return HttpResponseRedirect('/user/password')
     else:

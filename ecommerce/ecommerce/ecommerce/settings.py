@@ -39,8 +39,15 @@ INSTALLED_APPS = [
 	#'apps.vnlocation',
     #tool support
     'ckeditor',
-    'mptt',
+    'mptt', 
 
+    'allauth',
+    #'allauth.account',
+    'allauth.socialaccount',
+    #provider
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 # Middleware framework
@@ -77,10 +85,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
+
+
+
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database

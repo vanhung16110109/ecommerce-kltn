@@ -46,8 +46,7 @@ CITY = [
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    firstname = models.CharField(blank=True, max_length=20)
-    lastname = models.CharField(blank=True, max_length=20)
+    fullname = models.CharField(blank=True, max_length=20)
     email = models.EmailField(blank=True, max_length=50)
     phone = models.CharField(blank=True, max_length=20)
     address = models.CharField(blank=True, max_length=255)
@@ -67,4 +66,3 @@ class UserProfile(models.Model):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Image'
-

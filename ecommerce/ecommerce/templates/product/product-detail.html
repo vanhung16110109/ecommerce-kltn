@@ -24,7 +24,7 @@
 	<script src="{% static "" %}home/js/jquery.min.js"></script>
 	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
 	<style>
-		img {
+		.tab-content img {
 			width: 100%;
 			height: 80%;
 		}
@@ -51,7 +51,7 @@
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="{{ home_url }}"">Trang chủ</a></li>
+                <li><a href="{{ home_url }}">Trang chủ</a></li>
                 <li><a href="{{ product_category_slug_url }}">{{ product.category.title }}</a></li>
                 <li class="active">{{ product.title }}</li>
             </ul>
@@ -85,7 +85,7 @@
                             </div>
                             {% for rs in images %}
                             <div class="product-view">
-                                <img src="{{ rs.images.url }}" alt="">
+                                <img src="{{ rs.image.url }}" alt="">
                             </div>
                             {% endfor %} -->
                         </div>
@@ -156,12 +156,11 @@
 								<div id="tab1" class="tab-pane fade in active">
 									<div class="row">
 										<div class="col-md-7">
-											<p> {{ product.detail|safe }} </p>
+											<p> {{ product.detail | safe }} </p>
 										</div>
 										<div class="col-md-5">
 											<h3>Thông số kỹ thuật</h3>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-										irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>									
+											<p> {{ product.tespproduct | safe }} </p>
 										</div>
 									</div>
 								</div>
@@ -182,14 +181,14 @@
 																<i class="fa fa-star{% if rs.rate < 4 %}-o empty{% endif %}"></i>
 																<i class="fa fa-star{% if rs.rate < 5 %}-o empty{% endif %}"></i>
 															</div>
-															
-														</div>							
+
+														</div>
 														<div class="review-body">
 															<p>{{ rs.comment }}</p>
 														</div>
-														
+
 													</div>
-												{% endfor %}												
+												{% endfor %}
 
 												<ul class="reviews-pages">
 													<li class="active">1</li>
@@ -201,7 +200,7 @@
 										</div>
 										<div class="col-md-4" style="width: 45%;">
 											<div class="product-reviews">
-												<h4 class="text-uppercase">Đánh giá của bạn</h4>											
+												<h4 class="text-uppercase">Đánh giá của bạn</h4>
 												<form class="review-form" action="/product/addcomment/{{ product.id }}" method="POST">
 												{% csrf_token %}
 												{% if user.id is not None %}
@@ -224,9 +223,9 @@
 												{% else %}
 													<p>Bạn cần đăng nhập để thêm bình luận và đánh giá.</p>
 													<button><a href="/account/login">Đăng nhập ngay</a></button>
-												{% endif %}												
+												{% endif %}
 												</form>
-											</div>											
+											</div>
 										</div>
 									</div>
 

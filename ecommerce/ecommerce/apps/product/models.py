@@ -123,14 +123,16 @@ class Product(models.Model):
     amount = models.IntegerField()
     minamount = models.IntegerField()
     detail = RichTextUploadingField()
+    #Technical specifications
+    tespproduct = RichTextUploadingField()			
     slug = models.SlugField(blank=False, null=True)
     status = models.CharField(max_length=10, choices=STATUS)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now_add=True)
-    banner = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
+    #banner = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
     statusdiscount = models.CharField(max_length=10, choices=STATUS)
     pricediscount = models.DecimalField(max_digits=20, decimal_places=3)
-    
+
 
 
     def __str__(self):
@@ -146,20 +148,6 @@ class Product(models.Model):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
 
     image_tag.short_description='Image'
-
-        # def set_image(self):
-    #     if self.image == None:
-    #         return null
-    #     return self.image
-
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     SIZE = 270, 360
-
-    #     if self.image:
-    #         pic = Image.open(self.image.path)
-    #         pic.thumbnail(SIZE, Image.LANCZOS)
-    #         pic.save(self.image.path)
 
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
@@ -178,7 +166,31 @@ class Images(models.Model):
     def __str__(self):
         return self.title
 
-    
+
+class ProductBanner(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    banner = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(blank=False, null=True)
+
+    def __str__(self):
+        return self.title
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})
+
+
+def productpresavereceiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(productpresavereceiver, sender=ProductBanner)
+
+
+
 class Product_Type_Color(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)
