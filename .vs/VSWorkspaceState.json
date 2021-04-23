@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ecommerce",
+    "\\ecommerce\\ecommerce",
+    "\\ecommerce\\ecommerce\\apps",
+    "\\ecommerce\\ecommerce\\apps\\account",
+    "\\ecommerce\\ecommerce\\ecommerce",
+    "\\ecommerce\\ecommerce\\templates\\account",
+    "\\ecommerce\\ecommerce\\templates\\product"
+  ],
+  "SelectedNode": "\\ecommerce\\ecommerce\\apps\\account\\views.py",
+  "PreviewInSolutionExplorer": false
+}

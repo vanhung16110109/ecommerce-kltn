@@ -13,12 +13,9 @@ urlpatterns = [
     path('order/', include('apps.order.urls'), name='order'),
     path('product/', include('apps.product.urls'), name='product'),
     path('', include('apps.home.urls'), name='home'),
-	path('social-auth/', include('social_django.urls', namespace="social")),
+	path('social-auth/', include('social_django.urls', namespace='social')),
 	#path('oauth/', include('social_django.urls', namespace='social')),  # <-- here
     path('vnlocation/', include('apps.vnlocation.urls'), name='vnlocation'),
 	path('admin/', admin.site.urls),
 	path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
-

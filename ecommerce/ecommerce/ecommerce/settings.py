@@ -39,15 +39,10 @@ INSTALLED_APPS = [
 	#'apps.vnlocation',
     #tool support
     'ckeditor',
-    'mptt', 
+    'mptt',
 
-    'allauth',
-    #'allauth.account',
-    'allauth.socialaccount',
-    #provider
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.twitter',
+	#login with fb, gg, ...
+	'social_django', # add this
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
 ]
 
 # Middleware framework
@@ -68,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -85,14 +80,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
+
+				'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect', # <-- Here
             ],
         },
     },
 ]
-
-
-
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
@@ -120,6 +114,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.google.GoogleOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -167,3 +169,16 @@ CKEDITOR_CONFIGS = {
 
 # default is 10 pixels
 MPTT_ADMIN_LEVEL_INDENT = 20
+
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '309998650475414'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'a17830884332a23a071e733262e8df9b'  # App Secret
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '949282540815-ip14gpn28e2gtb2sc4je4qnlakv8ekrq.apps.googleusercontent.com'  # App ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'n9htdQ7SGxYTFOrtS6ReGqJd'  # App Secret
