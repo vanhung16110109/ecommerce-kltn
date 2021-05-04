@@ -138,10 +138,10 @@ def account_password_update(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request,'Thay đổi mật khẩu thành công')
-            return HttpResponseRedirect('/user')
+            return HttpResponseRedirect('/account/information/')
         else:
             messages.error(request, 'Thay đổi mật khẩu không thành công, xin vui lòng kiểm tra lại')
-            return HttpResponseRedirect('/user/password')
+            return HttpResponseRedirect('/account/changepassword/')
     else:
         category = Category.objects.all()
         form = PasswordChangeForm(request.user)
@@ -150,3 +150,6 @@ def account_password_update(request):
             'form':form
         }
     return render(request, 'account/changepassword.html', context)
+
+
+

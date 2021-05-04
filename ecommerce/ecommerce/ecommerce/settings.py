@@ -182,3 +182,13 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'a17830884332a23a071e733262e8df9b'  # App Secret
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '949282540815-ip14gpn28e2gtb2sc4je4qnlakv8ekrq.apps.googleusercontent.com'  # App ID
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'n9htdQ7SGxYTFOrtS6ReGqJd'  # App Secret
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'nvhungxx98@gmail.com'
+EMAIL_HOST_PASSWORD = 'NGUYENhung1998'

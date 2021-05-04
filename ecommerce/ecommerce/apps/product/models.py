@@ -114,6 +114,12 @@ pre_save.connect(category_pre_save_receiver, sender=Category_Product_Detail)
 class Product(models.Model):
     STATUS = (('TRUE', 'TRUE'),
                 ('FALSE', 'FALSE'))
+    VARIANTS = (
+        ('None', 'None'),
+        ('Size', 'Size'),
+        ('Color', 'Color'),
+        ('Size-Color', 'Size-Color'),
+    )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     keywords = models.CharField(max_length=255)
@@ -122,6 +128,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=20, decimal_places=3)
     amount = models.IntegerField()
     minamount = models.IntegerField()
+    variant = models.CharField(max_length=10, choices=VARIANTS, default = 'None')
     detail = RichTextUploadingField()
     #Technical specifications
     tespproduct = RichTextUploadingField()			
@@ -167,7 +174,7 @@ class Images(models.Model):
         return self.title
 
 
-class ProductBanner(models.Model):
+class Banner(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     banner = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
     title = models.CharField(max_length=255)
@@ -187,25 +194,57 @@ def productpresavereceiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
-pre_save.connect(productpresavereceiver, sender=ProductBanner)
+pre_save.connect(productpresavereceiver, sender=Banner)
 
 
 
-class Product_Type_Color(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50, blank=True)
+class Color(models.Model):
+    name = models.CharField(max_length=20)
+    code = models.CharField(max_length=10, blank=True, null = True)
+
+    def __str__(self):
+        return self.title
+
+    def color_tag(self):
+        if self.code is not None:
+            return mark_safe('<p style="background-color:{}">Màu </p>'.format(self.code))
+        else:
+            return ""
+
+
+class Size(models.Model):
+    name = models.CharField(max_length=20)
+    code = models.CharField(max_length=10, blank=True, null = True)
 
     def __str__(self):
         return self.title
 
 
-class Product_Type_Size(models.Model):
+class Variants(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50, blank=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null = True)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null = True)
+    image_id = models.IntegerField(blank = True, null=True, default=0)
+    quantity = models.IntegerField(default=1)
+    price = models.FloatField(default=0)
 
     def __str__(self):
         return self.title
 
+    def image(self):
+        img = Images.objects.get(id=self.image_id)
+        if img.id is not None:
+            varimage = img.image.url
+        else:
+            varimage = ""
+
+    def image_tag(self):
+        img = Images.objects.get(id=self.image_id)
+        if img.id is not None:
+            return mark_safe('<img src="{}" height="50" />'.format(img.image.url))
+        else:
+            return ""
 
 
 class Comment(models.Model):

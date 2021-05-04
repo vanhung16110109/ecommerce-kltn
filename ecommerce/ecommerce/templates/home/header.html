@@ -3,7 +3,7 @@
 {% url 'account_information_view' as info_view %}
 {% static "home/img/logo.png" as img_logo_url %}
 {% static "account/user.png" as img_default %}
-{% url 'account_login' as login_url %}
+{% url 'login' as login_url %}
 {% url 'account_register' as register_url %}
 {% url 'account_logout' as logout_url %}
 	<!-- HEADER -->
@@ -68,7 +68,7 @@
 							{% if request.user.is_authenticated %}
 									<span href="#" class="text-uppercase">{{ user }}</span>
 							{% else %}
-								<span class="text-uppercase">NO USER</span>
+								<span class="text-uppercase">Chưa đăng nhập</span>
 							{% endif %}
 
 							<ul class="custom-menu">

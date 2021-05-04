@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.product.models import Category, Product, Images, Comment, Category_Product_Detail, Product_Type_Color, Product_Type_Size, ProductBanner
+from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail
 from mptt.admin import DraggableMPTTAdmin
 
 
@@ -44,8 +44,6 @@ class ProductImageInline(admin.TabularInline):
     max_num = 20
     extra = 5
 
-class ProductColorInline(admin.TabularInline):
-    model = Product_Type_Color
 
 
 #Register your models here.
@@ -63,6 +61,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['subject', 'comment', 'status', 'create_at']
     list_filter = ['status']
     readonly_fields =('subject','comment','ip','user','product', 'rate')
+
 
 class Category_Product_DetailAdmin(DraggableMPTTAdmin):
     mptt_indent_field = "title"
@@ -99,12 +98,20 @@ class Category_Product_DetailAdmin(DraggableMPTTAdmin):
     related_products_cumulative_count.short_description = 'Related products (in tree)'
 
 
-class ProductColorAdmin(admin.ModelAdmin):
-    list_display = ['product', 'title']
-
-
-class ProductBannerAdmin(admin.ModelAdmin):
+class BannerAdmin(admin.ModelAdmin):
     list_display = ['product', 'title', 'banner']
+
+
+class ColorAdmin(admin.ModelAdmin):
+    list_display= ['name', 'code', 'color_tag']
+
+
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'code']
+
+
+class VariantsAdmin(admin.ModelAdmin):
+    list_display = ['title','product', 'color', 'size', 'price', 'quantity', 'image_tag']
 
 
 # Register your models here.
@@ -113,6 +120,8 @@ admin.site.register(Category_Product_Detail, Category_Product_DetailAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Images)
-admin.site.register(Product_Type_Color, ProductColorAdmin)
-admin.site.register(Product_Type_Size)
-admin.site.register(ProductBanner, ProductBannerAdmin)
+admin.site.register(Banner, BannerAdmin)
+admin.site.register(Color, ColorAdmin)
+admin.site.register(Size, SizeAdmin)
+admin.site.register(Variants, VariantsAdmin)
+
