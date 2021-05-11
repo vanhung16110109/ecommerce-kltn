@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     #tool support
     'ckeditor',
     'mptt',
-
 	#login with fb, gg, ...
 	'social_django', # add this
     # Add your apps here to enable them

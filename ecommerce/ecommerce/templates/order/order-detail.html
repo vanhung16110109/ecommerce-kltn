@@ -81,14 +81,32 @@
                                 <tbody>
                                     {% for rs in shopcart %}
                                         <tr>
-                                            <td class="thumb"><img src="{{ rs.product.image.url }}"" alt=""></td>
+                                            <td class="thumb">												
+												{% if rs.variant.image_id > 0 %}
+													<img src="{{ rs.variant.image }}"" alt="">
+												{% else %}
+													<img src="{{ rs.product.image.url }}"" alt="">
+												{% endif %}
+											</td>
                                             <td class="details">
                                                 <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
                                                 
                                             </td>
-                                            <td class="price text-center"><strong>{{ rs.product.price }}</strong></td>
+                                            <td class="price text-center"><strong>											
+												{% if rs.product.variant == 'None' %}
+												{{ rs.product.price}}.000 VND
+											{% else %}
+												{{ rs.variant.price}}.000 VND
+											{% endif %}
+											</strong></td>
                                             <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
-                                            <td class="total text-center"><strong class="primary-color">{{ rs.amount }}.000 VND</strong></td>
+                                            <td class="total text-center"><strong class="primary-color">
+												{% if rs.product.variant == 'None' %}
+													{{ rs.amount}}.000 VND
+												{% else %}
+													{{ rs.varamount}}.000 VND
+												{% endif %}
+												
                                             <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
                                         </tr>
                                     {% endfor %}

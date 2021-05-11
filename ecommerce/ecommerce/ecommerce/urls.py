@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from datetime import datetime
 from django.urls import path, include
 from django.contrib import admin
-
+from apps.product.views import ajaxcolor
 
 
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
     path('vnlocation/', include('apps.vnlocation.urls'), name='vnlocation'),
 	path('admin/', admin.site.urls),
 	path('ckeditor/', include('ckeditor_uploader.urls')),
+	path('ajaxcolor/', ajaxcolor, name='ajaxcolor'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

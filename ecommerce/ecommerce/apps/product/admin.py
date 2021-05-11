@@ -1,7 +1,7 @@
 from django.contrib import admin
 from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail
 from mptt.admin import DraggableMPTTAdmin
-
+import admin_thumbnails
 
 class CategoryAdmin(DraggableMPTTAdmin):
     mptt_indent_field = "title"
@@ -38,21 +38,32 @@ class CategoryAdmin(DraggableMPTTAdmin):
     related_products_cumulative_count.short_description = 'Related products (in tree)'
 
 
+
+@admin_thumbnails.thumbnail('image')
 class ProductImageInline(admin.TabularInline):
     model = Images
-    min_num = 1
-    max_num = 20
-    extra = 5
+    readonly_fields = ('id',)
+    extra = 1
 
+class ProductVariantsInline(admin.TabularInline):
+    model = Variants
+    readonly_fields = ('image_tag',)
+    extra = 1
+    show_change_link = True
+
+
+@admin_thumbnails.thumbnail('image')
+class ImagesAdmin(admin.ModelAdmin):
+    list_display = ['image','title','image_thumbnail']
 
 
 #Register your models here.
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'slug', 'category','status']   #thể hiện field slug trong model admin
-    inlines = [ProductImageInline]
-    prepopulated_fields = {'slug':('title',)}
-    class Meta:
-        model = Product
+    list_display = ['title','category', 'status','image_tag']
+    list_filter = ['category']
+    readonly_fields = ('image_tag',)
+    inlines = [ProductImageInline, ProductVariantsInline]
+    prepopulated_fields = {'slug': ('title',)}
 
 
 
@@ -124,4 +135,3 @@ admin.site.register(Banner, BannerAdmin)
 admin.site.register(Color, ColorAdmin)
 admin.site.register(Size, SizeAdmin)
 admin.site.register(Variants, VariantsAdmin)
-

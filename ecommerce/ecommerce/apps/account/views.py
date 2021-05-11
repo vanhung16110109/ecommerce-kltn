@@ -145,9 +145,21 @@ def account_password_update(request):
     else:
         category = Category.objects.all()
         form = PasswordChangeForm(request.user)
+        current_user = request.user
+        user_id = current_user.id
+        print(user_id)
+        shopcart = ShopCart.objects.filter(user_id=current_user.id)
+        total = 0
+        for rs in shopcart:
+            total += rs.product.price * rs.quantity
+        quantity = 0
+        for rs in shopcart:
+            quantity += rs.quantity
         context = {
             'category': category,
-            'form':form
+            'form':form,
+            'total': total,
+            'quantity': quantity,
         }
     return render(request, 'account/changepassword.html', context)
 

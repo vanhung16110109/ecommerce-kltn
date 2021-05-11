@@ -40,7 +40,6 @@ class Category(MPTTModel):
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now_add=True)
 
-
     def __str__(self):
         return self.title
 
@@ -81,7 +80,6 @@ class Category_Product_Detail(MPTTModel):
     slug = models.SlugField(blank=True, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now_add=True)
-
 
     def __str__(self):
         return self.title
@@ -125,7 +123,7 @@ class Product(models.Model):
     keywords = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     image = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
-    price = models.DecimalField(max_digits=20, decimal_places=3)
+    price = models.DecimalField(max_digits=12, decimal_places=3,default=0)
     amount = models.IntegerField()
     minamount = models.IntegerField()
     variant = models.CharField(max_length=10, choices=VARIANTS, default = 'None')
@@ -139,8 +137,6 @@ class Product(models.Model):
     #banner = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
     statusdiscount = models.CharField(max_length=10, choices=STATUS)
     pricediscount = models.DecimalField(max_digits=20, decimal_places=3)
-
-
 
     def __str__(self):
         return self.title
@@ -203,7 +199,7 @@ class Color(models.Model):
     code = models.CharField(max_length=10, blank=True, null = True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def color_tag(self):
         if self.code is not None:
@@ -217,7 +213,7 @@ class Size(models.Model):
     code = models.CharField(max_length=10, blank=True, null = True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Variants(models.Model):
@@ -227,7 +223,7 @@ class Variants(models.Model):
     size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null = True)
     image_id = models.IntegerField(blank = True, null=True, default=0)
     quantity = models.IntegerField(default=1)
-    price = models.FloatField(default=0)
+    price = models.DecimalField(max_digits=12, decimal_places=3,default=0)
 
     def __str__(self):
         return self.title
@@ -235,14 +231,15 @@ class Variants(models.Model):
     def image(self):
         img = Images.objects.get(id=self.image_id)
         if img.id is not None:
-            varimage = img.image.url
+            varimage=img.image.url
         else:
-            varimage = ""
+            varimage=""
+        return varimage
 
     def image_tag(self):
         img = Images.objects.get(id=self.image_id)
         if img.id is not None:
-            return mark_safe('<img src="{}" height="50" />'.format(img.image.url))
+            return mark_safe('<img src="{}" height="50"/>'.format(img.image.url))
         else:
             return ""
 

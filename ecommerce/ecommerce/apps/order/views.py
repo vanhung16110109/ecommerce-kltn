@@ -1,68 +1,67 @@
-from django.shortcuts import render
-
-
-# Create your views here.
-def order_add(request):
-
-    return render(request, 'order_add.html', {})
-
-
-def order_delete(request):
-    return render(request, 'order_delete.html', {})
-
-
-def order_detail(request):
-    return render(request, 'order_detail.html', {})
-
-
-
 from django.http.response import HttpResponseRedirect
 from django.http import HttpResponse
 from django.contrib import messages
 # Create your views here.
 from apps.order.models import ShopCart, ShopCartForm, OrderForm, Order
 from django.contrib.auth.decorators import login_required
-from apps.product.models import Category, Product
 from apps.account.models import UserProfile
+from apps.product.models import Category, Product, Variants
 
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/login') # Check login
 def addtoshopcart(request,id):
-    url = request.META.get('HTTP_REFERER') 
-    current_user = request.user
-    checkproduct = ShopCart.objects.filter(id=id)
-    if checkproduct:
-        control = 1
+    url = request.META.get('HTTP_REFERER')  # get last url
+    current_user = request.user  
+    product= Product.objects.get(pk=id)
+
+    if product.variant != 'None':
+        variantid = request.POST.get('variantid')  
+        checkinvariant = ShopCart.objects.filter(variant_id=variantid, user_id=current_user.id)  
+        if checkinvariant:
+            control = 1 
+        else:
+            control = 0 
     else:
-        control = 0
-    if request.method == 'POST':
+        checkinproduct = ShopCart.objects.filter(product_id=id, user_id=current_user.id) 
+        if checkinproduct:
+            control = 1 
+        else:
+            control = 0 
+
+    if request.method == 'POST':  
         form = ShopCartForm(request.POST)
         if form.is_valid():
-            if control==1: #update shopcart
-                data = ShopCart.objects.get(id=id)
+            if control==1: 
+                if product.variant == 'None':
+                    data = ShopCart.objects.get(product_id=id, user_id=current_user.id)
+                else:
+                    data = ShopCart.objects.get(product_id=id, variant_id=variantid, user_id=current_user.id)
                 data.quantity += form.cleaned_data['quantity']
-                data.save()
-            else:
+                data.save()  
+            else : 
                 data = ShopCart()
                 data.user_id = current_user.id
-                data.product_id = id
-                data.quantity = form.cleaned_data['quantity'] 
+                data.product_id =id
+                data.variant_id = variantid
+                data.quantity = form.cleaned_data['quantity']
                 data.save()
-            messages.success(request,"Thêm sản phẩm thành công")
-            return HttpResponseRedirect(url)
-    else:
-        if control == 1:
-            data = ShopCart.objects.get(id=id)
-            data.quantity +=1
-            data.save()
-        else:
-            data = ShopCart()
+        messages.success(request, "Thêm sản phẩm thành công")
+        return HttpResponseRedirect(url)
+
+    else: 
+        if control == 1:  
+            data = ShopCart.objects.get(product_id=id, user_id=current_user.id)
+            data.quantity += 1
+            data.save()  
+        else:  
+            data = ShopCart() 
             data.user_id = current_user.id
             data.product_id = id
             data.quantity = 1
-            data.save()
-        messages.success(request,"Thêm sản phẩm thành công")
-    return HttpResponseRedirect(url)
+            data.variant_id =None
+            data.save()  
+        messages.success(request, "Thêm sản phẩm thành công")
+        return HttpResponseRedirect(url)
 
 
 def shopcart(request):
@@ -114,3 +113,22 @@ def orderproduct(request):
 			ordercode = get_random_string(5).upper()
 			data.save()
 	return HttpResponse("Thanh toán")
+
+
+
+from django.shortcuts import render
+
+
+# Create your views here.
+def order_add(request):
+
+    return render(request, 'order_add.html', {})
+
+
+def order_delete(request):
+    return render(request, 'order_delete.html', {})
+
+
+def order_detail(request):
+    return render(request, 'order_detail.html', {})
+

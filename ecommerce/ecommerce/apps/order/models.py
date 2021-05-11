@@ -1,16 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
-from apps.product.models import Product
+from apps.product.models import Product, Variants
 from django.forms import ModelForm
 from django.forms.widgets import FileInput, Select, TextInput
+
 
 class ShopCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    quantity = models.DecimalField(max_digits=20, decimal_places=0)
+    variant = models.ForeignKey(Variants, on_delete=models.SET_NULL,blank=True, null=True)
+    quantity = models.IntegerField()
     
-
     def __str__(self):
         return self.product.title
 
@@ -20,7 +21,11 @@ class ShopCart(models.Model):
 
     @property
     def amount(self):
-        return (self.quantity * self.product.price)    
+        return (self.quantity * self.product.price)   
+
+    @property
+    def varamount(self):
+        return (self.quantity * self.variant.price)
 
 
 class ShopCartForm(ModelForm):
@@ -56,29 +61,29 @@ class Order(models.Model):
 	
 
 class OrderForm(ModelForm):
-	class Meta:
-		model = Order
-		fields = ['first_name','last_name', 'address', 'phone', 'city', 'country']
-
+    class Meta:
+        model = Order
+        fields = ['first_name','last_name','address','phone','city','country']
 
 class OrderProduct(models.Model):
-	STATUS = (
-		('New', 'New'),
-		('Accepted', 'Accepted'),
-		('Canceled', 'Canceled')
-	)
-	order = models.ForeignKey(Order,on_delete=models.CASCADE)
-	user = models.ForeignKey(User,on_delete=models.CASCADE)
-	product = models.ForeignKey(Product,on_delete=models.CASCADE)
-	quantity = models.IntegerField()
-	price = models.FloatField()
-	amount = models.FloatField()
-	status = models.CharField(max_length=10,choices=STATUS,default='New')
-	create_at =  models.DateTimeField(auto_now_add=True)
-	update_at = models.DateTimeField(auto_now=True)
+    STATUS = (
+        ('New', 'New'),
+        ('Accepted', 'Accepted'),
+        ('Canceled', 'Canceled'),
+    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    variant = models.ForeignKey(Variants, on_delete=models.SET_NULL,blank=True, null=True)
+    quantity = models.IntegerField()
+    price = models.FloatField()
+    amount = models.FloatField()
+    status = models.CharField(max_length=10, choices=STATUS, default='New')
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
 
-	def __str__(self):
-		return self.product.title
+    def __str__(self):
+        return self.product.title
 
 
 

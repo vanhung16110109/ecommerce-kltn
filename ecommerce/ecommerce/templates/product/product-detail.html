@@ -21,6 +21,7 @@
 	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
 	<!-- jQuery UI !-->
 	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+
 	<script src="{% static "" %}home/js/jquery.min.js"></script>
 	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
 	<style>
@@ -69,14 +70,30 @@
                 <div class="product product-details clearfix">
                     <div class="col-md-6" style="width: 65%;">
                         <div id="product-main-view">
-                            <div class="product-view">
+							{% if variant.image_id > 0 %}
+                                <div class="product-view">
+                                    <img src="{{ variant.image }}" alt="">
+                                </div>
+                            {% else %}
+                                <div class="product-view">
+                                    <img src="{{ product.image.url }}" alt="">
+                                </div>
+                            {% endif %}
+
+                            {% for rs in images %}
+                                <div  class="product-view active">
+                                    <img src="{{ rs.image.url }}" alt="">
+                                </div>
+                            {% endfor %}
+
+                            <!-- <div class="product-view">
                                 <img src="{{ product.image.url }}" alt="">
                             </div>
                             {% for rs in images %}
                             <div class="product-view">
                                 <img src="{{ rs.image.url }}" alt="">
                             </div>
-                            {% endfor %}
+                            {% endfor %} -->
 
                         </div>
                         <div id="product-view">
@@ -92,60 +109,180 @@
                     </div>
                     <div class="col-md-4">
                         <div class="product-body">
-                            <div class="product-label">
+                            <!-- <div class="product-label">
                                 <span>New</span>
                                 <span class="sale">-20%</span>
-                            </div>
+                            </div> -->
                             <h2 class="product-name">{{ product.title }}</h2>
-                            <h3 class="product-price">{{ product.price }}.000 VND <del class="product-old-price">$45.00</del></h3>
-                            <div>
+                            <!-- <h3 class="product-price">{{ product.price }}.000 VND <del class="product-old-price">$45.00</del></h3> -->
+                            <h3 class="product-price">{{ product.price }}.000 VND</del></h3>
+                            
+							<div>
                                 <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 1%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 2%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 3%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 4%}-o empty{% endif%}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 5%}-o empty{% endif%}"></i>
+                                    <!-- {{ product.avaregereview |stringformat:".2f"}} -->
                                 </div>
                                 <a href="#">10 đánh giá</a>
                             </div>
                             <!-- <p><strong>Availability:</strong> In Stock</p>
                             <p><strong>Brand:</strong> E-SHOP</p>
                             <p>{{ product.description }}</p> -->
-                            <div class="product-options">
-                                <ul class="size-option">
-                                    <li><span class="text-uppercase">Dung lượng:</span></li>
-                                    <li class="active"><a href="#">64GB</a></li>
-                                    <li><a href="#">128GB</a></li>
-                                    <li><a href="#">256GB</a></li>
-                                </ul>
-                                <ul class="color-option">
-                                    <li><span class="text-uppercase">Màu:</span></li>
-                                    <li class="active"><a href="#" style="background-color:#475984;"></a></li>
-                                    <li><a href="#" style="background-color:#8A2454;"></a></li>
-                                    <li><a href="#" style="background-color:#BF6989;"></a></li>
-                                    <li><a href="#" style="background-color:#9A54D8;"></a></li>
-                                </ul>
-                            </div>
+							<script>
+                                $(document).on('change', '#post-form',function(e){
+                                    e.preventDefault();
+                                    $.ajax({
+                                        type:'POST',
+                                        url:'{% url "ajaxcolor" %}',
+                                        data:{
+                                            productid:$('#productid').val(),
+                                            size:$('#size').val(),
+                                            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                            action: 'post'
+                                        },
+                                        data_type : 'html',
+                                        success: function (data) {
+                                            console.log("success");
+                                            $('#appendHere').html(data.rendered_table);
+                                        },
+                                        error: function (data) {
+                                            alert("Got an error dude " + data);
+                                        }
+                                    });
+                                });
+                            </script>
+							<div class="product-btns">
+                                <div class="row">
+                                    {% if product.variant == 'Size-Color' %}
 
-                            <div class="product-btns">
+                                        <div class="product-options" >
+                                            <div class="size-option">
+                                                <form method="POST" id="post-form">
+                                                    <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+                                                    <span class="">Dung lượng:</span>
+                                                    {% csrf_token %}
+                                                    <select name="size" id="size">
+                                                        {% for rs in sizes %}
+                                                            <option {% if variant.size_id == rs.size_id %} selected {% endif %} value="{{ rs.size_id }}">{{ rs.size.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </form>
+                                            </div>
 
-                                <form action="/order/addtoshopcart/{{ product.id }}" method="POST">{% csrf_token %}
-                                    <div class="qty-input">
-                                        <span class="text-uppercase">Số lượng: </span>
+                                            <form method="post" action="?q=selectvariant" id="post-color">
+                                                {% csrf_token %}
+                                                <div id="appendHere">
+                                                    <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                                    <ul class="color-option" >
+                                                        <li><span class="">Màu:  </span></li>
+                                                        {% for rs in colors %}
+                                                            <input type="radio"  {% if variant.id == rs.id %} checked {% endif %} name="variantid" id="variantid" value="{{ rs.id }}" onchange="this.form.submit();">
+                                                            <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                                                <!-- <a style="">
+                                                                    {{ rs.price }} {{ rs.color }}
+                                                                </a> -->
+                                                                <!-- <img src="{{ rs.image }}" style="height: 70px"> -->
+																<span>{{ rs.color }}</br></span>
+																</br>
+																	<img src="{{ rs.image }}" style="height: 70px">
+																</br>
+																Giá: {{ rs.price }}.000 VND 
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </form>
+                                        </div>
 
-                                        <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">
+
+                                    {% elif product.variant == 'Size' %}
+                                        <form method="post" action="?q=selectvariant" id="post-color">
+                                            {% csrf_token %}
+                                            <div id="appendHere">
+                                                <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                                <ul class="color-option" >
+                                                    <li><span class="">Dung lượng: </span></li>
+                                                    {% for rs in sizes %}
+                                                        <input type="radio"  {% if variant.id == rs.id %} checked {% endif %} name="variantid" id="variantid" value="{{ rs.id }}" onchange="this.form.submit();">
+                                                        <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                                            <a style="">
+                                                                {{ rs.size }}<br> {{ rs.price }}.000 VND
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </form>
+                                        <br><br>
+
+                                    {% elif product.variant == 'Color' %}
+                                        <form method="post" action="?q=selectvariant" id="post-color">
+                                            {% csrf_token %}
+                                            <div id="appendHere">
+                                                <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                                <ul class="color-option" >
+                                                    <li><span class="">Màu:  </span></li>
+                                                    {% for rs in colors %}
+                                                        <input type="radio"  {% if variant.id == rs.id %} checked {% endif %} name="variantid" id="variantid" value="{{ rs.id }}" onchange="this.form.submit();">
+                                                        <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                                            <a style="">
+                                                                {{ rs.price }} {{ rs.color }}
+                                                            </a>
+                                                            <img src="{{ rs.image }}" style="height: 70px">
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+
+                                        </form>
+                                        </div>
+                                    {% endif %}
+
+                            {% if  product.variant != 'None'   %}
+                                <form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
+                                    <div id="SelectedProduct">
+                                        <p><strong>Tình trạng: </strong> {% if variant.quantity > 0  %} Còn hàng {% else %} Tạm thời hết hàng {% endif %}</p>
+                                        <p><strong>Đã chọn: </strong> Dung lượng: {{ variant.size }}  Màu: {{ variant.color }} </p>
+                                        <h3 class="product-price">{{ variant.price}}.000 VND</h3>
+                                        <div class="qty-input">
+                                            <span class="text-uppercase">Số lượng:  </span>
+                                            <input class="input" name="quantity" type="number" value="1" min="1" max="{{ variant.quantity }}">
+                                            <button type="submit" {% if variant.quantity < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
                                 </form>
-                                <!--	<div class="pull-right">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
-                                </div> -->
+                            {% else %}
+
+                                <form action="/order/addtoshopcart/{{ product.id }}" method="post"  id="addchart-form">
+                                    {% csrf_token %}
+                                    <div id="SelectedProduct">
+                                        <p><strong>Tình trạng: </strong> {% if product.amount > 0  %} Còn hàng {% else %} Tạm thời hết hàng {% endif %}</p>
+                                        <h3 class="product-price">{{ product.price }}.000 VND</h3>
+                                        <div class="qty-input">
+                                            <span class="text-uppercase">Số lượng:  </span>
+                                            <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">
+                                            <button type="submit" {% if product.amount < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                                                <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            {% endif %}
                             </div>
+                            <br>
                         </div>
-                    </div>
-                    <div class="col-md-12">
+                    </div>        
+                </div>
+				<div class="product product-details clearfix">
+					<div class="col-md-12">
 						<div class="product-tab">
 							<ul class="tab-nav">
 								<li class="active"><a data-toggle="tab" href="#tab1">Thông tin nổi bật</a></li>
@@ -253,7 +390,7 @@
 						</div>
 					</div>
 
-                </div>
+				</div>
                 <!-- /Product Details -->
             </div>
             <!-- /row -->
