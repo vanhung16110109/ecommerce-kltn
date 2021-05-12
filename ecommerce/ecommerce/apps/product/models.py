@@ -129,7 +129,9 @@ class Product(models.Model):
     variant = models.CharField(max_length=10, choices=VARIANTS, default = 'None')
     detail = RichTextUploadingField()
     #Technical specifications
-    tespproduct = RichTextUploadingField()			
+    tespproduct = RichTextUploadingField()
+	#thong tin chi tiet
+    detailsproduct = RichTextUploadingField()			
     slug = models.SlugField(blank=False, null=True)
     status = models.CharField(max_length=10, choices=STATUS)
     create_at = models.DateTimeField(auto_now_add=True)
@@ -268,3 +270,115 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ['subject', 'comment', 'rate']
+
+
+# class DetailsProduct(models.Model):
+# 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+# 	details = RichTextUploadingField()
+
+
+# class Screen(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=20)
+#     func = models.CharField(max_length=10, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.name
+
+
+# class RearCamera(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# class FrontCamera(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+# #Operating System & CPU
+# class OpeSyCP(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# #Memory & Storage
+# class MemoStora(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# #Kết nối
+# class Connect(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# #Rechargeable batteries (Pin và sạc)
+# class RechBatter(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# #Utilities - tiện ích
+# class Utilities(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# #General information - thông tin chung
+# class GeneralInformation(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     func = models.CharField(max_length=100, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.title
+
+
+# class DetailsProduct(models.Model):
+# 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	
+
+# class ScreenDemo(models.Model):
+#     name = models.CharField(max_length=20)
+#     code = models.CharField(max_length=10, blank=True, null = True)
+
+#     def __str__(self):
+#         return self.name
+
+
+# class DetailsProductDemo(models.Model):
+#     title = models.CharField(max_length=100, blank=True, null=True)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     screen = models.ForeignKey(Screen, on_delete=models.CASCADE, blank=True, null = True)
+    
+#     def __str__(self):
+#         return self.title

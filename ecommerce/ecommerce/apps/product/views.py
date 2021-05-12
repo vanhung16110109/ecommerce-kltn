@@ -53,6 +53,7 @@ def product_detail(request, id, slug):
 	product = Product.objects.get(pk=id)
 	images = Images.objects.filter(product_id=id)
 	comments = Comment.objects.filter(product_id=id)
+	# details = DetailsProduct.objects.filter(product_id=id)
 	context = {
         'comments': comments,
         'product': product,
@@ -60,6 +61,7 @@ def product_detail(request, id, slug):
         'images': images,
 		'total': total,
         'quantity': quantity,
+		# 'deta': details,
     }
 	if product.variant !="None": # Product have variants
 		if request.method == 'POST': #if we select color

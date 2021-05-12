@@ -3,6 +3,8 @@ from apps.product.models import Category, Product, Images, Comment, Banner, Size
 from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 
+
+
 class CategoryAdmin(DraggableMPTTAdmin):
     mptt_indent_field = "title"
     list_display_links = ('indented_title',)
@@ -125,7 +127,9 @@ class VariantsAdmin(admin.ModelAdmin):
     list_display = ['title','product', 'color', 'size', 'price', 'quantity', 'image_tag']
 
 
-# Register your models here.
+# class DetailsProductAdmin(admin.ModelAdmin):
+# 	list_display = ['product']
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Category_Product_Detail, Category_Product_DetailAdmin)
 admin.site.register(Product, ProductAdmin)
@@ -135,3 +139,5 @@ admin.site.register(Banner, BannerAdmin)
 admin.site.register(Color, ColorAdmin)
 admin.site.register(Size, SizeAdmin)
 admin.site.register(Variants, VariantsAdmin)
+# admin.site.register(DetailsProduct, DetailsProductAdmin)
+
