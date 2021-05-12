@@ -29,6 +29,11 @@
 			width: 100%;
 			height: 80%;
 		}
+		.center {
+			margin: auto;
+			width: 80%;		
+			padding: 40px;
+		}
 	</style>
 {% endblock %}
 
@@ -314,9 +319,11 @@
 															<p>This is a large modal.</p> -->
 															<div class="row">
 																<div class="col-md-12">
-																	<p> {{ product.detailsproduct | safe }} </p>
+																	<!-- <p> {{ product.detailsproduct | safe }} </p> -->
+																	<div class="center">
+																		<p> {{ product.detailsproduct | safe }} </p>
+																	</div>
 																</div>
-																
 															</div>
 															
 															
