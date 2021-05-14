@@ -12,9 +12,19 @@ import json
 def category_products(request, id, slug):
     category = Category.objects.all()
     products = Product.objects.filter(category_id = id)
+    current_user = request.user
+    shopcart = ShopCart.objects.filter(user_id=current_user.id)
+    total = 0
+    for rs in shopcart:
+        total += rs.product.price * rs.quantity
+    quantity = 0
+    for rs in shopcart:
+        quantity += rs.quantity
     context = {
         'category':category,
         'products': products,
+		'total': total,
+        'quantity': quantity,
     }
     return render(request, 'product/category_products.html',context)
 
