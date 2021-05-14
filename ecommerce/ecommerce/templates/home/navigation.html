@@ -17,15 +17,16 @@
 						<li class="dropdown dropdown-toggle">
 							{% if node.status != 'FALSE' %}
 								<!-- ĐÚNG -->
-								<a href="/category/{{ node.id }}/{{ node.slug }}" class="dropdown-toggle" {% if not node.is_leaf_node %} data-toggle="dropdown" aria-expanded="false" {% endif %}>{{ node.title }}</a>							
+								<a href="/product/category/{{ node.id }}/{{ node.slug }}" class="dropdown-toggle" {% if not node.is_leaf_node %} data-toggle="dropdown" aria-expanded="false" {% endif %}>{{ node.title }}</a>							
 								<div class="custom-menu">			
 									<div class="row">		
 										<div class="col-md-12">
 											{% if not node.is_leaf_node %}
 											<ul class="list-links">
 												<li>
-													<h3 class="list-links-title">Nhà sản xuất</h3></li>
-												<li><a href="#">{{ children }}</a></li>	
+													<h3 class="list-links-title">Dòng sản phẩm</h3></li>
+													<a href="#">{{ children }}</a></li>	
+												<li>
 											</ul>
 											{% endif %}
 											<hr class="hidden-md hidden-lg">

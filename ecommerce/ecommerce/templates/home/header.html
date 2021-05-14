@@ -53,16 +53,21 @@
 						<!-- Account -->
 						<li class="header-account dropdown default-dropdown" style="width: 180px;">
 							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true" style="width: 160px;">
-								{% if request.user.is_authenticated %}
+								<!-- {% if request.user.is_authenticated %}
 									<div class="header-btns-icon">
 										<img src="{{ request.session.userimage }}" style="height: 25px;"/>
 									</div>
 								{% else %}
 									<div class="header-btns-icon">
 										<img src="{{ img_default }}" style="height: 25px;"/>
-										<!-- <i class="fa fa-user-o"></i> -->
+										
 									</div>
-								{% endif %}
+								{% endif %} -->
+								<div class="header-btns-icon">
+									<img src="{{ img_default }}" style="height: 25px;"/>
+									
+								</div>
+								<!-- <i class="fa fa-user-o"></i> -->
 								<strong class="text-uppercase">Khách hàng </strong>
 							</div>
 							{% if request.user.is_authenticated %}

@@ -16,8 +16,10 @@ from apps.order.models import ShopCart
 def home_page(request):
     category = Category.objects.all()
     product_slider = Banner.objects.all().order_by('id')[:4]
+    product_slider_mini = Banner.objects.all().order_by('id')[5:8] #lay 2 phan tu cuoi cung cua mang
     product_lasted = Product.objects.all().order_by('-id')[:4]
     product_picked = Product.objects.all().order_by('?')[:4]
+    product = Product.objects.all()
     page = "home"
     current_user = request.user
     image_default = "user.png"
@@ -32,8 +34,10 @@ def home_page(request):
         'page': page,
         'category': category,
         'product_slider': product_slider,
+        'product_slider_mini': product_slider_mini,
         'product_lasted': product_lasted,
         'product_picked': product_picked,
+		'product': product,
 		'total': total,
         'quantity': quantity,
         'image_default': image_default,
@@ -74,6 +78,3 @@ def home_page(request):
 #         'form': form
 #     }
 #     return render(request, './contact.html', context)
-
-
-

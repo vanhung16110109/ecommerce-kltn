@@ -4,33 +4,49 @@
     <!-- container -->
     <div class="container">
 		<div class="row">
+      </br>
 			<div class="col-md-8">
 				<!-- home wrap -->
 				<div class="home-wrap">
 					<!-- home slick -->
 					<div id="home-slick">
-						{% for rs in product_slider %}
+						<!-- {% for rs in product_slider %}
 						<a href="/product/{{ rs.id }}/{{ rs.slug }}" class="banner banner-1">
 							<img src="{{ rs.banner.url }}" alt="">
 							<h5>{{rs.description}}</h5>
 						</a>
+						{% endfor %} -->
+
+						{% for rs in product_slider %}
+							{% for pd in product %}
+								{% if rs.slug == pd.slug %}
+									<a href="/product/{{ pd.id }}/{{ pd.slug }}" class="banner banner-1">
+										<img src="{{ rs.banner.url }}" alt="" style="width: 800px; height: 420px">
+										<h5>{{rs.description}}</h5>
+									</a>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 					</div>
 					<!-- /home slick -->
 				</div>
 				<!-- /home wrap -->
 			</div>
-			
+
 			<div class="col-md-4">
 				<!-- home wrap -->
 				<div class="home-wrap">
 					<!-- home slick -->
 					<div id="home-slick">
-						{% for rs in product_slider %}
-							<a href="/product/{{ rs.id }}/{{ rs.slug }}" class="banner banner-1">
-								<img src="{{ rs.banner.url }}" alt="">
-								<h5>{{rs.description}}</h5>
-							</a>
+						{% for rs in product_slider_mini %}
+							{% for pd in product %}
+								{% if rs.slug == pd.slug %}
+									<a href="/product/{{ pd.id }}/{{ pd.slug }}" class="banner banner-1">
+										<img src="{{ rs.banner.url }}" alt="">
+										<h5>{{rs.description}}</h5>
+									</a>
+								{% endif %}
+							{% endfor %}
 						{% endfor %}
 					</div>
 					<!-- /home slick -->

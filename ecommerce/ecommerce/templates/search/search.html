@@ -26,46 +26,40 @@
 {% block navigation %} {% include "home/navigation.html" %} {% endblock %}
 
 {% block body %}
-	<!-- BREADCRUMB -->
-	<div id="breadcrumb">
-		<div class="container">
-			<ul class="breadcrumb">
-				<li >Kết quả tìm kiếm: <b>{{ query }}</b></li>
-			</ul>
-		</div>
-	</div>
-	<!-- /BREADCRUMB -->
+
     <!-- section -->
 	<div class="section">
 		<!-- container -->
 		<div class="container">
 			<!-- row -->
-			<div class="row">	
+			<div class="row">
 				<!-- MAIN -->
-				<div id="main" class="col-md-12">	
+				<div id="main" class="col-md-12">
                     <!-- store -->
-                    <div class="col-md-12">
+          <div class="col-md-12">
+						<h3>Kết quả cần tìm kiếm: <b>{{ query }}</b></h3>
+						<hr>
 						<div class="order-summary clearfix">
 							<div class="section-title">
 								<h3 class="title">Danh sách tìm kiếm</h3>
 							</div>
 							<table class="shopping-cart-table table">
-								<!-- <thead>
+								<thead>
 									<tr>
-										<th>Sản phẩm</th>
 										<th></th>
+										<th>Tên sản phẩm</th>
 										<th class="text-center">Giá</th>
 									</tr>
-                                </thead> -->
-                                
-								<!-- <tbody>
-                                    {% for rs in products %}
+                </thead>
+
+								<!--<tbody>
+                  <!--                  {% for rs in products %}
 										<tr>
 											<td class="thumb"> <a href="/product/{{ rs.id }}/{{ rs.slug }}">
 												<img src="{{ rs.image.url }}" alt="" style="height: 70px;">
 											</a></td>
 											<td class="details">
-												<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>												
+												<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
 											</td>
 											<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br><del class="font-weak"><small>$40.00</small></del></td>
 										</tr>
@@ -77,17 +71,18 @@
 												<img src="{{ rs.image.url }}" alt="" style="height: 70px;">
 											</a></td>
 											<td class="details">
-												<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>												
+												<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
 											</td>
-											<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br><del class="font-weak"><small>$40.00</small></del></td>
+											<!--<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br><del class="font-weak"><small>$40.00</small></del></td> -->
+											<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br></del></td>
 										</tr>
-									{% endfor %}
-								
+								{% endfor %}
+
 							</table>
-							
+
 						</div>
 
-					</div>                
+					</div>
 				</div>
 				<!-- /MAIN -->
 			</div>
@@ -96,7 +91,7 @@
 		<!-- /container -->
 	</div>
 {% endblock body %}
-    
+
 
 {% block script_body %}
     <!-- jQuery Plugins -->

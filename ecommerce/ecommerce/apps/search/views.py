@@ -32,9 +32,9 @@ def search(request):
                 'total': total,
                 'quantity': quantity,
             }
-            
+
             return render(request, 'search/search.html', context)
-        
+
     return HttpResponseRedirect('/search')
 
 

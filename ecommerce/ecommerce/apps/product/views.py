@@ -16,7 +16,7 @@ def category_products(request, id, slug):
         'category':category,
         'products': products,
     }
-    return render(request, './category_products.html',context)
+    return render(request, 'product./category_products.html',context)
 
 
 def addcomment(request, id):
@@ -67,7 +67,7 @@ def product_detail(request, id, slug):
 		if request.method == 'POST': #if we select color
 			variant_id = request.POST.get('variantid')
 			variant = Variants.objects.get(id=variant_id) #selected product by click color radio
-			colors = Variants.objects.filter(product_id=id,size_id=variant.size_id )
+			colors = Variants.objects.filter(product_id=id,size_id=variant.size_id)
 			sizes = Variants.objects.raw('SELECT * FROM  product_variants  WHERE product_id=%s GROUP BY size_id',[id])
 			query += variant.title+' Size:' +str(variant.size) +' Color:' +str(variant.color)
 		else:
