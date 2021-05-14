@@ -16,7 +16,7 @@ def category_products(request, id, slug):
         'category':category,
         'products': products,
     }
-    return render(request, 'product./category_products.html',context)
+    return render(request, 'product/category_products.html',context)
 
 
 def addcomment(request, id):
