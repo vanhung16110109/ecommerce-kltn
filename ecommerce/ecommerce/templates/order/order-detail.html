@@ -59,7 +59,13 @@
     <div class="section">
         <!-- container -->
         <div class="container">
-            <!-- row -->
+			{% if total <= 0 %}
+				<div class="">
+                    <h3>Không có sản phẩm trong giỏ hàng</h3>
+					<a href="{% url 'home' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Trở về trang chủ</a>
+				</div>
+			{% else %}
+			<!-- row -->
             <div class="row">
                 <form id="checkout-form" class="clearfix">
                     <div class="col-md-12">
@@ -73,6 +79,8 @@
 										<th></th>
                                         <th>Tên sản phẩm</th>
                                         <th class="text-center">Giá</th>
+										<th class="text-center">Dung lượng</th>
+										<th class="text-center">Màu</th>
                                         <th class="text-center">Số lượng</th>
                                         <th class="text-center">Thành tiền</th>
                                         <th class="text-right"></th>
@@ -93,26 +101,76 @@
                                                 
                                             </td>
                                             <td class="price text-center"><strong>											
-												{% if rs.product.variant == 'None' %}
+											{% if rs.product.variant == 'None' %}
 												{{ rs.product.price}}.000 VND
 											{% else %}
 												{{ rs.variant.price}}.000 VND
 											{% endif %}
 											</strong></td>
+											<td class="qty text-center"><strong>
+												{% if rs.product.variant == 'None' %}
+													{{ rs.product.size}}
+												{% else %}
+													{{ rs.variant.size }}
+												{% endif %}
+												
+											</strong></td>
+											<td class="qty text-center"><strong>{{ rs.variant.color }}</strong></td>
                                             <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
                                             <td class="total text-center"><strong class="primary-color">
 												{% if rs.product.variant == 'None' %}
-													{{ rs.amount}}.000 VND
+													{{ rs.amount }}.000 VND
 												{% else %}
 													{{ rs.varamount}}.000 VND
-												{% endif %}
-												
+												{% endif %}												
                                             <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
                                         </tr>
                                     {% endfor %}
                                     
                                 </tbody>
+                                <!-- <tfoot>
+									
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Tổng tiền</th>
+                                        <th colspan="2" class="sub-total">{{ total }}.000 VND</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Phí vận chuyển</th>
+                                        <td colspan="2">Miễn phí</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Tổng tiền thanh toán</th>
+                                        <th colspan="2" class="total">{{ total }}.000 VND</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="pull-right">
+                                <a href="/order/orderproduct" class="primary-btn">Thanh toán</a>
+                            </div> -->
+							</table>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <!-- /row -->
+			<div class="row">
+                <form id="checkout-form" class="clearfix">
+					<div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <div class="order-summary clearfix">
+                            <!-- <div class="section-title">
+                                <h3 class="title">Báo Giá Thanh Toán</h3>
+                            </div> -->
+							<br>
+                            <table class="shopping-cart-table table">
+                                
                                 <tfoot>
+									
                                     <tr>
                                         <th class="empty" colspan="3"></th>
                                         <th>Tổng tiền</th>
@@ -139,6 +197,8 @@
                 </form>
             </div>
             <!-- /row -->
+			{% endif %}
+            
         </div>
         <!-- /container -->
     </div>

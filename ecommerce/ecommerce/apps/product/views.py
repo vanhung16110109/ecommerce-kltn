@@ -16,7 +16,7 @@ def category_products(request, id, slug):
     shopcart = ShopCart.objects.filter(user_id=current_user.id)
     total = 0
     for rs in shopcart:
-        total += rs.product.price * rs.quantity
+        total += rs.variant.price * rs.quantity
     quantity = 0
     for rs in shopcart:
         quantity += rs.quantity
@@ -55,7 +55,7 @@ def product_detail(request, id, slug):
 	shopcart = ShopCart.objects.filter(user_id=current_user.id)
 	total = 0
 	for rs in shopcart:
-		total += rs.product.price * rs.quantity
+		total += rs.variant.price * rs.quantity
 	quantity = 0
 	for rs in shopcart:
 		quantity += rs.quantity
@@ -84,7 +84,7 @@ def product_detail(request, id, slug):
 			variants = Variants.objects.filter(product_id=id)
 			colors = Variants.objects.filter(product_id=id,size_id=variants[0].size_id )
 			sizes = Variants.objects.raw('SELECT * FROM  product_variants  WHERE product_id=%s GROUP BY size_id',[id])
-			variant =Variants.objects.get(id=variants[0].id)
+			variant = Variants.objects.get(id=variants[0].id)
 		context.update({'sizes': sizes, 'colors': colors,
                         'variant': variant,'query': query
                         })

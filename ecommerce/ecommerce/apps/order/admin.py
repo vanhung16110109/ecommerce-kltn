@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import ShopCart, Order, OrderProduct
 
 class ShopCartAdmin(admin.ModelAdmin):
-    list_display = ['product', 'user','quantity', 'price', 'amount']
+    list_display = ['product', 'user','quantity', 'price', 'amount', 'varamount', 'size', 'color']
     list_filter = ['user']
 
 
@@ -27,6 +27,7 @@ class OrderProductAdmin(admin.ModelAdmin):
 	list_display = ['user', 'product', 'price', 'quantity', 'amount']
 	list_filter = ['user']
 	
+
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderProduct, OrderProductAdmin)

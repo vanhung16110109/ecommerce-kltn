@@ -26,7 +26,7 @@ def home_page(request):
     shopcart = ShopCart.objects.filter(user_id=current_user.id)
     total = 0
     for rs in shopcart:
-        total += rs.product.price * rs.quantity
+        total += rs.variant.price * rs.quantity
     quantity = 0
     for rs in shopcart:
         quantity += rs.quantity

@@ -61,7 +61,7 @@
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="{{ home_url }}">Trang chủ</a></li>
+                <li><a href="{% url 'home' %}">Trang chủ</a></li>
                 <li><a href="{{ product_category_slug_url }}">{{ product.category.title }}</a></li>
                 <li class="active">{{ product.title }}</li>
             </ul>

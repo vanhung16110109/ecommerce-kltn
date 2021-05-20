@@ -41,7 +41,7 @@ def addtoshopcart(request,id):
             else : 
                 data = ShopCart()
                 data.user_id = current_user.id
-                data.product_id =id
+                data.product_id = id
                 data.variant_id = variantid
                 data.quantity = form.cleaned_data['quantity']
                 data.save()
@@ -70,7 +70,7 @@ def shopcart(request):
     shopcart = ShopCart.objects.filter(user_id=current_user.id)
     total = 0
     for rs in shopcart:
-        total += rs.product.price * rs.quantity
+        total += rs.variant.price * rs.quantity
     quantity = 0
     for rs in shopcart:
         quantity += rs.quantity
@@ -97,7 +97,7 @@ def orderproduct(request):
 	shopcart = ShopCart.objects.filter(user_id=current_user.id)
 	total = 0
 	for rs in shopcart:
-		total += rs.product.price*rs.quantity
+		total += rs.variant.price*rs.quantity
 	if request.method =='POST':
 		form = OrderForm(request.POST)
 		if form.is_valid():

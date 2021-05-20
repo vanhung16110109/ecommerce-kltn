@@ -27,6 +27,14 @@ class ShopCart(models.Model):
     def varamount(self):
         return (self.quantity * self.variant.price)
 
+    @property
+    def size(self):
+        return self.variant.size
+
+    @property
+    def color(self):
+        return self.variant.color
+
 
 class ShopCartForm(ModelForm):
     class Meta:
@@ -87,4 +95,3 @@ class OrderProduct(models.Model):
 
 
 
-	
