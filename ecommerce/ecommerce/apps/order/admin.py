@@ -4,7 +4,8 @@ from django.contrib import admin
 from .models import ShopCart, Order, OrderProduct
 
 class ShopCartAdmin(admin.ModelAdmin):
-    list_display = ['product', 'user','quantity', 'price', 'amount', 'varamount', 'size', 'color']
+    # list_display = ['product', 'user','quantity', 'price', 'amount', 'varamount', 'size', 'color']
+    list_display = ['product', 'user','quantity', 'price', 'varamount', 'size', 'color']
     list_filter = ['user']
 
 
@@ -16,9 +17,9 @@ class OrderProductLine(admin.TabularInline):
 
 
 class OrderAdmin(admin.ModelAdmin):
-	list_display = ['first_name', 'last_name', 'phone', 'city', 'total', 'status']
+	list_display = ['first_name', 'last_name', 'phone', 'total', 'status']
 	list_filter = ['status']
-	readonly_fields	= ('user', 'address', 'city', 'country', 'phone', 'first_name', 'last_name', 'ip', 'phone', 'city', 'total' )
+	readonly_fields	= ('user','first_name', 'last_name', 'address', 'phone',  'ip', 'total' )
 	can_delete = False
 	inlines = [OrderProductLine]
 

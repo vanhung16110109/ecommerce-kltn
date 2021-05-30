@@ -6,9 +6,10 @@ from apps.order.models import ShopCart, ShopCartForm, OrderForm, Order
 from django.contrib.auth.decorators import login_required
 from apps.account.models import UserProfile
 from apps.product.models import Category, Product, Variants
+from django.shortcuts import render
 
 
-@login_required(login_url='/login') # Check login
+@login_required(login_url='/account/login')# Check login
 def addtoshopcart(request,id):
     url = request.META.get('HTTP_REFERER')  # get last url
     current_user = request.user  
@@ -105,7 +106,7 @@ def orderproduct(request):
 			data.first_name = form.cleaned_data['first_name']
 			data.last_name = form.cleaned_data['last_name']
 			data.address = form.cleaned_data['address']
-			data.city = form.cleaned_data['city']
+			# data.city = form.cleaned_data['city']
 			data.phone = form.cleaned_data['phone']
 			data.user_id = current_user.id
 			data.total = total
@@ -113,22 +114,4 @@ def orderproduct(request):
 			ordercode = get_random_string(5).upper()
 			data.save()
 	return HttpResponse("Thanh toán")
-
-
-
-from django.shortcuts import render
-
-
-# Create your views here.
-def order_add(request):
-
-    return render(request, 'order_add.html', {})
-
-
-def order_delete(request):
-    return render(request, 'order_delete.html', {})
-
-
-def order_detail(request):
-    return render(request, 'order_detail.html', {})
 

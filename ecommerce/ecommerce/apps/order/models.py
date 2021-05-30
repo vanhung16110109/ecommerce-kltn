@@ -15,9 +15,13 @@ class ShopCart(models.Model):
     def __str__(self):
         return self.product.title
 
+    # @property
+    # def price(self):
+    #     return (self.product.price)
+
     @property
     def price(self):
-        return (self.product.price)
+        return (self.variant.price)
 
     @property
     def amount(self):
@@ -44,10 +48,11 @@ class ShopCartForm(ModelForm):
 
 class Order(models.Model):
 	STATUS = (
-		('New', 'New'),
-		('Preparing', 'Preparing'),
-		('OnShipping', 'OnShipping'),
-		('Canceled', 'Canceled')
+		('Mới', 'Mới'),
+		('Chuẩn bị', 'Chuẩn bị'),
+		('Đang giao hàng', 'Đang giao hàng'),
+		('Hoàn thành', 'Hoàn thành'),
+		('Đã hủy', 'Đã hủy')
 	)
 	user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	code = models.CharField(max_length=5, editable=False)
@@ -55,10 +60,10 @@ class Order(models.Model):
 	last_name = models.CharField(max_length=20)
 	phone = models.CharField(blank=True, max_length=20)
 	address = models.CharField(blank=True, max_length=255)
-	city = models.CharField(blank=True, max_length=50)
-	country = models.CharField(blank=True, max_length=50)
+	# city = models.CharField(blank=True, max_length=50)
+	# country = models.CharField(blank=True, max_length=50)
 	total = models.FloatField()
-	status = models.CharField(max_length=10, choices=STATUS,default='New')
+	status = models.CharField(max_length=50, choices=STATUS,default='Mới')
 	ip = models.CharField(blank=True, max_length=30)
 	adminnote = models.CharField(blank=True, max_length=50)
 	create_at =  models.DateTimeField(auto_now_add=True)
@@ -71,13 +76,15 @@ class Order(models.Model):
 class OrderForm(ModelForm):
     class Meta:
         model = Order
-        fields = ['first_name','last_name','address','phone','city','country']
+        fields = ['first_name','last_name','address','phone']
+
+        # fields = ['first_name','last_name','address','phone','city','country']
 
 class OrderProduct(models.Model):
     STATUS = (
-        ('New', 'New'),
-        ('Accepted', 'Accepted'),
-        ('Canceled', 'Canceled'),
+        ('Mới', 'Mới'),
+        ('Đã được chấp nhận', 'Đã được chấp nhận'),
+        ('Đã hủy', 'Đã hủy'),
     )
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -86,12 +93,13 @@ class OrderProduct(models.Model):
     quantity = models.IntegerField()
     price = models.FloatField()
     amount = models.FloatField()
-    status = models.CharField(max_length=10, choices=STATUS, default='New')
+    status = models.CharField(max_length=50, choices=STATUS, default='Mới')
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.product.title
+
 
 
 

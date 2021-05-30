@@ -189,8 +189,11 @@
                                 </tfoot>
                             </table>
                             <div class="pull-right">
-                                <a href="/order/orderproduct" class="primary-btn">Thanh toán</a>
+                                <a href="{% url "checkout_offline" %}" class="btn primary-btn btn-lg active">Thanh toán offline</a>
+								<a href="{% url "checkout_online" %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">THANH TOÁN ONLINE</a>
+							
                             </div>
+
                         </div>
 
                     </div>

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Thanh Toán Offline {% endblock %}
+{% block head %}
+    <!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+{% endblock %}
+
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
+
+
+{% block body %}
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">Trang Chủ</a></li>
+                <li class="active">Thanh Toán Offline</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div  class="row">
+                
+
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <h3 class="title">Danh sách sản phẩm trong giỏ hàng</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="text-center">Giá</th>
+                                    <th class="text-center">Dung lượng</th>
+                                    <th class="text-center">Màu</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Thành tiền</th>
+                                    <th class="text-right"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rs in shopcart %}
+                                    <tr>
+                                        <td class="thumb">												
+                                            {% if rs.variant.image_id > 0 %}
+                                                <img src="{{ rs.variant.image }}"" alt="">
+                                            {% else %}
+                                                <img src="{{ rs.product.image.url }}"" alt="">
+                                            {% endif %}
+                                        </td>
+                                        <td class="details">
+                                            <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
+                                            
+                                        </td>
+                                        <td class="price text-center"><strong>											
+                                        {% if rs.product.variant == 'None' %}
+                                            {{ rs.product.price}}.000 VND
+                                        {% else %}
+                                            {{ rs.variant.price}}.000 VND
+                                        {% endif %}
+                                        </strong></td>
+                                        <td class="qty text-center"><strong>
+                                            {% if rs.product.variant == 'None' %}
+                                                {{ rs.product.size}}
+                                            {% else %}
+                                                {{ rs.variant.size }}
+                                            {% endif %}
+                                            
+                                        </strong></td>
+                                        <td class="qty text-center"><strong>{{ rs.variant.color }}</strong></td>
+                                        <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
+                                        <td class="total text-center"><strong class="primary-color">
+                                            {% if rs.product.variant == 'None' %}
+                                                {{ rs.amount }}.000 VND
+                                            {% else %}
+                                                {{ rs.varamount}}.000 VND
+                                            {% endif %}												
+                                        <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                            <!-- <tfoot>
+                                
+                                <tr>
+                                    <th class="empty" colspan="3"></th>
+                                    <th>Tổng tiền</th>
+                                    <th colspan="2" class="sub-total">{{ total }}.000 VND</th>
+                                </tr>
+                                <tr>
+                                    <th class="empty" colspan="3"></th>
+                                    <th>Phí vận chuyển</th>
+                                    <td colspan="2">Miễn phí</td>
+                                </tr>
+                                <tr>
+                                    <th class="empty" colspan="3"></th>
+                                    <th>Tổng tiền thanh toán</th>
+                                    <th colspan="2" class="total">{{ total }}.000 VND</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="pull-right">
+                            <a href="/order/orderproduct" class="primary-btn">Thanh toán</a>
+                        </div> -->
+                        </table>
+                        
+                    </div>
+
+                </div>
+
+                <Form action="" method="post">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <div class="billing-details">
+
+                            <div class="section-title">
+                                <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
+                            </div>
+                            <p><label for="id_first_name">Tên:</label><br>
+                                <input type="text" name="first_name"  value="{{ profile.first_name }}" class="input" maxlength="10" required id="id_first_name"></p>
+                            <p><label for="id_last_name">Họ:</label><br>
+                                <input type="text" name="last_name"  value="{{ profile.last_name }}" class="input" maxlength="10" required id="id_last_name"></p>
+                            <p><label for="id_address">Địa chỉ nhận hàng:</label>
+                                <input type="text" name="address" value="{{ profile.address }}" class="input" maxlength="150" id="id_address"></p>
+                            <p><label for="id_phone">Số điện thoại:</label><br>
+                                <input type="text" name="phone"  value="{{ profile.phone }}"  class="input" maxlength="20" id="id_phone"></p>
+                            <!-- <p><label for="id_city">City:</label><br>
+                                <select name="city" class="input" id="id_city">
+                                    <option value="{{ profile.city }}" selected>{{ profile.city }}</option>
+                                    <option value="İstanbul">Istanbul</option>
+                                    <option value="Ankara">Ankara</option>
+                                    <option value="İzmir">Izmir</option>
+                                    <option value="Bursa">Bursa</option>
+                                    <option value="Konya">Konya</option>
+                                    <option value="Yozgat">Yozgat</option>
+                                </select></p>
+                            <p><label for="id_first_name">Country :</label><br>
+                                <input type="text" name="country" class="input" id="id_country" value="{{ profile.country }}"></p> -->
+                            <!-- <div class="pull-right">
+                                <button  type="submit" class="primary-btn">Complete Order</button>
+                            </div> -->
+                            <button  type="submit" class="primary-btn">Hoàn tất thông tin đặt hàng</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="shiping-methods">
+                            <div class="section-title">
+                                <h4 class="title">Thanh toán</h4>
+                            </div>
+                            <h3>
+                                Tổng tiền phải thanh toán: {{ total }}.000 VND
+                            </h3>
+                            <!-- <p><label for="id_first_name">Tổng tiền cần thanh toán: {{ total }} USD </label>
+                                <input type="text" name="total" class="input" readonly value="${{ total }} "></p>
+                            <p><label for="id_first_name">Credit Card Holder</label>
+                                <input type="text" name="holder" class="input"  value=""></p>
+                            <p><label for="id_first_name">Credit Card Number</label>
+                                <input type="text" name="number" class="input"  value=""></p>
+                            <p><label for="id_first_name">Credit Exp Date/Year</label>
+                                <input type="text" name="ecpdate" class="input"  placeholder="mm/yy"></p>
+                            <p><label for="id_first_name">Security Number</label>
+                                <input type="text" name="secnumber" class="input"  value=""></p> -->
+                        </div>
+                    </div>
+
+                </Form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock %}
+
+{% block script_body %} 
+    
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
+	
+{% endblock %}

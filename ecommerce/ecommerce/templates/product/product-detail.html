@@ -105,7 +105,7 @@
                             {% endfor %} -->
 
                         </div>
-                        <div id="product-view">
+                        <div id="product-view" style="width: auto;">
                             <!-- <div class="product-view">
                                 <img src="{{ product.image.url }}" alt="">
                             </div>
@@ -122,10 +122,16 @@
                                 <span>New</span>
                                 <span class="sale">-20%</span>
                             </div> -->
-                            <h2 class="product-name">{{ product.title }}</h2>
+                            <!-- <h2 class="product-name">{{ product.title }}</h2>
                             <!-- <h3 class="product-price">{{ product.price }}.000 VND <del class="product-old-price">$45.00</del></h3> -->
-                            <h3 class="product-price">{{ product.price }}.000 VND</h3>
-
+                            <!-- <h3 class="product-price">{{ product.price }}.000 VND</h3> -->	
+							{% if product.variant != 'None' %}
+								<h2 class="product-name">{{ variant.title }}</h2>
+								<h3 class="product-price">{{ variant.price }}.000 VND</h3>
+							{% else %}
+								<h2 class="product-name">{{ product.title }}</h2>
+								<h3 class="product-price">{{ product.price }}.000 VND</h3>
+							{% endif %}
 							<div>
                                 <div class="product-rating">
                                     <i class="fa fa-star{% if product.avaregereview < 1%}-o empty{% endif%}"></i>
@@ -171,7 +177,8 @@
                                             <div class="size-option">
                                                 <form method="POST" id="post-form">
                                                     <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
-                                                    <span class="">Dung lượng:</span>
+                                                    
+													<span class="">Dung lượng:</span>
                                                     {% csrf_token %}
                                                     <select name="size" id="size">
                                                         {% for rs in sizes %}
@@ -187,7 +194,7 @@
                                                     <input type="hidden" name="size" id="size" value="{{ size_id }}">
                                                     <ul class="color-option" >
                                                         <!-- <li><span class="">Màu:  </span></li> -->
-                                                        <li><span class=""></span></li>
+                                                        <!-- <li><span class=""></span></li> -->
                                                         {% for rs in colors %}
                                                             <!-- <li  {% if variant.id == rs.id %} class="active" {% endif %}>
                                                                 <a style="">
@@ -279,7 +286,7 @@
                                         <div id="SelectedProduct">
                                             <p><strong>Tình trạng: </strong> {% if variant.quantity > 0  %} Còn hàng {% else %} Tạm thời hết hàng {% endif %}</p>
                                             <p><strong>Đã chọn: </strong> Dung lượng: {{ variant.size }}  Màu: {{ variant.color }} </p>
-                                            <h3 class="product-price">{{ variant.price}}.000 VND</h3>
+                                            <h3 class="product-price">Giá: {{ variant.price}}.000 VND</h3>
                                             <div class="qty-input">
                                                 <span class="text-uppercase">Số lượng:  </span>
                                                 <input class="input" name="quantity" type="number" value="1" min="1" max="{{ variant.quantity }}">
@@ -294,7 +301,7 @@
                                         {% csrf_token %}
                                         <div id="SelectedProduct">
                                             <p><strong>Tình trạng: </strong> {% if product.amount > 0  %} Còn hàng {% else %} Tạm thời hết hàng {% endif %}</p>
-                                            <h3 class="product-price">{{ product.price }}.000 VND</h3>
+                                            <h3 class="product-price">Giá: {{ product.price }}.000 VND</h3>
                                             <div class="qty-input">
                                                 <span class="text-uppercase">Số lượng:  </span>
                                                 <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.amount }}">

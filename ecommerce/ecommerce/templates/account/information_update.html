@@ -20,6 +20,14 @@
 	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
 	<script src="{% static "" %}home/js/jquery.min.js"></script>
 	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+	<style>
+		.form-group input{
+			width: 730px;
+		}
+		.form-group select{
+			width: 730px;
+		}
+	</style>
 {% endblock %}
 
 {% block header %} {% include "home/header.html" %} {% endblock %}
@@ -65,15 +73,16 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-9">
+				<div class="col-md-7" style="width: 65%;">
 					<div class="billing-details">
-						<div class="section-title">
+						<div class="section-title" >
 							<h3>Cập nhật thông tin cá nhân</h3>
 						</div>
 						<form method="POST" enctype="multipart/form-data">
 							{% csrf_token %}
 							<fieldset class="form-group">
 								{{ profile_form.as_p }}
+								
 							</fieldset>
 							<div class="form-group">
 								<button class="primary-btn" type="submit"> Cập nhật </button>
