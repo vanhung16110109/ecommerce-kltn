@@ -73,8 +73,13 @@ def checkout_offline(request):
 
             ShopCart.objects.filter(user_id=current_user.id).delete() # Clear & Delete shopcart
             request.session['cart_items']=0
-            messages.success(request, "Your Order has been completed. Thank you ")
-            return render(request, 'Order_Completed.html',{'ordercode':ordercode,'category': category})
+            context = {
+				'total': total,
+				'quantity': quantity,
+				'ordercode':ordercode,'category': category
+			}
+            # messages.success(request, "Đơn hàng của bạn đã được hoàn thành. Cảm ơn bạn")
+            return render(request, 'order/Order_Completed.html',context)
         else:
             messages.warning(request, form.errors)
             return HttpResponseRedirect("/order/orderproduct")
