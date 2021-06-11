@@ -48,8 +48,8 @@ class ShopCartForm(ModelForm):
 
 class Order(models.Model):
 	STATUS = (
-		('Mới', 'Mới'),
-		('Chuẩn bị', 'Chuẩn bị'),
+		('Đang chờ xác nhận', 'Đang chờ xác nhận'),
+		('Chuẩn bị giao hàng', 'Chuẩn bị giao hàng'),
 		('Đang giao hàng', 'Đang giao hàng'),
 		('Hoàn thành', 'Hoàn thành'),
 		('Đã hủy', 'Đã hủy')
@@ -63,7 +63,7 @@ class Order(models.Model):
 	# city = models.CharField(blank=True, max_length=50)
 	# country = models.CharField(blank=True, max_length=50)
 	total = models.FloatField()
-	status = models.CharField(max_length=50, choices=STATUS,default='Mới')
+	status = models.CharField(max_length=50, choices=STATUS,default='Đang chờ xác nhận')
 	ip = models.CharField(blank=True, max_length=30)
 	adminnote = models.CharField(blank=True, max_length=50)
 	create_at =  models.DateTimeField(auto_now_add=True)

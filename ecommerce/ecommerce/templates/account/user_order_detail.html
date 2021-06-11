@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Danh sách đơn đặt hàng {% endblock %}
+
+
+{% block head %}
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+{% endblock %}
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+
+
+{% block body %}
+
+	<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ home_page }}">Trang chủ</a></li>
+                <li class="active">Danh sách đơn đặt hàng</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}" role="alert">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endif %}
+
+	<div class="section">
+		<div class="container">
+			<div class="section">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3">
+							{% include "account/user_panel.html" %}
+						</div>
+						<div class="col-md-9">
+							<div class="section-title">
+								<h3 class="title">Thông tin khách hàng</h3>
+							</div>
+							<table class="shopping-cart-table table">
+								<tr>
+									<th class="text-left">Tên người nhận hàng</th>
+									<td class="text-left">{{ order.first_name}} {{ order.last_name }} </td>
+								</tr>
+								<tr>
+									<th class="text-left">Điện thoại</th>
+									<td class="text-left">{{ order.phone}}</td>
+								</tr>
+								<tr>
+									<th class="text-left">Địa chỉ nhận hàng</th>
+									<td class="text-left">{{ order.address}}</td>
+								</tr>
+								<tr>
+									<th class="text-left">Status</th>
+									<td class="text-left">{{ order.status}}</td>
+								</tr>
+	
+								<tr>
+									<th class="text-left">Mã đơn hàng</th>
+									<td class="text-left">{{ order.code}}</td>
+								</tr>
+								<tr>
+									<th class="text-left">Ngày mua hàng</th>
+									<td class="text-left">{{ order.create_at}}</td>
+								</tr>
+								<tr>
+									<th class="text-left">Thông tin vận chuyển</th>
+									<td class="text-left">{{ order.adminnote}}</td>
+								</tr>
+								<tr></tr>
+							</table>
+						</div>
+						
+					</div>
+					<div class="row">
+						<form id="checkout-form" class="clearfix">
+							<div class="col-md-3">
+								
+							</div>
+							<div class="col-md-9">
+								<div class="order-summary clearfix">
+									<div class="section-title">
+										
+										<h3 class="title">Danh sách sản phẩm đã đặt mua</h3>
+									</div>
+									<table class="shopping-cart-table table">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Tên sản phẩm</th>
+												<th class="text-center">Giá</th>
+												<th class="text-center">Dung lượng</th>
+												<th class="text-center">Màu</th>
+												<th class="text-center">Số lượng</th>
+												<th class="text-center">Thành tiền</th>
+												<th class="text-right"></th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for rs in orderitems %}
+												<tr>
+													<td class="thumb">												
+														{% if rs.variant.image_id > 0 %}
+															<img src="{{ rs.variant.image }}"" alt="">
+														{% else %}
+															<img src="{{ rs.product.image.url }}"" alt="">
+														{% endif %}
+													</td>
+													<td class="details">
+														<a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
+														
+													</td>
+													<td class="price text-center"><strong>											
+													{% if rs.product.variant == 'None' %}
+														{{ rs.product.price}}.000
+													{% else %}
+														{{ rs.variant.price}}.000
+													{% endif %}
+													
+													</strong></td>
+													<td class="qty text-center"><strong>
+														{% if rs.product.variant == 'None' %}
+															{{ rs.product.size}}
+														{% else %}
+															{{ rs.variant.size }}
+														{% endif %}
+														
+													</strong></td>
+													<td class="qty text-center"><strong>{{ rs.variant.color }}</strong></td>
+													<td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
+													<td class="total text-center"><strong class="primary-color">
+														{{ rs.amount }}0.000 VND											
+												   </tr>
+											{% endfor %}
+											
+										</tbody>
+									</table>
+									<h3>Tổng tiền: {{ order.total }}0.000 VND</h3>
+								</div>
+		
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+            
+		</div>
+	</div>
+
+
+
+{% endblock body %}
+
+
+{% block script_body %}
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
+{% endblock %}

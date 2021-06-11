@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Danh sách đơn đặt hàng {% endblock %}
+
+
+{% block head %}
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+{% endblock %}
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+
+
+{% block body %}
+
+	<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ home_page }}">Trang chủ</a></li>
+                <li class="active">Danh sách đơn đặt hàng</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}" role="alert">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endif %}
+
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+                    {% include "account/user_panel.html" %}
+                </div>
+				<div class="col-md-9">
+					<div class="section-title">
+						<h3>Danh sách đơn đặt hàng</h3>
+					</div>
+					<table class="shopping-cart-table table">
+						<tr>
+							<th class="text-center">STT </th>
+							<th class="text-center">Tên </th>
+							<th class="text-center">Họ </th>
+							<th class="text-center">Tổng tiền </th>
+							<th class="text-center">Trạng thái </th>
+							<th class="text-center">Ngày </th>
+							<th class="text-center"> </th>
+							
+							<!-- <th class="text-center">Chi tiết </th> -->
+						</tr>
+						{% for rs in orders %}
+							<tr>
+								<td class="text-center">{{ rs.id }} </td>
+								<td class="text-center">{{ rs.first_name}} </td>
+								<td class="text-center">{{ rs.last_name}} </td>
+								<td class="text-center">{{ rs.total}}0.000 </td>
+								<td class="text-center">{{ rs.status}} </td>
+								<td class="text-center">{{ rs.create_at}} </td>
+								<td class="text-center"><a class="primary-btn" href="/account/user_orders_product/{{ rs.id }}"> Chi tiết </a></td>
+								
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock body %}
+
+
+{% block script_body %}
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
+{% endblock %}

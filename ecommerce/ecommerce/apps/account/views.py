@@ -10,7 +10,7 @@ from apps.product.models import Category
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from apps.order.models import ShopCart
+from apps.order.models import ShopCart, Order, OrderProduct
 
 # login
 def account_login(request):
@@ -164,4 +164,86 @@ def account_password_update(request):
     return render(request, 'account/changepassword.html', context)
 
 
+
+@login_required(login_url='/account/login')
+def user_orders(request):
+    category = Category.objects.all()
+    current_user = request.user
+    user_id = current_user.id
+    order_product = OrderProduct.objects.filter(user_id=current_user.id).order_by('-id')
+    shopcart = ShopCart.objects.filter(user_id=current_user.id)
+    orders = Order.objects.filter(user_id=current_user.id)
+    total = 0
+    for rs in shopcart:
+        total += rs.variant.price * rs.quantity
+    quantity = 0
+    for rs in shopcart:
+        quantity += rs.quantity
+    context={
+        'category':category,
+        'total': total,
+        'quantity': quantity,
+		'orders': orders,
+        'order_product': order_product,
+    }
+    return render(request, 'account/user_orders.html', context)
+
+
+
+@login_required(login_url='/account/login')
+def user_order_product_detail(request,id):
+    current_user = request.user
+    order = Order.objects.get(user_id=current_user.id, id=id)
+    orderitems = OrderProduct.objects.filter(order_id=id)
+    category = Category.objects.all()
+    shopcart = ShopCart.objects.filter(user_id=current_user.id)
+    orders = Order.objects.filter(user_id=current_user.id)
+    order_product = OrderProduct.objects.filter(user_id=current_user.id).order_by('-id')
+    total = 0
+    for rs in shopcart:
+        total += rs.variant.price * rs.quantity
+    quantity = 0
+    for rs in shopcart:
+        quantity += rs.quantity
+    context = {
+        'category': category,
+        'order': order,
+        'orders': orders,
+        'orderitems': orderitems,
+        'category':category,
+        'total': total,
+        'quantity': quantity,
+        'order_product': order_product,
+    }
+    return render(request, 'account/user_order_detail.html', context)
+
+
+@login_required(login_url='/account/login')
+def user_comments(request):
+    #category = Category.objects.all()
+    current_user = request.user
+    comments = Comment.objects.filter(user_id=current_user.id)
+    context = {
+        #'category': category,
+        'comments': comments,
+    }
+    return render(request, 'user_comments.html', context)
+
+
+# @login_required(login_url='/account/login')
+# def user_order_product(request):
+#     #category = Category.objects.all()
+#     current_user = request.user
+#     order_product = OrderProduct.objects.filter(user_id=current_user.id).order_by('-id')
+#     context = {#'category': category,
+#                'order_product': order_product,
+#                }
+#     return render(request, 'user_order_products.html', context)
+
+@login_required(login_url='/account/login')
+def user_deletecomment(request,id):
+    current_user = request.user
+    Comment.objects.filter(id=id, user_id=current_user.id).delete()
+    messages.success(request, 'Comment deleted..')
+    return HttpResponseRedirect('/user/comments')
 

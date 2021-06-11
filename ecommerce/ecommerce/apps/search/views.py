@@ -35,7 +35,7 @@ def search(request):
 
             return render(request, 'search/search.html', context)
 
-    return HttpResponseRedirect('/search')
+    return HttpResponseRedirect('/')
 
 
 def search_auto(request):

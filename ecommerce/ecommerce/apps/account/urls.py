@@ -1,5 +1,5 @@
 from django.urls import path, include
-from apps.account.views import account_login, account_register, account_logout, account_information_view, account_information_update, account_password_update
+from apps.account.views import account_login, account_register, account_logout, account_information_view, account_information_update, account_password_update, user_orders, user_order_product_detail
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -16,4 +16,10 @@ urlpatterns = [
 	path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='account/password_reset_sent.html'), name='password_reset_done'),
 	path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='account/password_reset_confirm.html'), name='password_reset_confirm'),
 	path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='account/password_reset_done.html'), name='password_reset_complete'),
+
+	#user_list_orders
+	path('user_orders', user_orders, name='user_orders'),
+	path('user_orders_product/<int:id>', user_order_product_detail, name='user_order_product_detail'),
+	# path('order_product_detail/<int:id>/<int:oid>', user_order_product_detail, name='user_order_product_detail'),
+    
 ]

@@ -139,6 +139,9 @@ class Product(models.Model):
     #banner = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
     statusdiscount = models.CharField(max_length=10, choices=STATUS)
     pricediscount = models.DecimalField(max_digits=20, decimal_places=3)
+    #gán cờ hiệu cho sản phẩm nhằm phân loại
+    pro_code = models.CharField(max_length=10)
+    #pro_code = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
