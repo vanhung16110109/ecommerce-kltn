@@ -102,7 +102,7 @@ DATABASES = {
 
 import dj_database_url 
 prod_db  =  dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+DATABASES['default'].update(prod_db)
 DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
