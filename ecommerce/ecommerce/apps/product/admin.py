@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail
+from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, Product_Search
 from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 
@@ -127,8 +127,26 @@ class VariantsAdmin(admin.ModelAdmin):
     list_display = ['title','product', 'color', 'size', 'price', 'quantity', 'image_tag']
 
 
-# class DetailsProductAdmin(admin.ModelAdmin):
-# 	list_display = ['product']
+# class ProductSearchInline(admin.TabularInline):
+#     model = Category_Product_Detail
+#     extra = 1
+# class ProductSearchInline(admin.TabularInline):
+#     model = Category_Product_Detail
+#     readonly_fields = ('id',)
+#     extra = 1
+#     show_change_link = True
+
+# class Product_Search_Admin(admin.ModelAdmin):
+#     list_display = ['product', 'category']
+#     # inlines = [ProductSearchInline,]
+#     list_filter = ['product', 'category']
+#     #inlines = [ProductSearchInlines]
+
+
+class Product_Search_Admin(admin.ModelAdmin):
+    list_display = ('product', 'category')
+
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Category_Product_Detail, Category_Product_DetailAdmin)
@@ -139,5 +157,6 @@ admin.site.register(Banner, BannerAdmin)
 admin.site.register(Color, ColorAdmin)
 admin.site.register(Size, SizeAdmin)
 admin.site.register(Variants, VariantsAdmin)
+admin.site.register(Product_Search, Product_Search_Admin)
 # admin.site.register(DetailsProduct, DetailsProductAdmin)
 

@@ -1,11 +1,264 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Đặt hàng và thanh toán {% endblock %}
+{% block head %}
+    <!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-	checkout online
-</body>
-</html>
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+     <!-- Custom styles for this template -->
+     <link href="{% static "vnpay_python/css/jumbotron-narrow.css" %}" rel="stylesheet">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ 
+     <!--[if lt IE 9]><script src="{% static "js/ie8-responsive-file-warning.js" %}"></script><![endif]-->
+     <script src="{% static "vnpay_python/js/ie-emulation-modes-warning.js" %}"></script>
+     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+     <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+     <![endif]-->
+     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+     <script src="{% static "vnpay_python/js/ie10-viewport-bug-workaround.js" %}"></script>
+{% endblock %}
+
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
+
+
+{% block body %}
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">Trang Chủ</a></li>
+                <li class="active">Thanh Toán Offline</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div  class="row">
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <h3 class="title">Danh sách sản phẩm trong giỏ hàng</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="text-center">Giá</th>
+                                    <th class="text-center">Dung lượng</th>
+                                    <th class="text-center">Màu</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Thành tiền</th>
+                                    <th class="text-right"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rs in shopcart %}
+                                    <tr>
+                                        <td class="thumb">												
+                                            {% if rs.variant.image_id > 0 %}
+                                                <img src="{{ rs.variant.image }}"" alt="">
+                                            {% else %}
+                                                <img src="{{ rs.product.image.url }}"" alt="">
+                                            {% endif %}
+                                        </td>
+                                        <td class="details">
+                                            <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
+                                            
+                                        </td>
+                                        <td class="price text-center"><strong>											
+                                        {% if rs.product.variant == 'None' %}
+                                            {{ rs.product.price}}.000 VND
+                                        {% else %}
+                                            {{ rs.variant.price}}.000 VND
+                                        {% endif %}
+                                        </strong></td>
+                                        <td class="qty text-center"><strong>
+                                            {% if rs.product.variant == 'None' %}
+                                                {{ rs.product.size}}
+                                            {% else %}
+                                                {{ rs.variant.size }}
+                                            {% endif %}
+                                            
+                                        </strong></td>
+                                        <td class="qty text-center"><strong>{{ rs.variant.color }}</strong></td>
+                                        <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
+                                        <td class="total text-center"><strong class="primary-color">
+                                            {% if rs.product.variant == 'None' %}
+                                                {{ rs.amount }}.000 VND
+                                            {% else %}
+                                                {{ rs.varamount}}.000 VND
+                                            {% endif %}												
+                                        <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
+                                    </tr>
+                                {% endfor %}                            
+                            </tbody>                    
+                        </table>                       
+                    </div>
+                </div>
+               <form action="{% url "payment" %}" id="create_form" method="post">
+                {% csrf_token %}
+                    
+                    <div class="col-md-6" style="width: 55%;">
+                        <div class="billing-details">
+
+                            <div class="section-title">
+                                <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
+                            </div>
+                            <p><label for="id_first_name">Tên:</label><br>
+                                <input type="text" name="first_name"  value="{{ profile.first_name }}" class="input" maxlength="10" required id="id_first_name"></p>
+                            <p><label for="id_last_name">Họ:</label><br>
+                                <input type="text" name="last_name"  value="{{ profile.last_name }}" class="input" maxlength="10" required id="id_last_name"></p>
+                            <p><label for="id_address">Địa chỉ nhận hàng:</label>
+                                <input type="text" name="address" value="{{ profile.address }}" class="input" maxlength="150" id="id_address"></p>
+                            <p><label for="id_phone">Số điện thoại:</label><br>
+                                <input type="text" name="phone"  value="{{ profile.phone }}"  class="input" maxlength="20" id="id_phone"></p>
+                       </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="shiping-methods">
+                            <div class="section-title">
+                                <h4 class="title">Thông tin thanh toán - VNPAY</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="form-group">
+                                    <label for="language">Loại hàng hóa </label>
+                                    <select name="order_type" id="order_type" class="form-control">
+                                        <option value="billpayment">Thanh toán hóa đơn</option>
+                                        <option value="topup">Nạp tiền điện thoại</option>                                         
+                                        <option value="fashion">Thời trang</option>
+                                        <option value="other">Khác - Xem thêm tại VNPAY</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order_id">Mã hóa đơn</label>
+                                    <input class="form-control" id="order_id"
+                                           name="order_id" type="text" value="{{ ordercode }}" readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount">Số tiền </label>
+                                    <input class="form-control" id="amount"
+                                           name="amount" type="text" value="{{ total }}.000 VND" readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order_desc">Nội dung thanh toán</label>
+                                    <textarea class="form-control" cols="20" id="order_desc" name="order_desc" rows="2">Thanh toán đơn hàng thời gian: {% now "Y-m-d H:i:s" %}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bank_code">Ngân hàng</label>
+                                    <select name="bank_code" id="bank_code" class="form-control">
+                                        <option value="">Không chọn</option>
+                                        <option value="NCB"> Ngan hang NCB</option>
+                                        <option value="AGRIBANK"> Ngan hang Agribank</option>
+                                        <option value="SCB"> Ngan hang SCB</option>
+                                        <option value="SACOMBANK">Ngan hang SacomBank</option>
+                                        <option value="EXIMBANK"> Ngan hang EximBank</option>
+                                        <option value="MSBANK"> Ngan hang MSBANK</option>
+                                        <option value="NAMABANK"> Ngan hang NamABank</option>
+                                        <option value="VNMART"> Vi dien tu VnMart</option>
+                                        <option value="VIETINBANK">Ngan hang Vietinbank</option>
+                                        <option value="VIETCOMBANK"> Ngan hang VCB</option>
+                                        <option value="HDBANK">Ngan hang HDBank</option>
+                                        <option value="DONGABANK"> Ngan hang Dong A</option>
+                                        <option value="TPBANK"> Ngân hàng TPBank</option>
+                                        <option value="OJB"> Ngân hàng OceanBank</option>
+                                        <option value="BIDV"> Ngân hàng BIDV</option>
+                                        <option value="TECHCOMBANK"> Ngân hàng Techcombank</option>
+                                        <option value="VPBANK"> Ngan hang VPBank</option>
+                                        <option value="MBBANK"> Ngan hang MBBank</option>
+                                        <option value="ACB"> Ngan hang ACB</option>
+                                        <option value="OCB"> Ngan hang OCB</option>
+                                        <option value="IVB"> Ngan hang IVB</option>
+                                        <option value="VISA"> Thanh toan qua VISA/MASTER</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="language">Ngôn ngữ</label>
+                                    <select name="language" id="language" class="form-control">
+                                        <option value="vn">Tiếng Việt</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-primary" id="btnPopup">Xác nhận</button>
+                                </div>
+                                <!-- <button type="submit" class="btn btn-default">Thanh toán Redirect</button> -->
+                                <div class="form-group"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </Form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+    <link href="https://pay.vnpay.vn/lib/vnpay/vnpay.css" rel="stylesheet"/>
+    <script src="https://pay.vnpay.vn/lib/vnpay/vnpay.js"></script>
+    
+    <script type="text/javascript">
+        $("#btnPopup").click(function () {
+            var postData = $("#frmCreateOrder").serialize();
+            var submitUrl = $("#frmCreateOrder").attr("action");
+            $.ajax({
+                type: "POST",
+                url: submitUrl,
+                data: postData,
+                dataType: 'JSON',
+                success: function (x) {
+                    if (x.code === '00') {
+                        vnpay.open({width: 480, height: 600, url: x.data});
+                        return false;
+                    } else {
+                        alert(x.Message);
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}
+
+{% block script_body %} 
+    
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
+	
+{% endblock %}
+
