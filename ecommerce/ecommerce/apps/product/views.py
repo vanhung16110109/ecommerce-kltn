@@ -105,3 +105,25 @@ def ajaxcolor(request):
         data = {'rendered_table': render_to_string('product/color_list.html', context=context)}
         return JsonResponse(data)
     return JsonResponse(data)
+
+
+def category_products_pro_code(request, id, title):
+    category = Category.objects.all()
+    products = Product.objects.filter(pro_code = title)
+    current_user = request.user
+    shopcart = ShopCart.objects.filter(user_id=current_user.id)
+    product = Product.objects.all()
+    total = 0
+    for rs in shopcart:
+        total += rs.variant.price * rs.quantity
+    quantity = 0
+    for rs in shopcart:
+        quantity += rs.quantity
+    context = {
+        'category':category,
+        'products': products,
+		'total': total,
+        'quantity': quantity,
+        'product': product,
+    }
+    return render(request, 'product/category_products_pro_code.html',context)

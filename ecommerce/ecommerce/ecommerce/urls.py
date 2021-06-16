@@ -6,6 +6,8 @@ from django.contrib import admin
 from apps.product.views import ajaxcolor
 from django.conf.urls import url
 import apps.vnpay_python.views
+from apps.product.views import category_products_pro_code
+
 
 urlpatterns = [
 	path('account/', include('apps.account.urls'), name='account'),
@@ -20,6 +22,8 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('ckeditor/', include('ckeditor_uploader.urls')),
 	path('ajaxcolor/', ajaxcolor, name='ajaxcolor'),
+    path('category/<int:id>/<slug:title>', category_products_pro_code, name='category_products_pro_code'),
+
 
     path('vnpay/', apps.vnpay_python.views.index, name='index'),
     path('vnpay/payment', apps.vnpay_python.views.payment, name='payment'),
