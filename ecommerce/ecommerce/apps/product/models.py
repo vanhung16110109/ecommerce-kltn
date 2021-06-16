@@ -275,9 +275,68 @@ class CommentForm(ModelForm):
         fields = ['subject', 'comment', 'rate']
 
 
-class Product_Search(models.Model):
+
+class PhoneType(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+
+class InternaMemory(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+
+class AmountRAM(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+class BatteryPerformance(models.Model):
+	name = models.CharField(max_length=40)
+
+	def __str__(self):
+		return self.name
+
+
+class ScreenSize(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+
+class PhoneDesign(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+
+class CameraFeature(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+class SpecialFeatures(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+	
+class ProductAdvancedSearch(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category_Product_Detail, on_delete=models.CASCADE)
-
-
-    
+    phonetype = models.ForeignKey(PhoneType, on_delete=models.CASCADE)
+    internamemory = models.ForeignKey(InternaMemory, on_delete=models.CASCADE)
+    amountram = models.ForeignKey(AmountRAM, on_delete=models.CASCADE)
+    batteryperformance = models.ForeignKey(BatteryPerformance, on_delete=models.CASCADE)
+    screensize = models.ForeignKey(ScreenSize, on_delete=models.CASCADE)
+    phonedesign = models.ForeignKey(PhoneDesign, on_delete=models.CASCADE)
+    camerafeature = models.ForeignKey(CameraFeature, on_delete=models.CASCADE)
+    specialfeatures = models.ForeignKey(SpecialFeatures, on_delete=models.CASCADE)

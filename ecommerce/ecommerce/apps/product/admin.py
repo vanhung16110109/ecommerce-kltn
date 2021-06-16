@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, Product_Search
+from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, ProductAdvancedSearch, PhoneType, InternaMemory, AmountRAM, BatteryPerformance, ScreenSize, PhoneDesign, CameraFeature, SpecialFeatures
 from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 
@@ -127,25 +127,40 @@ class VariantsAdmin(admin.ModelAdmin):
     list_display = ['title','product', 'color', 'size', 'price', 'quantity', 'image_tag']
 
 
-# class ProductSearchInline(admin.TabularInline):
-#     model = Category_Product_Detail
-#     extra = 1
-# class ProductSearchInline(admin.TabularInline):
-#     model = Category_Product_Detail
-#     readonly_fields = ('id',)
-#     extra = 1
-#     show_change_link = True
-
-# class Product_Search_Admin(admin.ModelAdmin):
-#     list_display = ['product', 'category']
-#     # inlines = [ProductSearchInline,]
-#     list_filter = ['product', 'category']
-#     #inlines = [ProductSearchInlines]
+class PhoneTypeAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
 
-class Product_Search_Admin(admin.ModelAdmin):
-    list_display = ('product', 'category')
+class InternaMemoryAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
+
+class AmountRAMAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class BatteryPerformanceAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class ScreenSizeAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class PhoneDesignAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class CameraFeatureAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class SpecialFeaturesAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class ProductAdvancedSearchAdmin(admin.ModelAdmin):
+	list_display = ['product']
 
 
 admin.site.register(Category, CategoryAdmin)
@@ -157,6 +172,14 @@ admin.site.register(Banner, BannerAdmin)
 admin.site.register(Color, ColorAdmin)
 admin.site.register(Size, SizeAdmin)
 admin.site.register(Variants, VariantsAdmin)
-admin.site.register(Product_Search, Product_Search_Admin)
+admin.site.register(ProductAdvancedSearch, ProductAdvancedSearchAdmin)
+admin.site.register(PhoneType, PhoneTypeAdmin)
+admin.site.register(InternaMemory, InternaMemoryAdmin)
+admin.site.register(AmountRAM, AmountRAMAdmin)
+admin.site.register(BatteryPerformance, BatteryPerformanceAdmin)
+admin.site.register(ScreenSize, ScreenSizeAdmin)
+admin.site.register(PhoneDesign, PhoneDesignAdmin)
+admin.site.register(CameraFeature, CameraFeatureAdmin)
+admin.site.register(SpecialFeatures, SpecialFeaturesAdmin)
 # admin.site.register(DetailsProduct, DetailsProductAdmin)
 

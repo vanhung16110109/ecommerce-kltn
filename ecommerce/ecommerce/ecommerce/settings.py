@@ -24,9 +24,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6c773705-9979-46c3-ac59-bc72081792f3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','ecommerce-kltn.herokuapp.com']
+# ALLOWED_HOSTS = ['127.0.0.1','ecommerce-kltn.herokuapp.com']
+DEBUG = True
+
+ALLOWED_HOSTS = []
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [
