@@ -19,7 +19,7 @@ def home_page(request):
     product_slider_mini = Banner.objects.all().order_by('id')[5:8] #lay 2 phan tu cuoi cung cua mang
     product_lasted = Product.objects.all().order_by('-id')[:4]
     product_picked = Product.objects.all().order_by('?')[:4]
-    product = Product.objects.all()
+    product_all = Product.objects.all()
     page = "home"
     current_user = request.user
     image_default = "user.png"
@@ -37,44 +37,9 @@ def home_page(request):
         'product_slider_mini': product_slider_mini,
         'product_lasted': product_lasted,
         'product_picked': product_picked,
-		'product': product,
+		'product_all': product_all,
 		'total': total,
         'quantity': quantity,
         'image_default': image_default,
     }
     return render(request, './index.html', context)
-
-
-# def about_us(request):
-#     setting = Setting.objects.get(pk=1)
-#     category = Category.objects.all()
-#     context={
-#         'category':category,
-#         'setting': setting
-#     }
-#     return render(request, './about.html', context)
-
-
-# def contact(request):
-#     if request.method == 'POST':
-#         form = ContactForm(request.POST)
-#         if form.is_valid():
-#             data = ContactMessage()
-#             data.name = form.cleaned_data['name']
-#             data.email = form.cleaned_data['email']
-#             data.subject = form.cleaned_data['subject']
-#             data.message = form.cleaned_data['message']
-#             data.ip = request.META.get('REMOTE_ADDR')
-#             data.save()
-#             messages.success(request, "Your message has be sent. Thanks you for your message.")
-#             return HttpResponseRedirect('/contact')
-
-#     setting = Setting.objects.get(pk=1)
-#     category = Category.objects.all()
-#     form = ContactForm
-#     context={
-#         'category':category,
-#         'setting': setting,
-#         'form': form
-#     }
-#     return render(request, './contact.html', context)

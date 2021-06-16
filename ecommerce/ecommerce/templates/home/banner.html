@@ -18,7 +18,7 @@
 						{% endfor %} -->
 
 						{% for rs in product_slider %}
-							{% for pd in product %}
+							{% for pd in product_all %}
 								{% if rs.slug == pd.slug %}
 									<a href="/product/{{ pd.id }}/{{ pd.slug }}" class="banner banner-1">
 										<img src="{{ rs.banner.url }}" alt="" style="width: 800px; height: 420px">
