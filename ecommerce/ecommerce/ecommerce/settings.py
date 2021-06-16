@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import posixpath
-import logging
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,11 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6c773705-9979-46c3-ac59-bc72081792f3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-# ALLOWED_HOSTS = ['127.0.0.1','ecommerce-kltn.herokuapp.com']
 DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = []
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -53,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/
@@ -100,13 +96,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-import dj_database_url 
-prod_db  =  dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
-DATABASES['default']['CONN_MAX_AGE'] = 500
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -202,11 +191,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nvhungxx98@gmail.com'
 EMAIL_HOST_PASSWORD = 'NGUYENhung1998'
-
-
-# VNPAY CONFIG
-VNPAY_RETURN_URL = 'http://localhost:8000/payment_return'  # get from config
-VNPAY_PAYMENT_URL = 'http://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
-VNPAY_API_URL = 'http://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
-VNPAY_TMN_CODE = 'B7YFPAOP'  # Website ID in VNPAY System, get from config
-VNPAY_HASH_SECRET_KEY = 'NAXGCEETXOSYBAYKGQJSWXUNTZHIHXBY'  # Secret key for create checksum,get from config
