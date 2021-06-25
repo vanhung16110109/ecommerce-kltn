@@ -18,11 +18,11 @@ class vnpay:
                 hasData = hasData + "&" + str(key) + '=' + str(val)
             else:
                 seq = 1
-                queryString = key + '=' + urlquote(val)
+                queryString = key + '=' + urlquote(str(val))
                 hasData = str(key) + '=' + str(val)
 
         hashValue = self.__md5(secret_key + hasData)
-        return vnpay_payment_url + "?" + queryString + '&vnp_SecureHashType=MD5&vnp_SecureHash=' + hashValue
+        return vnpay_payment_url + "?" + queryString + '&vnp_SecureHashType=SHA256&vnp_SecureHash=' + hashValue
 
     def validate_response(self, secret_key):
         vnp_SecureHash = self.responseData['vnp_SecureHash']
@@ -53,4 +53,4 @@ class vnpay:
 
     def __md5(self, input):
         byteInput = input.encode('utf-8')
-        return hashlib.md5(byteInput).hexdigest()
+        return hashlib.sha256(byteInput).hexdigest()

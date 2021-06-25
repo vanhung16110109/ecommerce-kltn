@@ -25,7 +25,7 @@ SECRET_KEY = '6c773705-9979-46c3-ac59-bc72081792f3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','ecommerce-kltn.herokuapp.com']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -183,11 +183,24 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '949282540815-ip14gpn28e2gtb2sc4je4qnlakv8ekrq.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'n9htdQ7SGxYTFOrtS6ReGqJd'  # App Secret
 
 
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nvhungxx98@gmail.com'
 EMAIL_HOST_PASSWORD = 'NGUYENhung1998'
+
+
+# # VNPAY CONFIG
+# VNPAY_RETURN_URL = 'http://ecommerce-kltn.herokuapp.com/vnpay/payment_return'  # get from config
+# VNPAY_PAYMENT_URL = 'http://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
+# VNPAY_API_URL = 'http://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
+# VNPAY_TMN_CODE = 'B7YFPAOP'  # Website ID in VNPAY System, get from config
+# VNPAY_HASH_SECRET_KEY = 'NAXGCEETXOSYBAYKGQJSWXUNTZHIHXBY'  # Secret key for create checksum,get from config
+
+# VNPAY CONFIG
+VNPAY_RETURN_URL = 'http://127.0.0.1:8000/payment/payment_return'  # get from config
+VNPAY_PAYMENT_URL = 'http://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
+VNPAY_API_URL = 'http://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
+VNPAY_TMN_CODE = 'B7YFPAOP'  # Website ID in VNPAY System, get from config
+VNPAY_HASH_SECRET_KEY =   'NAXGCEETXOSYBAYKGQJSWXUNTZHIHXBY' # Secret key for create checksum,get from config

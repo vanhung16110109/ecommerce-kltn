@@ -24,18 +24,11 @@ urlpatterns = [
 	path('ajaxcolor/', ajaxcolor, name='ajaxcolor'),
     path('category/<int:id>/<slug:title>', category_products_pro_code, name='category_products_pro_code'),
 
-
-    path('vnpay/', apps.vnpay_python.views.index, name='index'),
-    path('vnpay/payment', apps.vnpay_python.views.payment, name='payment'),
-    path('vnpay/payment_ipn', apps.vnpay_python.views.payment_ipn, name='payment_ipn'),
-    path('vnpay/payment_return', apps.vnpay_python.views.payment_return, name='payment_return'),
-    path('vnpay/query', apps.vnpay_python.views.query, name='query'),
-    path('vnpay/refund', apps.vnpay_python.views.refund, name='refund'),
-    # url(r'^$', apps.vnpay_python.views.index, name='index'),
-    # url(r'^payment$', apps.vnpay_python.views.payment, name='payment'),
-    # url(r'^payment_ipn$', apps.vnpay_python.views.payment_ipn, name='payment_ipn'),
-    # url(r'^payment_return$', apps.vnpay_python.views.payment_return, name='payment_return'),
-    # url(r'^query$', apps.vnpay_python.views.query, name='query'),
-    # url(r'^refund$', apps.vnpay_python.views.refund, name='refund'),
-
+	path('payment/', include('apps.vnpay_python.urls'), name='payment'),
+    #path('vnpay/', apps.vnpay_python.views.index, name='index'),
+    # path('vnpay/payment', apps.vnpay_python.views.payment, name='payment'),
+    # path('vnpay/payment_ipn', apps.vnpay_python.views.payment_ipn, name='payment_ipn'),
+    # path('vnpay/payment_return', apps.vnpay_python.views.payment_return, name='payment_return'),
+    # path('vnpay/query', apps.vnpay_python.views.query, name='query'),
+    # path('vnpay/refund', apps.vnpay_python.views.refund, name='refund'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

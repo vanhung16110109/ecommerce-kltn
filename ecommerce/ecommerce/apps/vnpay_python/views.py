@@ -5,21 +5,24 @@ from datetime import datetime
 from django.core.serializers import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
-
+from apps.product.models import Category
 from apps.vnpay_python.forms import PaymentForm
 from apps.vnpay_python.vnpay import vnpay
 from django.conf import settings
-
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, "vnpay_python/index.html", {"title": "Danh sách demo"})
 
-
+#@csrf_exempt
 def payment(request):
+    print("hello1")
     if request.method == 'POST':
+        print("hello2")
         # Process input data and build url payment
         form = PaymentForm(request.POST)
         if form.is_valid():
+            print("hello3")
             order_type = form.cleaned_data['order_type']
             order_id = form.cleaned_data['order_id']
             amount = form.cleaned_data['amount']
@@ -52,16 +55,21 @@ def payment(request):
             vnpay_payment_url = vnp.get_payment_url(settings.VNPAY_PAYMENT_URL, settings.VNPAY_HASH_SECRET_KEY)
             print(vnpay_payment_url)
             if request.is_ajax():
+                print("hello4")
                 # Show VNPAY Popup
                 result = JsonResponse({'code': '00', 'Message': 'Init Success', 'data': vnpay_payment_url})
+                print("hello5 === ", result)
                 return result
             else:
+                print("hello5")
                 # Redirect to VNPAY
                 return redirect(vnpay_payment_url)
         else:
+            print("hello6")
             print("Form input not validate")
     else:
-        return render(request, "vnpay_python/payment.html", {"title": "Thanh toán"})
+        print("hello7")
+        return render(request, "vnpay_python/payment.html", {"title": "Thanh toán", "price": request.GET["price"]})
 
 
 def payment_ipn(request):
@@ -104,6 +112,9 @@ def payment_ipn(request):
 
 
 def payment_return(request):
+    category = Category.objects.all()
+    total = 0
+    quantity = 0
     inputData = request.GET
     if inputData:
         vnp = vnpay()
@@ -123,6 +134,9 @@ def payment_return(request):
                                                                "result": "Thành công", "order_id": order_id,
                                                                "amount": amount,
                                                                "order_desc": order_desc,
+                                                               "category": category,
+                                                               "total": total,
+                                                               "quantity": quantity,
                                                                "vnp_TransactionNo": vnp_TransactionNo,
                                                                "vnp_ResponseCode": vnp_ResponseCode})
             else:
@@ -130,13 +144,16 @@ def payment_return(request):
                                                                "result": "Lỗi", "order_id": order_id,
                                                                "amount": amount,
                                                                "order_desc": order_desc,
+                                                               "category": category,
+                                                               "total": total,
+                                                               "quantity": quantity,
                                                                "vnp_TransactionNo": vnp_TransactionNo,
                                                                "vnp_ResponseCode": vnp_ResponseCode})
         else:
-            return render(request, "payment_return.html",
+            return render(request, "vnpay_python/payment_return.html",
                           {"title": "Kết quả thanh toán", "result": "Lỗi", "order_id": order_id, "amount": amount,
-                           "order_desc": order_desc, "vnp_TransactionNo": vnp_TransactionNo,
-                           "vnp_ResponseCode": vnp_ResponseCode, "msg": "Sai checksum"})
+                           "order_desc": order_desc, "vnp_TransactionNo": vnp_TransactionNo,"category": category,
+                           "total": total,"quantity": quantity,"vnp_ResponseCode": vnp_ResponseCode, "msg": "Sai checksum"})
     else:
         return render(request, "vnpay_python/payment_return.html", {"title": "Kết quả thanh toán", "result": ""})
 

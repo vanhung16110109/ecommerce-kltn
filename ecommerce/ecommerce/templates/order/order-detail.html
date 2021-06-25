@@ -128,28 +128,7 @@
                                     {% endfor %}
                                     
                                 </tbody>
-                                <!-- <tfoot>
-									
-                                    <tr>
-                                        <th class="empty" colspan="3"></th>
-                                        <th>Tổng tiền</th>
-                                        <th colspan="2" class="sub-total">{{ total }}.000 VND</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="empty" colspan="3"></th>
-                                        <th>Phí vận chuyển</th>
-                                        <td colspan="2">Miễn phí</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="empty" colspan="3"></th>
-                                        <th>Tổng tiền thanh toán</th>
-                                        <th colspan="2" class="total">{{ total }}.000 VND</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                            <div class="pull-right">
-                                <a href="/order/orderproduct" class="primary-btn">Thanh toán</a>
-                            </div> -->
+                                
 							</table>
 
                         </div>
@@ -191,6 +170,7 @@
                             <div class="pull-right" style="text-transform: uppercase;">
                                 <a href="{% url "checkout_offline" %}" class="btn primary-btn btn-lg active">Đặt hàng</a>
 								<a href="{% url "checkout_online" %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Đặt hàng và thanh toán</a>
+								{% comment %} <a href="{% url "payment" %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Đặt hàng và thanh toán</a> {% endcomment %}
 							
                             </div>
 

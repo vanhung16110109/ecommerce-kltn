@@ -78,20 +78,20 @@
                 <!--  Product Details -->
                 <div class="product product-details clearfix">
                     <div class="col-md-6" style="width: 65%;">
-                        <div id="product-main-view">
+                        <div id="product-main-view" style="width: 600px; height: 450px;">
 							{% if variant.image_id > 0 %}
                                 <div class="product-view">
-                                    <img src="{{ variant.image }}" alt="">
+                                    <img src="{{ variant.image }}" alt="" style="width: 600px; height: 450px;">
                                 </div>
                             {% else %}
                                 <div class="product-view">
-                                    <img src="{{ product.image.url }}" alt="">
+                                    <img src="{{ product.image.url }}" alt="" style="width: 600px; height: 450px;">
                                 </div>
                             {% endif %}
 
                             {% for rs in images %}
                                 <div  class="product-view active">
-                                    <img src="{{ rs.image.url }}" alt="">
+                                    <img src="{{ rs.image.url }}" alt="" style="width: 600px; height: 450px;">
                                 </div>
                             {% endfor %}
 
