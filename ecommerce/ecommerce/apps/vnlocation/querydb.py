@@ -10,10 +10,6 @@ def show_province():
     c.execute("SELECT name FROM province")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
     
 
 def show_district():
@@ -24,10 +20,6 @@ def show_district():
     c.execute("SELECT * FROM district")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 def show_ward():
@@ -38,10 +30,7 @@ def show_ward():
     c.execute("SELECT * FROM ward")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
+
 
 def show_village():
     #connect database    
@@ -51,10 +40,6 @@ def show_village():
     c.execute("SELECT * FROM village")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 def show_province_district():
@@ -65,10 +50,6 @@ def show_province_district():
     c.execute("SELECT province.name, district.name FROM province, district WHERE province.provinceid = district.provinceid")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 def show_province_district_ward():
@@ -79,10 +60,6 @@ def show_province_district_ward():
     c.execute("SELECT province.name, district.name,ward.name FROM province, district, ward WHERE province.provinceid = district.provinceid and district.districtid = ward.districtid")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 def show_province_district_ward_village():
@@ -93,10 +70,6 @@ def show_province_district_ward_village():
     c.execute("SELECT province.name, district.name, ward.name, village.name FROM province, district, ward, village WHERE province.provinceid = district.provinceid and district.districtid = ward.districtid and ward.wardid = village.wardid")
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 # search district in province
@@ -108,10 +81,6 @@ def show_province_district_search(provinceid):
     c.execute("SELECT province.name, district.districtid, district.name FROM province, district WHERE province.provinceid = district.provinceid and district.provinceid = (?) ", (provinceid,))
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 # search ward in district
@@ -123,10 +92,6 @@ def show_province_district_ward_search(districtid):
     c.execute("SELECT province.name, district.name, ward.wardid, ward.name FROM province, district, ward WHERE province.provinceid = district.provinceid and district.districtid = ward.districtid and ward.districtid = (?)", (districtid,))
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
 
 
 # search village in ward
@@ -138,11 +103,6 @@ def show_province_district_ward_village(wardid):
     c.execute("SELECT province.name, district.name, ward.name, village.villageid, village.name FROM province, district, ward, village WHERE province.provinceid = district.provinceid and district.districtid = ward.districtid and ward.wardid = village.wardid and ward.wardid = (?)", (wardid,))
     items = c.fetchall()
     return items
-    # for item in items:
-    #     print(item[0],item[1])
-    # conn.commit()
-    # conn.close()
-
 
 
 def search_province():

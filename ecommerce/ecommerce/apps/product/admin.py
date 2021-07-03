@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, ProductAdvancedSearch, PhoneType, InternaMemory, AmountRAM, BatteryPerformance, ScreenSize, PhoneDesign, CameraFeature, SpecialFeatures
+from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, ProductAdvancedSearch, PhoneType, InternaMemory, AmountRAM, BatteryPerformance, ScreenSize, PhoneDesign, CameraFeature, SpecialFeatures, CompareProduct
 from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 
@@ -163,6 +163,10 @@ class ProductAdvancedSearchAdmin(admin.ModelAdmin):
 	list_display = ['product']
 
 
+class CompareProductAdmin(admin.ModelAdmin):
+    list_display = ['ip', 'title']
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Category_Product_Detail, Category_Product_DetailAdmin)
 admin.site.register(Product, ProductAdmin)
@@ -181,5 +185,5 @@ admin.site.register(ScreenSize, ScreenSizeAdmin)
 admin.site.register(PhoneDesign, PhoneDesignAdmin)
 admin.site.register(CameraFeature, CameraFeatureAdmin)
 admin.site.register(SpecialFeatures, SpecialFeaturesAdmin)
-# admin.site.register(DetailsProduct, DetailsProductAdmin)
+admin.site.register(CompareProduct, CompareProductAdmin)
 

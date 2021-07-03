@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'apps.order',
     'apps.product',
 	#'apps.vnlocation',
+    'rest_framework',
     #tool support
     'ckeditor',
     'mptt',
@@ -204,3 +205,21 @@ VNPAY_PAYMENT_URL = 'http://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get f
 VNPAY_API_URL = 'http://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
 VNPAY_TMN_CODE = 'B7YFPAOP'  # Website ID in VNPAY System, get from config
 VNPAY_HASH_SECRET_KEY =   'NAXGCEETXOSYBAYKGQJSWXUNTZHIHXBY' # Secret key for create checksum,get from config
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+
+JWT_AUTH = {
+    # Authorization:Token xxx
+    'JWT_AUTH_HEADER_PREFIX': 'Token',
+}

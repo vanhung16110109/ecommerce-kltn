@@ -96,6 +96,8 @@ def ajaxcolor(request):
     if request.POST.get('action') == 'post':
         size_id = request.POST.get('size')
         productid = request.POST.get('productid')
+        print(size_id)
+        print(productid)
         colors = Variants.objects.filter(product_id=productid, size_id=size_id)
         context = {
             'size_id': size_id,

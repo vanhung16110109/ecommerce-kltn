@@ -17,6 +17,9 @@ from apps.vnpay_python.forms import PaymentForm
 from apps.vnpay_python.vnpay import vnpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+import requests
+
+mytoken = "62045ed5-d43f-11eb-81f5-a267211ac77c"
 
 stripe.api_key = "sk_test_51J1vyDAGJ7lQptUOWAiE572OEq7GeThZxmZVMqakGn9nQubgtdCoSw4PxE7Qjg4zrKBzZTXsIfWKtR04Lr7BkMax00VJxyICNk"
 
@@ -174,6 +177,9 @@ def checkout_offline(request):
     for rs in shopcart:
         quantity += rs.quantity
     ordercode= get_random_string(5).upper()
+    headers={'Content-Type':'application/json', 'Token': mytoken}
+    r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', headers=headers)
+    dataAPI_province = r.json()
     if request.method == 'POST':  # if there is a post
         form = OrderForm(request.POST)
         #return HttpResponse(request.POST.items())
@@ -227,7 +233,8 @@ def checkout_offline(request):
             context = {
 				'total': total,
 				'quantity': quantity,
-				'ordercode':ordercode,'category': category
+				'ordercode':ordercode,'category': category,
+                'dataAPI_province': dataAPI_province,
 			}
             # messages.success(request, "Đơn hàng của bạn đã được hoàn thành. Cảm ơn bạn")
             return render(request, 'order/Order_Completed.html',context)
@@ -245,6 +252,7 @@ def checkout_offline(request):
         'form': form,
         'profile': profile,
         'ordercode': ordercode,
+        'dataAPI_province': dataAPI_province,
     }
     return render(request, 'checkout/checkout-offline.html', context)
 
@@ -257,3 +265,5 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+

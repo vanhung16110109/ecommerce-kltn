@@ -4,6 +4,7 @@ from datetime import datetime
 from django.urls import path, include
 from django.contrib import admin
 from apps.product.views import ajaxcolor
+from apps.vnlocation.views import ajaxAPIlocationdistrict, ajaxAPIlocationward
 from django.conf.urls import url
 import apps.vnpay_python.views
 from apps.product.views import category_products_pro_code
@@ -22,6 +23,8 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('ckeditor/', include('ckeditor_uploader.urls')),
 	path('ajaxcolor/', ajaxcolor, name='ajaxcolor'),
+    path('ajaxAPIlocationdistrict/', ajaxAPIlocationdistrict, name='ajaxAPIlocationdistrict'),
+    path('ajaxAPIlocationward/', ajaxAPIlocationward, name='ajaxAPIlocationward'),
     path('category/<int:id>/<slug:title>', category_products_pro_code, name='category_products_pro_code'),
 
 	path('payment/', include('apps.vnpay_python.urls'), name='payment'),

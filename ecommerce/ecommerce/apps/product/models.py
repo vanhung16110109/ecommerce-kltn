@@ -340,3 +340,12 @@ class ProductAdvancedSearch(models.Model):
     phonedesign = models.ForeignKey(PhoneDesign, on_delete=models.CASCADE)
     camerafeature = models.ForeignKey(CameraFeature, on_delete=models.CASCADE)
     specialfeatures = models.ForeignKey(SpecialFeatures, on_delete=models.CASCADE)
+
+
+
+class CompareProduct(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    ip = models.CharField(blank=True, max_length=30)
+    
+    def __str__(self):
+        return self.title
