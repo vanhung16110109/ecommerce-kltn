@@ -118,23 +118,89 @@
                         </table>                       
                     </div>
                 </div>
+                <script>
+                $(document).on('change', '#ghtk',function(e){
+                    e.preventDefault();
+                        $.ajax({
+                            type:'POST',
+                            url:'{% url "ajaxGHTK_online" %}',
+                            data:{
+                                ProvinceName:$('#ProvinceName').val(),
+                                DistrictName:$('#DistrictName').val(),                                      
+                                WardName:$('#WardName').val(),
+                                ghtk:$('#ghtk').val(),
+                                total:$('#total').val(),                                    
+                                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                action: 'post'
+                            },
+                            data_type : 'html',
+                            success: function (data) {
+                                console.log("success");
+                                //console.log(e);
+                                $('#total').html(data.rendered_table);
+                            },
+                            error: function (data) {
+                                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                            }
+                        });
+                    });
+                </script>
+                <script>
+                $(document).on('change', '#ghn',function(e){
+                    e.preventDefault();
+                        $.ajax({
+                            type:'POST',
+                            url:'{% url "ajaxGHN_online" %}',
+                            data:{
+                                ProvinceName:$('#ProvinceName').val(),
+                                DistrictName:$('#DistrictName').val(),                                       
+                                WardName:$('#WardName').val(),
+                                ghn:$('#ghn').val(),
+                                total:$('#total').val(),                                 
+                                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                action: 'post'
+                            },                                   
+                            data_type : 'html',
+                            success: function (data) {
+                                console.log("success");                                       
+                                //console.log(e);
+                                $('#total').html(data.rendered_table);
+                            },
+                            error: function (data) {
+                                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                            }
+                        });
+                    });
+                </script>
                 <form action="{% url "checkout_online" %}" id="create_form" method="post">
                 {% csrf_token %}                  
                     {% comment %} <div class="col-md-6" style="width: 50%;"> {% endcomment %}
-                    <div class="col-md-6" style="width: 45%;">
+                    <div class="col-md-6">
                         <div class="billing-details">
 
                             <div class="section-title">
                                 <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
                             </div>
                             <p><label for="id_first_name">Tên:</label><br>
-                                <input type="text" name="first_name"  value="{{ profile.first_name }}" class="input" maxlength="10" required id="id_first_name"></p>
+                                <input type="text" name="first_name" class="input" maxlength="10" required id="id_first_name" placeholder="Vui lòng nhập tên"></p>
                             <p><label for="id_last_name">Họ:</label><br>
-                                <input type="text" name="last_name"  value="{{ profile.last_name }}" class="input" maxlength="10" required id="id_last_name"></p>
-                            <p><label for="id_address">Địa chỉ nhận hàng:</label>
-                                <input type="text" name="address" value="{{ profile.address }}" class="input" maxlength="150" id="id_address"></p>
+                                <input type="text" name="last_name" class="input" maxlength="10" required id="id_last_name" placeholder="Vui lòng nhập họ"></p>  
+                            
+                            {% include "vnlocation/transportfeeAPI.html" %}
+                            <p><label for="id_address">Địa chỉ:</label><br>                               
+                                <input type="text" name="address" class="input" maxlength="150" id="id_address" placeholder="Nhập địa chỉ nhận hàng"></p>
                             <p><label for="id_phone">Số điện thoại:</label><br>
-                                <input type="text" name="phone"  value="{{ profile.phone }}"  class="input" maxlength="20" id="id_phone"></p>
+                                <input type="text" name="phone" class="input" maxlength="20" id="id_phone" placeholder="Vui lòng nhập số điện thoại"></p>
+
+                            <label>Vui lòng chọn hình thức giao hàng:</label>
+                              <input type="radio" id="ghtk" name="delivery" value="Giao hàng tiết kiệm">
+                              <label for="ghtk">Giao hàng tiết kiệm</label>
+                              <input type="radio" id="ghn" name="delivery" value="Giao hàng nhanh">
+                              <label for="ghn">Giao hàng nhanh</label>
+                            <br>
+
+
+
                        </div>
                     </div>
                     <div class="col-md-6">
@@ -158,7 +224,7 @@
                                            name="order_id" type="text" value="{{ ordercode }}" readonly/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="amount">Số tiền </label>
+                                    <label for="amount">Số tiền đơn hàng (chưa tính phí ship)</label>
                                     <input class="form-control" id="amount"
                                            name="amount" type="text" value="{{ price }}" readonly/>
                                 </div>
@@ -201,6 +267,17 @@
                                         <option value="en">English</option>
                                     </select>
                                 </div>
+                                <i><p>Chú ý: Khách hàng vui lòng điền đầy đủ thông tin để thực hiện tính phí ship, tổng tiền thanh toán</p></i>
+                                <div class="form-group" id="total">
+                                    <label for="transport_fee">Phí ship</label>
+                                    <input class="form-control" id="transport_fee"
+                                            name="transport_fee" type="text" placeholder="Đang thực hiện tính toán..." readonly/>
+                                    <br>
+                                    <label for="total_new">Tổng tiền thanh toán</label>
+                                    <input class="form-control" id="total_new"
+                                            name="total_new" type="text" placeholder="Đang thực hiện tính toán..." readonly/>
+                                </div>
+                                Đơn vị tiền tệ: Việt Nam Đồng (VND)
                                 <div class="pull-right">
                                     {% comment %} <button type="submit" class="btn btn-primary" id="btnPopup">Xác nhận</button> {% endcomment %}
                                     <button type="submit" class="btn btn-primary">Xác nhận</button>
@@ -256,4 +333,3 @@
 	<script src="{% static "" %}home/js/main.js"></script>
 	
 {% endblock %}
-

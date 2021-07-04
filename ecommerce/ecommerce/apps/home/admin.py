@@ -1,4 +1,8 @@
 from django.contrib import admin
+from .models import StoreAddress
+
+
+admin.site.register(StoreAddress)
 
 # from .models import Setting, ContactMessage
 

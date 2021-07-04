@@ -63,7 +63,11 @@ class Order(models.Model):
 	first_name = models.CharField(max_length=20)
 	last_name = models.CharField(max_length=20)
 	phone = models.CharField(blank=True, max_length=20)
+	province = models.CharField(blank=True, max_length=255)
+	district = models.CharField(blank=True, max_length=255)
+	ward = models.CharField(blank=True, max_length=255)
 	address = models.CharField(blank=True, max_length=255)
+ 
 	# city = models.CharField(blank=True, max_length=50)
 	# country = models.CharField(blank=True, max_length=50)
 	total = models.FloatField()

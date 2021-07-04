@@ -1,0 +1,29 @@
+<div class="col-md-12">
+    <div class="shiping-methods" id="total">
+        <div class="section-title">
+            <h4 class="title">Thanh toán khi nhận hàng</h4>
+        </div>
+        <table class="shopping-cart-table table">                                
+            <tfoot>         
+                <tr>
+                    <th class="empty" colspan="3"></th>
+                    <th>Tổng tiền</th>
+                    <th colspan="2" class="sub-total">{{ total_order }}.000 VND</th>
+                </tr>
+                <tr>
+                    <th class="empty" colspan="3"></th>
+                    <th>Phí vận chuyển</th>
+                    <td colspan="2">{{ transport_fee }}.000 VND</td>
+                </tr>
+                <tr>
+
+                    <input type="hidden" id="total_new" name="total_new" type="text" value={{ total }}>
+                    <th class="empty" colspan="3"></th>
+                    <th>Tổng tiền thanh toán</th>
+                    <th colspan="2" class="total">{{ total }}.000 VND</th>                   
+                </tr>
+            </tfoot>
+        </table>
+        Đơn vị tiền tệ: Việt Nam Đồng (VND)
+    </div>    
+</div>

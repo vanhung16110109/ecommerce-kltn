@@ -122,6 +122,64 @@
                 <Form action="" method="post">
                     {% csrf_token %}
                     <div class="col-md-6">
+                        <script>
+                        $(document).on('change', '#ghtk',function(e){
+                            e.preventDefault();
+                                $.ajax({
+                                    type:'POST',
+                                    url:'{% url "ajaxGHTK" %}',
+                                    data:{
+                                        ProvinceName:$('#ProvinceName').val(),
+                                        DistrictName:$('#DistrictName').val(),                                       
+                                        WardName:$('#WardName').val(),
+                                        ghtk:$('#ghtk').val(),
+                                        total:$('#total').val(),                                    
+                                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                        action: 'post'
+                                    },
+                                    data_type : 'html',
+                                    success: function (data) {
+                                        console.log("success");
+                                        console.log(ghtk);
+                                        console.log(total);
+                                        //console.log(e);
+                                        $('#total').html(data.rendered_table);
+                                    },
+                                    error: function (data) {
+                                        alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                                    }
+                                });
+                            });
+                        </script>
+                        <script>
+                        $(document).on('change', '#ghn',function(e){
+                            e.preventDefault();
+                                $.ajax({
+                                    type:'POST',
+                                    url:'{% url "ajaxGHN" %}',
+                                    data:{
+                                        ProvinceName:$('#ProvinceName').val(),
+                                        DistrictName:$('#DistrictName').val(),                                       
+                                        WardName:$('#WardName').val(),
+                                        ghn:$('#ghn').val(),
+                                        total:$('#total').val(),                                 
+                                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                        action: 'post'
+                                    },                                   
+                                    data_type : 'html',
+                                    success: function (data) {
+                                        console.log("success");
+                                        console.log(ghn);
+                                        console.log(total);
+                                        //console.log(e);
+                                        $('#total').html(data.rendered_table);
+                                    },
+                                    error: function (data) {
+                                        alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                                    }
+                                });
+                            });
+                        </script>
                         <div class="billing-details">
                             <div class="section-title">
                                 <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
@@ -135,19 +193,46 @@
                                 <input type="text" name="address" class="input" maxlength="150" id="id_address" placeholder="Nhập địa chỉ nhận hàng"></p>
                             <p><label for="id_phone">Số điện thoại:</label><br>
                                 <input type="text" name="phone" class="input" maxlength="20" id="id_phone" placeholder="Vui lòng nhập số điện thoại"></p>
+                            <form method="POST" id="post-delivery">
+                                <label>Vui lòng chọn hình thức giao hàng:</label>
+                                  <input type="radio" id="ghtk" name="delivery" value="Giao hàng tiết kiệm">
+                                  <label for="ghtk">Giao hàng tiết kiệm</label>
+                                  <input type="radio" id="ghn" name="delivery" value="Giao hàng nhanh">
+                                  <label for="ghn">Giao hàng nhanh</label>
+                                <br>
+                            </form>
                             <button  type="submit" class="primary-btn">Hoàn tất thông tin đặt hàng</button>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <div class="shiping-methods">
-                            <div class="section-title">
-                                <h4 class="title">Thanh toán khi nhận hàng</h4>
-                            </div>
-                            <h3>
-                                Tổng tiền phải thanh toán: {{ total }}.000 VND
-                            </h3>
-                        </div>
+                        <div class="shiping-methods" id="total">
+                            {% comment %}<div class="section-title">
+                                 <h4 class="title">Thanh toán khi nhận hàng</h4>
+                            </div>{% endcomment %}
+                            <table class="shopping-cart-table table">                                
+                                <tfoot>         
+                                    <tr>
+                                        {% comment %} <th class="empty" colspan="3"></th>
+                                        <th>Tổng tiền</th>
+                                        <th colspan="2" class="sub-total">{{ total_order }}.000 VND</th>
+                                    </tr> {% endcomment %}
+                                    {% comment %} <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>Phí vận chuyển</th>
+                                        <td colspan="2">{{ transport_fee }}.000 VND</td>
+                                    </tr> {% endcomment %}
+                                    <tr>
+
+                                        <input type="hidden" id="total_new" name="total_new" type="text" value={{ total }}>
+                                        {% comment %} <th class="empty" colspan="3"></th>
+                                        <th>Tổng tiền thanh toán</th>
+                                        <th colspan="2" class="total">{{ total }}.000 VND</th>                    {% endcomment %}
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            {% comment %} Đơn vị tiền tệ: Việt Nam Đồng (VND) {% endcomment %}
+                        </div>   
                     </div>
 
                 </Form>

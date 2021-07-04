@@ -1,8 +1,6 @@
-<form method="POST" id="post-district">
-    <select name="DistrictName" id="DistrictName" style="width: 100%;height: 40px; padding: 0px 15px;">
+<select name="DistrictName" id="DistrictName" style="width: 100%;height: 40px; padding: 0px 15px;">
         <option value="false">Chọn Quận, Huyện</option>
         {% for i_district in  dataAPI_district.data %}            
-            <option value={{i_district.DistrictID}}>{{i_district.DistrictName}}</option>
+            <option name="DistrictName" id="DistrictName" value={{i_district.DistrictID}}>{{i_district.DistrictName}}</option>
         {% endfor %}    
     </select>
-</form>

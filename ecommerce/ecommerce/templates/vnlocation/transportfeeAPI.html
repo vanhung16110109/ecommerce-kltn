@@ -60,18 +60,14 @@ $(document).on('change', '#DistrictName',function(e){
     });
 </script>
 
-
-<form method="POST" id="post-province">
     <label>Tỉnh, Thành Phố:</label><br>
     {% csrf_token %}      
     <select name="ProvinceName" id="ProvinceName" style="width: 100%;height: 40px; padding: 0px 15px;">
         <option value="false">Chọn Tỉnh, Thành Phố</option>
         {% for i in dataAPI_province.data %}
             <option value={{i.ProvinceID}}>{{i.ProvinceName}}</option>
-    {% endfor %}    
+        {% endfor %}    
     </select>
-</form>
-<form method="POST" id="post-district">
     <label>Quận, Huyện:</label><br>
     {% csrf_token %}
     <select name="DistrictName" id="DistrictName" style="width: 100%;height: 40px; padding: 0px 15px;">
@@ -81,8 +77,6 @@ $(document).on('change', '#DistrictName',function(e){
             <option value={{i_district.DistrictID}}>{{i_district.DistrictName}}</option>
         {% endfor %}     {% endcomment %}
     </select>
-</form>
-<form method="POST" id="post-ward">
     <label>Phường, Xã:</label><br>
     {% csrf_token %}
     <select name="WardName" id="WardName" style="width: 100%;height: 40px; padding: 0px 15px;">
@@ -91,7 +85,5 @@ $(document).on('change', '#DistrictName',function(e){
             <option value={{i_ward.WardCode}}>{{i_ward.WardName}}</option>
         {% endfor %} {% endcomment %}
     </select>
-</form>
-
 </body>
 </html>

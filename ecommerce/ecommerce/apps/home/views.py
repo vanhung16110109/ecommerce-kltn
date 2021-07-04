@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # from .forms import SearchForm
-from .models import ContactForm, ContactMessage
+# from .models import ContactForm, ContactMessage
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
 from apps.product.models import Category, Product, Banner

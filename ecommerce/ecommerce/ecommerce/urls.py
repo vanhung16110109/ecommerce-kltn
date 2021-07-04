@@ -4,7 +4,7 @@ from datetime import datetime
 from django.urls import path, include
 from django.contrib import admin
 from apps.product.views import ajaxcolor
-from apps.vnlocation.views import ajaxAPIlocationdistrict, ajaxAPIlocationward
+from apps.vnlocation.views import ajaxAPIlocationdistrict, ajaxAPIlocationward, ajaxGHTK, ajaxGHN, ajaxGHN_online, ajaxGHTK_online
 from django.conf.urls import url
 import apps.vnpay_python.views
 from apps.product.views import category_products_pro_code
@@ -25,13 +25,12 @@ urlpatterns = [
 	path('ajaxcolor/', ajaxcolor, name='ajaxcolor'),
     path('ajaxAPIlocationdistrict/', ajaxAPIlocationdistrict, name='ajaxAPIlocationdistrict'),
     path('ajaxAPIlocationward/', ajaxAPIlocationward, name='ajaxAPIlocationward'),
+    path('ajaxGHTK/', ajaxGHTK, name='ajaxGHTK'),
+    path('ajaxGHN/', ajaxGHN, name='ajaxGHN'),
+    path('ajaxGHTK_online/', ajaxGHTK_online, name='ajaxGHTK_online'),
+    path('ajaxGHN_online/', ajaxGHN_online, name='ajaxGHN_online'),
     path('category/<int:id>/<slug:title>', category_products_pro_code, name='category_products_pro_code'),
 
 	path('payment/', include('apps.vnpay_python.urls'), name='payment'),
-    #path('vnpay/', apps.vnpay_python.views.index, name='index'),
-    # path('vnpay/payment', apps.vnpay_python.views.payment, name='payment'),
-    # path('vnpay/payment_ipn', apps.vnpay_python.views.payment_ipn, name='payment_ipn'),
-    # path('vnpay/payment_return', apps.vnpay_python.views.payment_return, name='payment_return'),
-    # path('vnpay/query', apps.vnpay_python.views.query, name='query'),
-    # path('vnpay/refund', apps.vnpay_python.views.refund, name='refund'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -8,7 +8,7 @@ import stripe
 import urllib.request
 import urllib.parse
 from datetime import datetime
-
+from apps.home.models import StoreAddress
 from django.core.serializers import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
@@ -18,6 +18,7 @@ from apps.vnpay_python.vnpay import vnpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from django.contrib.auth.decorators import login_required
 
 mytoken = "62045ed5-d43f-11eb-81f5-a267211ac77c"
 
@@ -26,6 +27,7 @@ stripe.api_key = "sk_test_51J1vyDAGJ7lQptUOWAiE572OEq7GeThZxmZVMqakGn9nQubgtdCoS
 
 # Create your views here.
 #checkout online
+@login_required(login_url='/account/login')
 def checkout_online(request):
     category = Category.objects.all()
     product = Product.objects.all()
@@ -37,7 +39,13 @@ def checkout_online(request):
     quantity = 0
     for rs in shopcart:
         quantity += rs.quantity
+    storeaddress = StoreAddress.objects.filter(id=1)
+    for i in storeaddress:
+        adress_id = int(i.city)
     ordercode = get_random_string(5).upper() # random cod
+    headers={'Content-Type':'application/json', 'Token': mytoken}
+    r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', headers=headers)
+    dataAPI_province = r.json()
     if request.method == 'POST':  # if there is a post
         form = OrderForm(request.POST)
         form_Payment = PaymentForm(request.POST)
@@ -50,15 +58,60 @@ def checkout_online(request):
             data.first_name = form.cleaned_data['first_name'] #get product quantity from form
             data.last_name = form.cleaned_data['last_name']
             data.address = form.cleaned_data['address']
-            # data.city = form.cleaned_data['city']
+            #get data location
+            ProvinceName = int(request.POST.get('ProvinceName'))        #get id
+            DistrictName = int(request.POST.get('DistrictName'))
+            WardName = int(request.POST.get('WardName'))
+            json_district = {"province_id": ProvinceName}
+            r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district)
+            dataAPI_district = r.json()
+            json_ward = {"district_id": DistrictName}
+            r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', headers=headers, json=json_ward)
+            dataAPI_ward = r.json()
+            #print(dataAPI_ward)
+            for i in range(len(dataAPI_province['data'])):
+                #print(dataAPI_province['data'][i].get("ProvinceID"))
+                if (dataAPI_province['data'][i].get("ProvinceID"))==ProvinceName:
+                    Province = dataAPI_province['data'][i].get("ProvinceName")
+            for i in range(len(dataAPI_district['data'])):
+                #print(dataAPI_province['data'][i].get("ProvinceID"))
+                if (dataAPI_district['data'][i].get("DistrictID"))==DistrictName:
+                    District = dataAPI_district['data'][i].get("DistrictName")
+            for i in range(len(dataAPI_ward['data'])):
+                #print(dataAPI_ward['data'][i].get("WardCode"))
+                if int(dataAPI_ward['data'][i].get("WardCode"))==WardName:
+                    Ward = dataAPI_ward['data'][i].get("WardName")    
+            # print(Province)
+            # print(District)
+            # print(Ward)
+            data.province = Province
+            data.district = District
+            data.ward = Ward
             data.phone = form.cleaned_data['phone']
             data.user_id = current_user.id
-            data.total = total
+            #event tinh tien giao
+            giaohang = request.POST.get('delivery')
+            if giaohang=='Giao hàng tiết kiệm':
+                print('Có')
+                if adress_id == ProvinceName:
+                    transport_fee = 30
+                    total_new = (total*1000 + 30)/1000
+                else:
+                    transport_fee = 40
+                    total_new = (total*1000 + 40)/1000
+            elif giaohang=='Giao hàng nhanh':
+                if adress_id == ProvinceName:
+                    transport_fee = 37
+                    total_new = (total*1000 + 37)/1000
+                else:
+                    transport_fee = 47
+                    total_new = (total*1000 + 47)/1000                             
+            data.total = total_new
             data.ip = request.META.get('REMOTE_ADDR')
             #ordercode = get_random_string(5).upper() # random cod
             data.code =  ordercode
             data.status_pay = 'Đã thanh toán'
-            data.save() #
+            data.save()
 
             for rs in shopcart:
                 detail = OrderProduct()
@@ -88,6 +141,7 @@ def checkout_online(request):
                 #************ <> *****************
             # # messages.success(request, "Đơn hàng của bạn đã được hoàn thành. Cảm ơn bạn")
             # return render(request, 'order/Order_Completed.html',context)
+            transport_fee = transport_fee*100000
             if form_Payment.is_valid():
                 print("hello3")
                 order_type = form_Payment.cleaned_data['order_type']
@@ -102,7 +156,7 @@ def checkout_online(request):
                 vnp.requestData['vnp_Version'] = '2.0.0'
                 vnp.requestData['vnp_Command'] = 'pay'
                 vnp.requestData['vnp_TmnCode'] = settings.VNPAY_TMN_CODE
-                vnp.requestData['vnp_Amount'] = amount * 100
+                vnp.requestData['vnp_Amount'] = amount * 100 + transport_fee
                 vnp.requestData['vnp_CurrCode'] = 'VND'
                 vnp.requestData['vnp_TxnRef'] = order_id
                 vnp.requestData['vnp_OrderInfo'] = order_desc
@@ -120,7 +174,7 @@ def checkout_online(request):
                 vnp.requestData['vnp_IpAddr'] = ipaddr
                 vnp.requestData['vnp_ReturnUrl'] = settings.VNPAY_RETURN_URL
                 vnpay_payment_url = vnp.get_payment_url(settings.VNPAY_PAYMENT_URL, settings.VNPAY_HASH_SECRET_KEY)
-                print(vnpay_payment_url)
+                #print(vnpay_payment_url)
                 ShopCart.objects.filter(user_id=current_user.id).delete()
                 if request.is_ajax():
                     print("hello4")
@@ -132,16 +186,7 @@ def checkout_online(request):
                     print("hello5")
                     # Redirect to VNPAY
                     return redirect(vnpay_payment_url)
-            # ShopCart.objects.filter(user_id=current_user.id).delete() # Clear & Delete shopcart
-            # # request.session['cart_items']=0
-            # total = 0
-            # quantity = 0
-            # context = {
-			# 	'total': total,
-			# 	'quantity': quantity,
-			# 	'ordercode':ordercode,'category': category
-			# }
-            # return render(request, 'order/Order_Completed.html',context)
+                        
         else:
             messages.warning(request, form.errors)
             return HttpResponseRedirect("/order/orderproduct")
@@ -160,11 +205,13 @@ def checkout_online(request):
         'form': form,
         'profile': profile,
         'ordercode': ordercode,
+        'dataAPI_province': dataAPI_province,
     }
     return render(request, 'checkout/checkout-online.html', context)
 
 
 #checkout_offline
+@login_required(login_url='/account/login')
 def checkout_offline(request):
     category = Category.objects.all()
     product = Product.objects.all()
@@ -177,9 +224,16 @@ def checkout_offline(request):
     for rs in shopcart:
         quantity += rs.quantity
     ordercode= get_random_string(5).upper()
+    storeaddress = StoreAddress.objects.filter(id=1)
+    for i in storeaddress:
+        adress_id = int(i.city)
     headers={'Content-Type':'application/json', 'Token': mytoken}
     r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', headers=headers)
     dataAPI_province = r.json()
+    # địa chỉ cửa hàng
+    storeaddress = StoreAddress.objects.filter(id=1)
+    for i in storeaddress:
+        adress_id = int(i.city)
     if request.method == 'POST':  # if there is a post
         form = OrderForm(request.POST)
         #return HttpResponse(request.POST.items())
@@ -190,11 +244,59 @@ def checkout_offline(request):
             data = Order()
             data.first_name = form.cleaned_data['first_name'] #get product quantity from form
             data.last_name = form.cleaned_data['last_name']
+            ProvinceName = int(request.POST.get('ProvinceName'))        #get id
+            DistrictName = int(request.POST.get('DistrictName'))
+            WardName = int(request.POST.get('WardName'))
+            # print(WardName)
+            
+            json_district = {"province_id": ProvinceName}
+            r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district)
+            dataAPI_district = r.json()
+            json_ward = {"district_id": DistrictName}
+            r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', headers=headers, json=json_ward)
+            dataAPI_ward = r.json()
+            #print(dataAPI_ward)
+            for i in range(len(dataAPI_province['data'])):
+                #print(dataAPI_province['data'][i].get("ProvinceID"))
+                if (dataAPI_province['data'][i].get("ProvinceID"))==ProvinceName:
+                    Province = dataAPI_province['data'][i].get("ProvinceName")
+            for i in range(len(dataAPI_district['data'])):
+                #print(dataAPI_province['data'][i].get("ProvinceID"))
+                if (dataAPI_district['data'][i].get("DistrictID"))==DistrictName:
+                    District = dataAPI_district['data'][i].get("DistrictName")
+            for i in range(len(dataAPI_ward['data'])):
+                #print(dataAPI_ward['data'][i].get("WardCode"))
+                if int(dataAPI_ward['data'][i].get("WardCode"))==WardName:
+                    Ward = dataAPI_ward['data'][i].get("WardName")    
+            # print(Province)
+            # print(District)
+            # print(Ward)
+            data.province = Province
+            data.district = District
+            data.ward = Ward
             data.address = form.cleaned_data['address']
             # data.city = form.cleaned_data['city']
             data.phone = form.cleaned_data['phone']
             data.user_id = current_user.id
-            data.total = total
+            # event tinh tien giao hang
+            giaohang = request.POST.get('delivery')
+            if giaohang=='Giao hàng tiết kiệm':
+                print('Có')
+                if adress_id == ProvinceName:
+                    transport_fee = 30
+                    total_new = (total*1000 + 30)/1000
+                else:
+                    transport_fee = 40
+                    total_new = (total*1000 + 40)/1000
+            elif giaohang=='Giao hàng nhanh':
+                if adress_id == ProvinceName:
+                    transport_fee = 37
+                    total_new = (total*1000 + 37)/1000
+                else:
+                    transport_fee = 47
+                    total_new = (total*1000 + 47)/1000         
+					
+            data.total = total_new
             data.ip = request.META.get('REMOTE_ADDR')
             #ordercode= get_random_string(5).upper() # random cod
             data.code =  ordercode

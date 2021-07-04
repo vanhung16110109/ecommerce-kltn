@@ -1,8 +1,6 @@
-<form method="POST" id="post-ward">
-    <select name="WardName" id="WardName" style="width: 100%;height: 40px; padding: 0px 15px;">
+<select name="WardName" id="WardName" style="width: 100%;height: 40px; padding: 0px 15px;">
         <option value="false">Chọn Phường, Xã</option>
         {% for i_ward in  dataAPI_ward.data %}
-            <option value={{i_ward.WardCode}}>{{i_ward.WardName}}</option>
+            <option name="WardName" id="WardName" value={{i_ward.WardCode}}>{{i_ward.WardName}}</option>
         {% endfor %}    
     </select>
-</form>

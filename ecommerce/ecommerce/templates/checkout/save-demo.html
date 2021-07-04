@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Đặt hàng và thanh toán {% endblock %}
+{% block head %}
+    <!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+    {% comment %} <link href="{% static "vnpay_python/css/bootstrap.min.css" %}" rel="stylesheet"/> {% endcomment %}
+    {% comment %} <link href="{% static "vnpay_python/css/jumbotron-narrow.css" %}" rel="stylesheet"> {% endcomment %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static "vnpay_python/js/ie-emulation-modes-warning.js" %}"></script>
+    <script src="{% static "vnpay_python/js/ie10-viewport-bug-workaround.js" %}"></script>
+{% endblock %}
+
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
+
+
+{% block body %}
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">Trang Chủ</a></li>
+                <li class="active">Thanh Toán Offline</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div  class="row">
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <h3 class="title">Danh sách sản phẩm trong giỏ hàng</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tên sản phẩm</th>
+                                    <th class="text-center">Giá</th>
+                                    <th class="text-center">Dung lượng</th>
+                                    <th class="text-center">Màu</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Thành tiền</th>
+                                    <th class="text-right"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rs in shopcart %}
+                                    <tr>
+                                        <td class="thumb">												
+                                            {% if rs.variant.image_id > 0 %}
+                                                <img src="{{ rs.variant.image }}"" alt="">
+                                            {% else %}
+                                                <img src="{{ rs.product.image.url }}"" alt="">
+                                            {% endif %}
+                                        </td>
+                                        <td class="details">
+                                            <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
+                                            
+                                        </td>
+                                        <td class="price text-center"><strong>											
+                                        {% if rs.product.variant == 'None' %}
+                                            {{ rs.product.price}}.000 VND
+                                        {% else %}
+                                            {{ rs.variant.price}}.000 VND
+                                        {% endif %}
+                                        </strong></td>
+                                        <td class="qty text-center"><strong>
+                                            {% if rs.product.variant == 'None' %}
+                                                {{ rs.product.size}}
+                                            {% else %}
+                                                {{ rs.variant.size }}
+                                            {% endif %}
+                                            
+                                        </strong></td>
+                                        <td class="qty text-center"><strong>{{ rs.variant.color }}</strong></td>
+                                        <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
+                                        <td class="total text-center"><strong class="primary-color">
+                                            {% if rs.product.variant == 'None' %}
+                                                {{ rs.amount }}.000 VND
+                                            {% else %}
+                                                {{ rs.varamount}}.000 VND
+                                            {% endif %}												
+                                        <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
+                                    </tr>
+                                {% endfor %}                            
+                            </tbody>                    
+                        </table>                       
+                    </div>
+                </div>
+                <form action="{% url "checkout_online" %}" id="create_form" method="post">
+                {% csrf_token %}                  
+                    {% comment %} <div class="col-md-6" style="width: 50%;"> {% endcomment %}
+                    <script>
+                        $(document).on('change', '#ghtk',function(e){
+                            e.preventDefault();
+                                $.ajax({
+                                    type:'POST',
+                                    url:'{% url "ajaxGHTK_online" %}',
+                                    data:{
+                                        ProvinceName:$('#ProvinceName').val(),
+                                        DistrictName:$('#DistrictName').val(),                                      
+                                        WardName:$('#WardName').val(),
+                                        ghtk:$('#ghtk').val(),
+                                        total:$('#total').val(),                                    
+                                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                        action: 'post'
+                                    },
+                                    data_type : 'html',
+                                    success: function (data) {
+                                        console.log("success");
+                                        //console.log(e);
+                                        $('#total').html(data.rendered_table);
+                                    },
+                                    error: function (data) {
+                                        alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                                    }
+                                });
+                            });
+                        </script>
+                        <script>
+                        $(document).on('change', '#ghn',function(e){
+                            e.preventDefault();
+                                $.ajax({
+                                    type:'POST',
+                                    url:'{% url "ajaxGHN_online" %}',
+                                    data:{
+                                        ProvinceName:$('#ProvinceName').val(),
+                                        DistrictName:$('#DistrictName').val(),                                       
+                                        WardName:$('#WardName').val(),
+                                        ghn:$('#ghn').val(),
+                                        total:$('#total').val(),                                 
+                                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                        action: 'post'
+                                    },                                   
+                                    data_type : 'html',
+                                    success: function (data) {
+                                        console.log("success");                                       
+                                        //console.log(e);
+                                        $('#total').html(data.rendered_table);
+                                    },
+                                    error: function (data) {
+                                        alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                                    }
+                                });
+                            });
+                        </script>
+                    <div class="col-md-6">
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
+                            </div>
+                            <p><label for="id_first_name">Tên:</label><br>
+                                <input type="text" name="first_name" class="input" maxlength="10" required id="id_first_name" placeholder="Vui lòng nhập tên"></p>
+                            <p><label for="id_last_name">Họ:</label><br>
+                                <input type="text" name="last_name" class="input" maxlength="10" required id="id_last_name" placeholder="Vui lòng nhập họ"></p>                                                                                 
+                            {% include "vnlocation/transportfeeAPI.html" %}
+                            <p><label for="id_address">Địa chỉ:</label><br>                               
+                                <input type="text" name="address" class="input" maxlength="150" id="id_address" placeholder="Nhập địa chỉ nhận hàng"></p>
+                            <p><label for="id_phone">Số điện thoại:</label><br>
+                                <input type="text" name="phone" class="input" maxlength="20" id="id_phone" placeholder="Vui lòng nhập số điện thoại"></p>
+                            <form method="POST" id="post-delivery">
+                                <label>Vui lòng chọn hình thức giao hàng:</label>
+                                  <input type="radio" id="ghtk" name="delivery" value="Giao hàng tiết kiệm">
+                                  <label for="ghtk">Giao hàng tiết kiệm</label>
+                                  <input type="radio" id="ghn" name="delivery" value="Giao hàng nhanh">
+                                  <label for="ghn">Giao hàng nhanh</label>
+                                <br>
+                            </form>
+                            <i><p>Chú ý: Khách hàng vui lòng điền đầy đủ thông tin để thực hiện tính phí ship, tổng tiền thanh toán</p></i>
+                                <div class="form-group" id="total">
+                                    <label for="transport_fee">Phí ship</label>
+                                    <input class="form-control" id="transport_fee"
+                                            name="transport_fee" type="text" placeholder="Đang thực hiện tính toán..." readonly/>
+                                    <br>
+                                    <label for="total_new">Tổng tiền thanh toán</label>
+                                    <input class="form-control" id="total_new"
+                                            name="total_new" type="text" placeholder="Đang thực hiện tính toán..." readonly/>
+                                </div>
+                                Đơn vị tiền tệ: Việt Nam Đồng (VND)
+                            
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="shiping-methods">
+                            <div class="section-title">
+                                <h4 class="title">Thông tin thanh toán - VNPAY</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="form-group">
+                                    <label for="language">Loại hàng hóa </label>
+                                    <select name="order_type" id="order_type" class="form-control">
+                                        <option value="billpayment">Thanh toán hóa đơn</option>
+                                        <option value="topup">Nạp tiền điện thoại</option>                                         
+                                        <option value="fashion">Thời trang</option>
+                                        <option value="other">Khác - Xem thêm tại VNPAY</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order_id">Mã hóa đơn</label>
+                                    <input class="form-control" id="order_id"
+                                           name="order_id" type="text" value="{{ ordercode }}" readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount">Số tiền đơn hàng (chưa tính phí ship)</label>
+                                    <input class="form-control" id="amount"
+                                           name="amount" type="text" value="{{ price }}" readonly/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order_desc">Nội dung thanh toán</label>
+                                    <textarea class="form-control" cols="20" id="order_desc" name="order_desc" rows="2">Thanh toán đơn hàng thời gian: {% now "Y-m-d H:i:s" %}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bank_code">Ngân hàng</label>
+                                    <select name="bank_code" id="bank_code" class="form-control">
+                                        <option value="">Không chọn</option>
+                                        <option value="NCB"> Ngan hang NCB</option>
+                                        <option value="AGRIBANK"> Ngan hang Agribank</option>
+                                        <option value="SCB"> Ngan hang SCB</option>
+                                        <option value="SACOMBANK">Ngan hang SacomBank</option>
+                                        <option value="EXIMBANK"> Ngan hang EximBank</option>
+                                        <option value="MSBANK"> Ngan hang MSBANK</option>
+                                        <option value="NAMABANK"> Ngan hang NamABank</option>
+                                        <option value="VNMART"> Vi dien tu VnMart</option>
+                                        <option value="VIETINBANK">Ngan hang Vietinbank</option>
+                                        <option value="VIETCOMBANK"> Ngan hang VCB</option>
+                                        <option value="HDBANK">Ngan hang HDBank</option>
+                                        <option value="DONGABANK"> Ngan hang Dong A</option>
+                                        <option value="TPBANK"> Ngân hàng TPBank</option>
+                                        <option value="OJB"> Ngân hàng OceanBank</option>
+                                        <option value="BIDV"> Ngân hàng BIDV</option>
+                                        <option value="TECHCOMBANK"> Ngân hàng Techcombank</option>
+                                        <option value="VPBANK"> Ngan hang VPBank</option>
+                                        <option value="MBBANK"> Ngan hang MBBank</option>
+                                        <option value="ACB"> Ngan hang ACB</option>
+                                        <option value="OCB"> Ngan hang OCB</option>
+                                        <option value="IVB"> Ngan hang IVB</option>
+                                        <option value="VISA"> Thanh toan qua VISA/MASTER</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="language">Ngôn ngữ</label>
+                                    <select name="language" id="language" class="form-control">
+                                        <option value="vn">Tiếng Việt</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                
+                                
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-primary" id="btnPopup">Xác nhận</button>
+                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                </div>                                  
+                                <div class="form-group"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <script src="https://merchant.vnpay.vn/Scripts/jquery-2.1.4.min.js"></script>
+                <link href="https://merchant.vnpay.vn/Scripts/lib/vnpayframe.css" rel="stylesheet"/>
+                <script src="https://merchant.vnpay.vn/Scripts/lib/vnpayframe.js"></script>
+                <script src="https://merchant.vnpay.vn/Scripts/lib/openbutton.js"></script>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+    <link href="https://pay.vnpay.vn/lib/vnpay/vnpay.css" rel="stylesheet"/>
+    <script src="https://pay.vnpay.vn/lib/vnpay/vnpay.js"></script>
+    
+    <script type="text/javascript">
+        $("#btnPopup").click(function () {
+            var postData = $("#frmCreateOrder").serialize();
+            var submitUrl = $("#frmCreateOrder").attr("action");
+            $.ajax({
+                type: "POST",
+                url: submitUrl,
+                data: postData,
+                dataType: 'JSON',
+                success: function (x) {
+                    if (x.code === '00') {
+                        vnpay.open({width: 480, height: 600, url: x.data});
+                        return false;
+                    } else {
+                        alert(x.Message);
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}
+
+{% block script_body %} 
+    
+	<!-- jQuery Plugins -->
+	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
+	<script src="{% static "" %}home/js/slick.min.js"></script>
+	<script src="{% static "" %}home/js/nouislider.min.js"></script>
+	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+	<script src="{% static "" %}home/js/main.js"></script>
+	
+{% endblock %}
+
