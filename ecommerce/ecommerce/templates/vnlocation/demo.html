@@ -1,265 +1,89 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %} Thanh Toán Offline {% endblock %}
-{% block head %}
-    <!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- jQuery !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+</head>
+<body>
+<script>
+$(document).on('change', '#ProvinceName',function(e){
+    e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "ajaxAPIlocationdistrict" %}',
+            data:{
+                ProvinceID:$('#ProvinceID').val(),
+                ProvinceName:$('#ProvinceName').val(),
+                DistrictID:$('#DistrictID').val(),
+                DistrictName:$('#DistrictName').val(),
+                WardCode:$('#WardCode').val(),
+                WardName:$('#WardName').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            data_type : 'html',
+            success: function (data) {
+                console.log("success");
+                $('#DistrictName').html(data.rendered_table);
+                $('#WardName').html(data.rendered_table1);
+            },
+            error: function (data) {
+                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+            }
+        });
+    });
+</script>
+<script>
+$(document).on('change', '#DistrictName',function(e){
+    e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "ajaxAPIlocationward" %}',
+            data:{
+                DistrictID:$('#DistrictID').val(),
+                DistrictName:$('#DistrictName').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            data_type : 'html',
+            success: function (data) {
+                console.log("success");
+                $('#WardName').html(data.rendered_table);
+            },
+            error: function (data) {
+                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+            }
+        });
+    });
+</script>
 
-	<!-- Bootstrap -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
-
-	<!-- Slick -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
-
-	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
-
-	<!-- Font Awesome Icon -->
-	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
-
-	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
-	<!-- jQuery UI !-->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
-	<script src="{% static "" %}home/js/jquery.min.js"></script>
-	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
-    <!-- jQuery !-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
-    <!-- jQuery UI !-->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-{% endblock %}
-
-
-
-{% block header %} {% include "home/header.html" %} {% endblock %}
-{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
-
-
-
-{% block body %}
-        
-    <!-- BREADCRUMB -->
-    <div id="breadcrumb">
-        <div class="container">
-            <ul class="breadcrumb">
-                <li><a href="/">Trang Chủ</a></li>
-                <li class="active">Thanh Toán Offline</li>
-            </ul>
-        </div>
-    </div>
-    <!-- /BREADCRUMB -->
-    <!-- section -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-        <script>
-                $(document).on('change', '#ProvinceName',function(e){
-                    //console.log('{% url "ajaxAPIlocationdistrict" %}');
-                    //console.log('da vao function');
-                    e.preventDefault();
-                        $.ajax({
-                            type:'POST',
-                            url:'{% url "ajaxAPIlocationdistrict" %}',
-                            data:{
-                                ProvinceID:$('#ProvinceID').val(),
-                                ProvinceName:$('#ProvinceName').val(),
-                                DistrictID:$('#DistrictID').val(),
-                                DistrictName:$('#DistrictName').val(),
-                                WardCode:$('#WardCode').val(),
-                                WardName:$('#WardName').val(),
-                                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                                action: 'post'
-                            },
-                            data_type : 'html',
-                            success: function (data) {
-                                console.log("success");
-                                //console.log(data);
-                                //console.log(e);
-                                $('#DistrictName').html(data.rendered_table);
-                                $('#WardName').html(data.rendered_table1);
-                            },
-                            error: function (data) {
-                                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
-                            }
-                        });
-                    });
-                </script>
-                <script>
-                $(document).on('change', '#DistrictName',function(e){
-                    e.preventDefault();
-                        $.ajax({
-                            type:'POST',
-                            url:'{% url "ajaxAPIlocationward" %}',
-                            data:{
-                                DistrictID:$('#DistrictID').val(),
-                                DistrictName:$('#DistrictName').val(),
-                                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                                action: 'post'
-                            },
-                            data_type : 'html',
-                            success: function (data) {
-                                console.log("success");
-                                console.log(data);
-                                $('#WardName').html(data.rendered_table);
-                            },
-                            error: function (data) {
-                                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
-                            }
-                        });
-                    });
-                </script>
-            <!-- row -->
-            <div  class="row">
-                
-
-                <div class="col-md-12">
-                    <div class="order-summary clearfix">
-                        <div class="section-title">
-                            <h3 class="title">Danh sách sản phẩm trong giỏ hàng</h3>
-                        </div>
-                        <table class="shopping-cart-table table">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Tên sản phẩm</th>
-                                    <th class="text-center">Giá</th>
-                                    <th class="text-center">Dung lượng</th>
-                                    <th class="text-center">Màu</th>
-                                    <th class="text-center">Số lượng</th>
-                                    <th class="text-center">Thành tiền</th>
-                                    <th class="text-right"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for rs in shopcart %}
-                                    <tr>
-                                        <td class="thumb">												
-                                            {% if rs.variant.image_id > 0 %}
-                                                <img src="{{ rs.variant.image }}"" alt="">
-                                            {% else %}
-                                                <img src="{{ rs.product.image.url }}"" alt="">
-                                            {% endif %}
-                                        </td>
-                                        <td class="details">
-                                            <a href="/product/{{ rs.product.id }}/{{ rs.product.slug }}">{{ rs.product }}</a>
-                                            
-                                        </td>
-                                        <td class="price text-center"><strong>											
-                                        {% if rs.product.variant == 'None' %}
-                                            {{ rs.product.price}}.000 VND
-                                        {% else %}
-                                            {{ rs.variant.price}}.000 VND
-                                        {% endif %}
-                                        </strong></td>
-                                        <td class="qty text-center"><strong>
-                                            {% if rs.product.variant == 'None' %}
-                                                {{ rs.product.size}}
-                                            {% else %}
-                                                {{ rs.variant.size }}
-                                            {% endif %}
-                                            
-                                        </strong></td>
-                                        <td class="qty text-center"><strong>{{ rs.variant.color }}</strong></td>
-                                        <td class="qty text-center"><strong>{{ rs.quantity }}</strong></td>
-                                        <td class="total text-center"><strong class="primary-color">
-                                            {% if rs.product.variant == 'None' %}
-                                                {{ rs.amount }}.000 VND
-                                            {% else %}
-                                                {{ rs.varamount}}.000 VND
-                                            {% endif %}												
-                                        <td class="text-right"><a href="/order/deletefromcart/{{ rs.id }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="main-btn icon-btn"><i class="fa fa-close"></i></a></td>
-                                    </tr>
-                                {% endfor %}
-                                
-                            </tbody>
-
-                        </table>
-                        
-                    </div>
-
-                </div>
-                
-                <Form action="" method="post">
-                    {% csrf_token %}
-                    <div class="col-md-6">
-                        <div class="billing-details">
-                            <div class="section-title">
-                                <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
-                            </div>
-                            <p><label for="id_first_name">Tên:</label><br>
-                                <input type="text" name="first_name"  value="{{ profile.first_name }}" class="input" maxlength="10" required id="id_first_name" placeholder="Vui lòng nhập tên.."></p>
-                            <p><label for="id_last_name">Họ:</label><br>
-                                <input type="text" name="last_name"  value="{{ profile.last_name }}" class="input" maxlength="10" required id="id_last_name" placeholder="Vui lòng nhập họ.."></p>                                                                                 
-                            <form method="POST" id="post-province">
-                                <label>Tỉnh, Thành Phố:</label> 
-                                {% csrf_token %}      
-                                <select name="ProvinceName" id="ProvinceName">
-                                    <option value="false">Chọn Tỉnh, Thành Phố</option>
-                                    {% for i in dataAPI_province.data %}
-                                        <option value={{i.ProvinceID}}>{{i.ProvinceName}}</option>
-                                {% endfor %}    
-                                </select>
-                            </form>
-                            <form method="POST" id="post-district">
-                                <label>Quận, Huyện:</label>
-                                {% csrf_token %}
-                                <select name="DistrictName" id="DistrictName">
-                                    <option value="false">Chọn Quận, Huyện</option>
-                                    {% comment %} <h6>--Vui lòng chọn---</h6> {% endcomment %}
-                                    {% comment %} {% for i_district in  dataAPI_district.data %}
-                                        <option value={{i_district.DistrictID}}>{{i_district.DistrictName}}</option>
-                                    {% endfor %}     {% endcomment %}
-                                </select>
-                            </form>
-                            <form method="POST" id="post-ward">
-                                <label>Phường, Xã:</label>
-                                {% csrf_token %}
-                                <select name="WardName" id="WardName">
-                                    <option value="false">Chọn Phường, Xã</option>
-                                    {% comment %} {% for i_ward in  dataAPI_ward.data %}
-                                        <option value={{i_ward.WardCode}}>{{i_ward.WardName}}</option>
-                                    {% endfor %} {% endcomment %}
-                                </select>
-                            </form>
-                            <p><label for="id_address">Địa chỉ nhận hàng:</label>
-                               
-                                <input type="text" name="address" value="{{ profile.address }}" class="input" maxlength="150" id="id_address" placeholder="Nhập địa chỉ nhận hàng.."></p>
-                            <p><label for="id_phone">Số điện thoại:</label><br>
-                                <input type="text" name="phone"  value="{{ profile.phone }}"  class="input" maxlength="20" id="id_phone" placeholder="Vui lòng nhập số điện thoại.."></p>
-                            <button  type="submit" class="primary-btn">Hoàn tất thông tin đặt hàng</button>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="shiping-methods">
-                            <div class="section-title">
-                                <h4 class="title">Thanh toán khi nhận hàng</h4>
-                            </div>
-                            <h3>
-                                Tổng tiền phải thanh toán: {{ total }}.000 VND
-                            </h3>
-                        </div>
-                    </div>
-
-                </Form>
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /section -->
-
-{% endblock %}
-
-{% block script_body %} 
-    
-	<!-- jQuery Plugins -->
-	<script src="{% static "" %}home/js/bootstrap.min.js"></script>
-	<script src="{% static "" %}home/js/slick.min.js"></script>
-	<script src="{% static "" %}home/js/nouislider.min.js"></script>
-	<script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
-	<script src="{% static "" %}home/js/main.js"></script>
-	
-{% endblock %}
+    <label>Tỉnh, Thành Phố:</label><br>
+    {% csrf_token %}      
+    <select name="ProvinceName" id="ProvinceName" style="width: 100%;height: 40px; padding: 0px 15px;">
+        <option value="false">Chọn Tỉnh, Thành Phố</option>
+        {% for i in dataAPI_province.data %}
+            <option value={{i.ProvinceID}}>{{i.ProvinceName}}</option>
+        {% endfor %}    
+    </select>
+    <label>Quận, Huyện:</label><br>
+    {% csrf_token %}
+    <select name="DistrictName" id="DistrictName" style="width: 100%;height: 40px; padding: 0px 15px;">
+        <option value="false">Chọn Quận, Huyện</option>
+        {% comment %} <h6>--Vui lòng chọn---</h6> {% endcomment %}
+        {% comment %} {% for i_district in  dataAPI_district.data %}
+            <option value={{i_district.DistrictID}}>{{i_district.DistrictName}}</option>
+        {% endfor %}     {% endcomment %}
+    </select>
+    <label>Phường, Xã:</label><br>
+    {% csrf_token %}
+    <select name="WardName" id="WardName" style="width: 100%;height: 40px; padding: 0px 15px;">
+        <option value="false">Chọn Phường, Xã</option>
+        {% comment %} {% for i_ward in  dataAPI_ward.data %}
+            <option value={{i_ward.WardCode}}>{{i_ward.WardName}}</option>
+        {% endfor %} {% endcomment %}
+    </select>
+</body>
+</html>

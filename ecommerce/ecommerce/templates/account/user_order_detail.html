@@ -71,7 +71,7 @@
 								</tr>
 								<tr>
 									<th class="text-left">Địa chỉ nhận hàng</th>
-									<td class="text-left">{{ order.address}}</td>
+									<td class="text-left">{{ order.address}}, {{order.ward}}, {{order.district}}, {{order.province}}</td>
 								</tr>
 								<tr>
 									<th class="text-left">Trạng thái</th>
@@ -88,6 +88,10 @@
 								<tr>
 									<th class="text-left">Ngày mua hàng</th>
 									<td class="text-left">{{ order.create_at}}</td>
+								</tr>
+								<tr>
+									<th class="text-left">Đơn vị vận chuyển</th>
+									<td class="text-left">{{ order.delivery}}</td>
 								</tr>
 								<tr>
 									<th class="text-left">Thông tin vận chuyển</th>
@@ -161,7 +165,8 @@
 											
 										</tbody>
 									</table>
-									<h3>Tổng tiền: {{ order.total }}0.000 VND</h3>
+									<h3>Phí ship: {{ order.transport_fee }} VND</h3>
+									<h3>Tổng tiền: {{ order.total }} VND</h3>
 								</div>
 		
 							</div>
