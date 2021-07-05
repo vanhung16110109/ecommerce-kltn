@@ -21,7 +21,7 @@ import requests
 from django.contrib.auth.decorators import login_required
 
 mytoken = "62045ed5-d43f-11eb-81f5-a267211ac77c"
-
+mytoken_ghtk = "D85E94443Fe9647029c79A1E45d1837e35C7Cfec"
 stripe.api_key = "sk_test_51J1vyDAGJ7lQptUOWAiE572OEq7GeThZxmZVMqakGn9nQubgtdCoSw4PxE7Qjg4zrKBzZTXsIfWKtR04Lr7BkMax00VJxyICNk"
 
 
@@ -46,29 +46,38 @@ def checkout_online(request):
 	headers={'Content-Type':'application/json', 'Token': mytoken}
 	r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', headers=headers)
 	dataAPI_province = r.json()
+	# địa chỉ cửa hàng
+	storeaddress = StoreAddress.objects.filter(id=1)
+	for i in storeaddress:
+		adress_id = int(i.city)			#không cần dùng
+		shop_id = i.ShopID_GHN
+		district_id = int(i.district)
+		length = i.length
+		width = i.width
+		height = i.height
+		weight = i.weight
+	
 	if request.method == 'POST':  # if there is a post
 		form = OrderForm(request.POST)
-		form_Payment = PaymentForm(request.POST)
-		#return HttpResponse(request.POST.items())
 		if form.is_valid():
 			# Send Credit card to bank,  If the bank responds ok, continue, if not, show the error
 			# ..............
-			
+
 			data = Order()
 			data.first_name = form.cleaned_data['first_name'] #get product quantity from form
 			data.last_name = form.cleaned_data['last_name']
-			data.address = form.cleaned_data['address']
-			#get data location
 			ProvinceName = int(request.POST.get('ProvinceName'))        #get id
 			DistrictName = int(request.POST.get('DistrictName'))
 			WardName = int(request.POST.get('WardName'))
+			# print(WardName)
+			
 			json_district = {"province_id": ProvinceName}
 			r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district)
 			dataAPI_district = r.json()
 			json_ward = {"district_id": DistrictName}
 			r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', headers=headers, json=json_ward)
 			dataAPI_ward = r.json()
-			#print(dataAPI_ward)
+			# get ID Province, District, Ward
 			for i in range(len(dataAPI_province['data'])):
 				#print(dataAPI_province['data'][i].get("ProvinceID"))
 				if (dataAPI_province['data'][i].get("ProvinceID"))==ProvinceName:
@@ -81,31 +90,135 @@ def checkout_online(request):
 				#print(dataAPI_ward['data'][i].get("WardCode"))
 				if int(dataAPI_ward['data'][i].get("WardCode"))==WardName:
 					Ward = dataAPI_ward['data'][i].get("WardName")    
-			# print(Province)
-			# print(District)
-			# print(Ward)
+			# gán dữ liệu
 			data.province = Province
 			data.district = District
 			data.ward = Ward
+			data.address = form.cleaned_data['address']
 			data.phone = form.cleaned_data['phone']
 			data.user_id = current_user.id
-			#event tinh tien giao
+			# event tinh tien giao hang
 			giaohang = request.POST.get('delivery')
 			if giaohang=='Giao hàng tiết kiệm':
-				print('Có')
-				if adress_id == ProvinceName:
-					transport_fee = 30
-					total_new = (total*1000 + 30)/1000
-				else:
-					transport_fee = 40
-					total_new = (total*1000 + 40)/1000
+				ProvinceName = int(request.POST.get('ProvinceName'))        #get id
+				DistrictName = int(request.POST.get('DistrictName'))
+				WardName = request.POST.get('WardName')
+				headers={'Content-Type':'application/json', 'Token': mytoken}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', headers=headers)
+				dataAPI_province = r.json()
+				json_district = {"province_id": ProvinceName}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district)
+				dataAPI_district = r.json()
+				json_ward = {"district_id": DistrictName}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', headers=headers, json=json_ward)
+				dataAPI_ward = r.json()
+				for i in range(len(dataAPI_province['data'])):
+						#print(dataAPI_province['data'][i].get("ProvinceID"))
+					if (dataAPI_province['data'][i].get("ProvinceID"))==ProvinceName:
+						province = dataAPI_province['data'][i].get("ProvinceName")
+				for i in range(len(dataAPI_district['data'])):
+					#print(dataAPI_province['data'][i].get("ProvinceID"))
+					if (dataAPI_district['data'][i].get("DistrictID"))==DistrictName:
+						district = dataAPI_district['data'][i].get("DistrictName")
+				for i in range(len(dataAPI_ward['data'])):
+					#print(dataAPI_ward['data'][i].get("WardCode"))
+					if dataAPI_ward['data'][i].get("WardCode")==WardName:
+						ward = dataAPI_ward['data'][i].get("WardName") 
+				# địa chỉ gửi hàng
+				for i in range(len(dataAPI_province['data'])):
+					if (dataAPI_province['data'][i].get("ProvinceID"))==city_id:
+						pick_province = dataAPI_province['data'][i].get("ProvinceName")
+				json_district_shop = {"province_id": city_id}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district_shop)
+				json_district_shop = r.json()
+
+				for i in range(len(json_district_shop['data'])):
+					if json_district_shop['data'][i].get("DistrictID") == district_id:
+						pick_district = json_district_shop['data'][i].get("DistrictName")
+				# tính giá trị đơn hàng
+				#print(int(total*1000000))
+				#temp = int(total*1000000)
+				# if temp < 20000000:
+				# 	insurance_fee = temp
+				# else:
+				# 	insurance_fee = 20000000
+				# print(insurance_fee)
+				# tính giá cước
+				insurance_fee = 3000000
+				weight = weight*quantity
+				headers={'Content-Type':'application/json', 'Token': mytoken_ghtk}
+				json = {
+					"pick_province": pick_province,
+					"pick_district": pick_district,
+					"province": province,
+					"district": district,
+					"ward": ward,
+					"weight": weight,
+					"value": insurance_fee,
+					"transport": "fly",
+					"tags": [1]
+				}
+				# "tags": [1] Gắn nhãn dễ vỡ cho đơn hàng. Truyền giá trị 1 vào mảng tags nếu là đơn dễ vỡ
+				r = requests.get('https://services.giaohangtietkiem.vn/services/shipment/fee?', headers=headers, json=json)
+				dataAPI_transport_fee = r.json()
+					
+				transport_fee = 0
+				transport_fee = dataAPI_transport_fee['fee']['fee']
+				total_order = int(float(total)*1000000)
+				total_new = total_order + transport_fee   
 			elif giaohang=='Giao hàng nhanh':
-				if adress_id == ProvinceName:
-					transport_fee = 37
-					total_new = (total*1000 + 37)/1000
+				to_district = int(request.POST.get('DistrictName'))
+				#print(district_id)
+				#print(to_district)
+				headers={'Content-Type':'application/json', 'Token': mytoken}
+				json_district = {
+					"shop_id": shop_id,
+					"from_district": district_id,
+					"to_district": to_district
+				}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services', headers=headers, json=json_district)
+				dataAPI_thongtin = r.json()
+				ServiceID_API = []
+				for i in dataAPI_thongtin['data']:
+					ServiceID_API.append(i['service_type_id'])
+
+				for i in range(len(ServiceID_API)):
+					#print(ServiceID_API[i], type(ServiceID_API[i]))
+					if ServiceID_API[i]==2:
+						service_type_id = 2
+					else:
+						service_type_id = 1
+
+				to_ward_code = request.POST.get('WardName')
+				# tính giá trị đơn hàng
+				#print(int(total*1000000))
+				temp = int(total*1000000)
+				if temp < 10000000:
+					insurance_fee = temp
 				else:
-					transport_fee = 47
-					total_new = (total*1000 + 47)/1000                             
+					insurance_fee = 10000000
+				#print(insurance_fee)
+				#print(to_ward_code, type(to_ward_code))
+				# tính giá cước
+				json_district = {
+					"from_district_id": district_id,			# gửi từ
+					'service_type_id': service_type_id,			# hình thức vận chuyển
+					"to_district_id": to_district,				# quận huyện
+					"to_ward_code": to_ward_code,				# đến xã, phường
+					"height": height,							# chiều cao đơn hàng								
+					"length":length,							# Chiều dài đơn hàng
+					"weight": weight,							# khối lượng của đơn hàng
+					"width":width,								# chiều rộng của đơn hàng
+					"insurance_fee": insurance_fee,				# giá trị đơn hàng
+					}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', headers=headers, json=json_district)
+				dataAPI_transport_fee = r.json()
+				
+				transport_fee = 0
+				transport_fee = int(dataAPI_transport_fee['data']['total'])
+				total_order = int(float(total)*1000000)
+				total_new = total_order + transport_fee       
+			#total_new = (total*1000 + 47)/1000	
 			data.total = total_new
 			data.ip = request.META.get('REMOTE_ADDR')
 			#ordercode = get_random_string(5).upper() # random cod
@@ -281,61 +394,74 @@ def checkout_offline(request):
 			# event tinh tien giao hang
 			giaohang = request.POST.get('delivery')
 			if giaohang=='Giao hàng tiết kiệm':
-				to_district = int(request.POST.get('DistrictName'))
-				#print(district_id)
-				#print(to_district)
+				ProvinceName = int(request.POST.get('ProvinceName'))        #get id
+				DistrictName = int(request.POST.get('DistrictName'))
+				WardName = request.POST.get('WardName')
 				headers={'Content-Type':'application/json', 'Token': mytoken}
-				json_district = {
-					"shop_id": shop_id,
-					"from_district": district_id,
-					"to_district": to_district
-				}
-				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services', headers=headers, json=json_district)
-				dataAPI_thongtin = r.json()
-				ServiceID_API = []
-				for i in dataAPI_thongtin['data']:
-					ServiceID_API.append(i['service_type_id'])
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', headers=headers)
+				dataAPI_province = r.json()
+				json_district = {"province_id": ProvinceName}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district)
+				dataAPI_district = r.json()
+				json_ward = {"district_id": DistrictName}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', headers=headers, json=json_ward)
+				dataAPI_ward = r.json()
+				for i in range(len(dataAPI_province['data'])):
+						#print(dataAPI_province['data'][i].get("ProvinceID"))
+					if (dataAPI_province['data'][i].get("ProvinceID"))==ProvinceName:
+						province = dataAPI_province['data'][i].get("ProvinceName")
+				for i in range(len(dataAPI_district['data'])):
+					#print(dataAPI_province['data'][i].get("ProvinceID"))
+					if (dataAPI_district['data'][i].get("DistrictID"))==DistrictName:
+						district = dataAPI_district['data'][i].get("DistrictName")
+				for i in range(len(dataAPI_ward['data'])):
+					#print(dataAPI_ward['data'][i].get("WardCode"))
+					if dataAPI_ward['data'][i].get("WardCode")==WardName:
+						ward = dataAPI_ward['data'][i].get("WardName") 
+				# địa chỉ gửi hàng
+				for i in range(len(dataAPI_province['data'])):
+					if (dataAPI_province['data'][i].get("ProvinceID"))==city_id:
+						pick_province = dataAPI_province['data'][i].get("ProvinceName")
+				json_district_shop = {"province_id": city_id}
+				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', headers=headers, json=json_district_shop)
+				json_district_shop = r.json()
 
-				for i in range(len(ServiceID_API)):
-					#print(ServiceID_API[i], type(ServiceID_API[i]))
-					if ServiceID_API[i]==2:
-						service_type_id = 2
-					else:
-						service_type_id = 1
-
-				to_ward_code = request.POST.get('WardName')
+				for i in range(len(json_district_shop['data'])):
+					if json_district_shop['data'][i].get("DistrictID") == district_id:
+						pick_district = json_district_shop['data'][i].get("DistrictName")
 				# tính giá trị đơn hàng
 				#print(int(total*1000000))
-				temp = int(total*1000000)
-				if temp < 10000000:
-					insurance_fee = temp
-				else:
-					insurance_fee = 10000000
-				#print(insurance_fee)
-				#print(to_ward_code, type(to_ward_code))
+				#temp = int(total*1000000)
+				# if temp < 20000000:
+				# 	insurance_fee = temp
+				# else:
+				# 	insurance_fee = 20000000
+				# print(insurance_fee)
 				# tính giá cước
-				json_district = {
-					"from_district_id": district_id,			# gửi từ
-					'service_type_id': service_type_id,			# hình thức vận chuyển
-					"to_district_id": to_district,				# quận huyện
-					"to_ward_code": to_ward_code,				# đến xã, phường
-					"height": height,							# chiều cao đơn hàng								
-					"length":length,							# Chiều dài đơn hàng
-					"weight": weight,							# khối lượng của đơn hàng
-					"width":width,								# chiều rộng của đơn hàng
-					"insurance_fee": insurance_fee,				# giá trị đơn hàng
-					}
-				r = requests.get('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', headers=headers, json=json_district)
+				insurance_fee = 3000000
+				weight = weight*quantity
+				headers={'Content-Type':'application/json', 'Token': mytoken_ghtk}
+				json = {
+					"pick_province": pick_province,
+					"pick_district": pick_district,
+					"province": province,
+					"district": district,
+					"ward": ward,
+					"weight": weight,
+					"value": insurance_fee,
+					"transport": "fly",
+					"tags": [1]
+				}
+				# "tags": [1] Gắn nhãn dễ vỡ cho đơn hàng. Truyền giá trị 1 vào mảng tags nếu là đơn dễ vỡ
+				r = requests.get('https://services.giaohangtietkiem.vn/services/shipment/fee?', headers=headers, json=json)
 				dataAPI_transport_fee = r.json()
-				
+					
 				transport_fee = 0
-				transport_fee = int(dataAPI_transport_fee['data']['total'])
+				transport_fee = dataAPI_transport_fee['fee']['fee']
 				total_order = int(float(total)*1000000)
 				total_new = total_order + transport_fee
 			elif giaohang=='Giao hàng nhanh':
 				to_district = int(request.POST.get('DistrictName'))
-				#print(district_id)
-				#print(to_district)
 				headers={'Content-Type':'application/json', 'Token': mytoken}
 				json_district = {
 					"shop_id": shop_id,
@@ -349,7 +475,6 @@ def checkout_offline(request):
 					ServiceID_API.append(i['service_type_id'])
 
 				for i in range(len(ServiceID_API)):
-					#print(ServiceID_API[i], type(ServiceID_API[i]))
 					if ServiceID_API[i]==2:
 						service_type_id = 2
 					else:
@@ -357,7 +482,6 @@ def checkout_offline(request):
 
 				to_ward_code = request.POST.get('WardName')
 				# tính giá trị đơn hàng
-				#print(int(total*1000000))
 				temp = int(total*1000000)
 				if temp < 10000000:
 					insurance_fee = temp
@@ -458,5 +582,6 @@ def get_client_ip(request):
 	else:
 		ip = request.META.get('REMOTE_ADDR')
 	return ip
+
 
 
