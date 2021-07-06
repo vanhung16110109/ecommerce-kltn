@@ -1,7 +1,6 @@
 import urllib.request
 import urllib.parse
 from datetime import datetime
-
 from django.core.serializers import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
@@ -10,9 +9,23 @@ from apps.vnpay_python.forms import PaymentForm
 from apps.vnpay_python.vnpay import vnpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from apps.order.models import ShopCart, ShopCartForm, OrderForm, Order, OrderProduct, OrderWaitingPayment
+from apps.product.models import Category, Product, Variants
+from django.utils.crypto import get_random_string
+from django.contrib import messages
+import stripe
+import urllib.request
+import urllib.parse
+from datetime import datetime
+from apps.home.models import StoreAddress
+from django.core.serializers import json
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect
+
 
 def index(request):
 	return render(request, "vnpay_python/index.html", {"title": "Danh sách demo"})
+
 
 #@csrf_exempt
 def payment(request):
@@ -113,8 +126,14 @@ def payment_ipn(request):
 
 def payment_return(request):
 	category = Category.objects.all()
+	current_user = request.user
+	shopcart = ShopCart.objects.filter(user_id=current_user.id)
 	total = 0
+	for rs in shopcart:
+		total += rs.variant.price * rs.quantity
 	quantity = 0
+	for rs in shopcart:
+		quantity += rs.quantity
 	inputData = request.GET
 	if inputData:
 		vnp = vnpay()
@@ -130,6 +149,59 @@ def payment_return(request):
 		vnp_CardType = inputData['vnp_CardType']
 		if vnp.validate_response(settings.VNPAY_HASH_SECRET_KEY):
 			if vnp_ResponseCode == "00":
+				total = 0
+				quantity = 0
+				order_temp_data = OrderWaitingPayment.objects.filter(user_id=current_user.id)
+				print(order_id)
+
+				for order_temp in order_temp_data:
+					print(order_temp.code)
+					if order_temp.code == order_id:
+						data = Order()
+						data.user_id = order_temp.user_id
+						data.first_name = order_temp.first_name
+						data.last_name = order_temp.last_name
+						data.phone = order_temp.phone
+						data.province = order_temp.province
+						data.district = order_temp.district
+						data.ward = order_temp.ward
+						data.address = order_temp.address
+						data.total = order_temp.total
+						data.status_pay = order_temp.status_pay
+						data.delivery = order_temp.delivery
+						data.transport_fee = order_temp.transport_fee	
+						data.ip = order_temp.ip
+						data.code = order_temp.code
+						data.save()
+						shopcart = ShopCart.objects.filter(user_id=order_temp.user)
+						for rs in shopcart:
+							detail = OrderProduct()
+							detail.order_id     = data.id # Order Id
+							detail.product_id   = rs.product_id
+							detail.user_id      = current_user.id
+							detail.quantity     = rs.quantity
+							if rs.product.variant == 'None':
+								detail.price    = rs.product.price
+							else:
+								detail.price = rs.variant.price
+							detail.variant_id   = rs.variant_id
+							# detail.amount        = rs.amount
+							detail.amount       = rs.varamount
+
+							detail.save()
+							# ***Reduce quantity of sold product from Amount of Product
+							if rs.product.variant == 'None':
+								product = Product.objects.get(id=rs.product_id)
+								product.amount -= rs.quantity
+								product.save()
+							else:
+								#variant = Variants.objects.get(id=rs.product_id)
+								variant = Variants.objects.get(id=rs.variant_id)
+								variant.quantity -= rs.quantity
+								variant.save()
+							#************ <> *****************
+						ShopCart.objects.filter(user_id=current_user.id).delete()
+						print("Luu thong tin thanh cong")
 				return render(request, "vnpay_python/payment_return.html", {"title": "Kết quả thanh toán",
 																"result": "Thành công", "order_id": order_id,
 																"amount": amount,

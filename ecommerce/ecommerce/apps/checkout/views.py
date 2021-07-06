@@ -1,5 +1,5 @@
 from apps.product.models import Category, Product, Variants
-from apps.order.models import ShopCart, ShopCartForm, OrderForm, Order, OrderProduct
+from apps.order.models import ShopCart, ShopCartForm, OrderForm, Order, OrderProduct, OrderWaitingPayment
 from apps.account.models import UserProfile
 from django.utils.crypto import get_random_string
 from django.shortcuts import render
@@ -51,6 +51,7 @@ def checkout_online(request):
 	for i in storeaddress:
 		adress_id = int(i.city)			#không cần dùng
 		shop_id = i.ShopID_GHN
+		city_id = int(i.city)
 		district_id = int(i.district)
 		length = i.length
 		width = i.width
@@ -62,10 +63,6 @@ def checkout_online(request):
 		if form.is_valid():
 			# Send Credit card to bank,  If the bank responds ok, continue, if not, show the error
 			# ..............
-
-			data = Order()
-			data.first_name = form.cleaned_data['first_name'] #get product quantity from form
-			data.last_name = form.cleaned_data['last_name']
 			ProvinceName = int(request.POST.get('ProvinceName'))        #get id
 			DistrictName = int(request.POST.get('DistrictName'))
 			WardName = int(request.POST.get('WardName'))
@@ -90,13 +87,7 @@ def checkout_online(request):
 				#print(dataAPI_ward['data'][i].get("WardCode"))
 				if int(dataAPI_ward['data'][i].get("WardCode"))==WardName:
 					Ward = dataAPI_ward['data'][i].get("WardName")    
-			# gán dữ liệu
-			data.province = Province
-			data.district = District
-			data.ward = Ward
-			data.address = form.cleaned_data['address']
-			data.phone = form.cleaned_data['phone']
-			data.user_id = current_user.id
+			
 			# event tinh tien giao hang
 			giaohang = request.POST.get('delivery')
 			if giaohang=='Giao hàng tiết kiệm':
@@ -168,8 +159,6 @@ def checkout_online(request):
 				total_new = total_order + transport_fee   
 			elif giaohang=='Giao hàng nhanh':
 				to_district = int(request.POST.get('DistrictName'))
-				#print(district_id)
-				#print(to_district)
 				headers={'Content-Type':'application/json', 'Token': mytoken}
 				json_district = {
 					"shop_id": shop_id,
@@ -197,8 +186,7 @@ def checkout_online(request):
 					insurance_fee = temp
 				else:
 					insurance_fee = 10000000
-				#print(insurance_fee)
-				#print(to_ward_code, type(to_ward_code))
+
 				# tính giá cước
 				json_district = {
 					"from_district_id": district_id,			# gửi từ
@@ -218,45 +206,8 @@ def checkout_online(request):
 				transport_fee = int(dataAPI_transport_fee['data']['total'])
 				total_order = int(float(total)*1000000)
 				total_new = total_order + transport_fee       
-			#total_new = (total*1000 + 47)/1000	
-			data.total = total_new
-			data.ip = request.META.get('REMOTE_ADDR')
-			#ordercode = get_random_string(5).upper() # random cod
-			data.code =  ordercode
-			data.status_pay = 'Đã thanh toán'
-			data.save()
-
-			for rs in shopcart:
-				detail = OrderProduct()
-				detail.order_id     = data.id # Order Id
-				detail.product_id   = rs.product_id
-				detail.user_id      = current_user.id
-				detail.quantity     = rs.quantity
-				if rs.product.variant == 'None':
-					detail.price    = rs.product.price
-				else:
-					detail.price = rs.variant.price
-				detail.variant_id   = rs.variant_id
-				# detail.amount        = rs.amount
-				detail.amount       = rs.varamount
-
-				detail.save()
-				# ***Reduce quantity of sold product from Amount of Product
-				if rs.product.variant == 'None':
-					product = Product.objects.get(id=rs.product_id)
-					product.amount -= rs.quantity
-					product.save()
-				else:
-					#variant = Variants.objects.get(id=rs.product_id)
-					variant = Variants.objects.get(id=rs.variant_id)
-					variant.quantity -= rs.quantity
-					variant.save()
-				#************ <> *****************
-			# # messages.success(request, "Đơn hàng của bạn đã được hoàn thành. Cảm ơn bạn")
-			# return render(request, 'order/Order_Completed.html',context)
-			transport_fee = transport_fee*100000
+			form_Payment = PaymentForm(request.POST)
 			if form_Payment.is_valid():
-				print("hello3")
 				order_type = form_Payment.cleaned_data['order_type']
 				order_id = form_Payment.cleaned_data['order_id']
 				amount = form_Payment.cleaned_data['amount']
@@ -269,7 +220,7 @@ def checkout_online(request):
 				vnp.requestData['vnp_Version'] = '2.0.0'
 				vnp.requestData['vnp_Command'] = 'pay'
 				vnp.requestData['vnp_TmnCode'] = settings.VNPAY_TMN_CODE
-				vnp.requestData['vnp_Amount'] = amount * 100 + transport_fee
+				vnp.requestData['vnp_Amount'] = total_new*100
 				vnp.requestData['vnp_CurrCode'] = 'VND'
 				vnp.requestData['vnp_TxnRef'] = order_id
 				vnp.requestData['vnp_OrderInfo'] = order_desc
@@ -288,7 +239,39 @@ def checkout_online(request):
 				vnp.requestData['vnp_ReturnUrl'] = settings.VNPAY_RETURN_URL
 				vnpay_payment_url = vnp.get_payment_url(settings.VNPAY_PAYMENT_URL, settings.VNPAY_HASH_SECRET_KEY)
 				#print(vnpay_payment_url)
-				ShopCart.objects.filter(user_id=current_user.id).delete()
+				# gán giá trị tạm thời của post để kiểm tra thanh toán
+				temp_user_id = current_user.id
+				temp_ordercode = order_id
+				temp_first_name = form.cleaned_data['first_name']
+				temp_last_name = form.cleaned_data['last_name']
+				temp_phone = form.cleaned_data['phone']
+				temp_province = Province
+				temp_district = District
+				temp_ward = Ward
+				temp_address = form.cleaned_data['address']
+				temp_total = total_new
+				temp_status_pay = 'Đã thanh toán'
+				temp_delivery = giaohang
+				temp_transport_fee = transport_fee
+				temp_ip = request.META.get('REMOTE_ADDR')
+				order_temp = OrderWaitingPayment()
+				order_temp.user_id = temp_user_id
+				order_temp.code = temp_ordercode
+				order_temp.first_name = temp_first_name
+				order_temp.last_name = temp_last_name
+				order_temp.phone = temp_phone
+				order_temp.province = temp_province
+				order_temp.district = temp_district
+				order_temp.ward = temp_ward
+				order_temp.address = temp_address
+				order_temp.total = temp_total
+				order_temp.status_pay = temp_status_pay
+				order_temp.delivery = temp_delivery
+				order_temp.transport_fee = temp_transport_fee
+				order_temp.ip = temp_ip
+				order_temp.save()
+				print(order_temp)
+				
 				if request.is_ajax():
 					print("hello4")
 					# Show VNPAY Popup
@@ -306,9 +289,9 @@ def checkout_online(request):
 
 	form = OrderForm()
 	profile = UserProfile.objects.get(user_id=current_user.id)
-	print(total)
+	#print(total)
 	price = int(total * 1000)*1000
-	print(price)
+	#print(price)
 	context = {
 		'shopcart': shopcart,
 		'category': category,

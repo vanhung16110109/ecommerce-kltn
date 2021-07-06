@@ -49,16 +49,16 @@
                 <div class="col-md-12">
                     <div class="order-summary clearfix">
                         <div class="section-title">
-                            <h3 class="title">Hoàn thành</h3>
-                        </div>
-                        <!-- <hr>
-                        <h2>Dear  {{ user.first_name }} {{  user.last_name }}</h2>
-                        <hr> -->
-                        <h3>Đơn hàng của bạn đã thanh toán thành công</h3>
-                        <h3>Mã đặt hàng: {{ order_id }}</h3>
-                        <h3>Cảm ơn khách hàng đã tin tưởng chọn sản phẩm của cửa hàng chúng tôi.</h3>
-                        <hr>
-
+                            <h3 class="title">{{ title }}: {{ result }}</h3>
+							{% if vnp_ResponseCode == '00' %}
+								<h3>Đơn hàng của bạn đã thanh toán thành công</h3>
+								<h3>Mã đặt hàng: {{ order_id }}</h3>
+								<h3>Cảm ơn khách hàng đã tin tưởng chọn sản phẩm của cửa hàng chúng tôi.</h3>
+							{% else %}
+								<h3>Lỗi thanh toán, quý khách vui lòng kiểm tra thông tin và thanh toán lại lần nữa.</h3>
+								<h3>Xin cảm ơn</h3>
+							{% endif %}
+						</div>
                     </div>
 					<a href="{% url 'home' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Trở về trang chủ</a>
                 </div>
