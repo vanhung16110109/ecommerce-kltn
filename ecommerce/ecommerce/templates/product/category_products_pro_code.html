@@ -22,6 +22,24 @@
 <link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
 <script src="{% static "" %}myapp/js/jquery.min.js"></script>
 <script src="{% static "" %}myapp/js/jquery-ui.min.js"></script>
+<script>
+	function selectOnlyThis(id){
+		var myCheckbox = document.getElementsByName("brand");
+		Array.prototype.forEach.call(myCheckbox,function(el){
+			el.checked = false;
+		});
+		id.checked = true;
+	}
+	
+	function selectOnlyThisTotal(id){
+		var myCheckboxTotal = document.getElementsByName("totalID");
+		Array.prototype.forEach.call(myCheckboxTotal,function(el){
+			el.checked = false;
+		});
+		id.checked = true;
+	}
+	
+</script>
 {% endblock %}
 
 {% block header %} {% include "home/header.html" %} {% endblock %}
@@ -54,131 +72,492 @@
 					border: none !important;
 					}
 				</style>
-					<tbody class="text-left">
-						<tr>
-							<td><input type="checkbox" name="brand" checked> Tất cả</td> 
-								<td><input type="checkbox" name="brand"> Apple (Iphone)</td>
-						</tr> 
-						<tr>
-							<td><input type="checkbox" name="brand"> Samsung</td>
-								<td><input type="checkbox" name="brand"> Vsmart</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand"> Oppo</td>
-								<td><input type="checkbox" name="brand"> Xiaomi</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand"> Huawei</td>
-								<td><input type="checkbox" name="brand"> Nokia</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand"> Masstel</td>
-								<td><input type="checkbox" name="brand"> Vivo</td>
-						</tr>
-					</tbody>
+				<!-- {{filter_product_title}} -->
+				<script>
+					$(document).on('change', '#AllProduct',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_allproduct" %}',
+								data:{
+									AllProduct:$('#AllProduct').val(),
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				
+				
+				<script>
+					$(document).on('change', '#Apple',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_apple" %}',
+								data:{
+									Apple:$('#Apple').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Samsung',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_samsung" %}',
+								data:{
+									Samsung:$('#Samsung').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Oppo',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_oppo" %}',
+								data:{
+									Oppo:$('#Oppo').val(), 
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                              
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Vivo',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_vivo" %}',
+								data:{
+									Vivo:$('#Vivo').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Vsmart',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_vsmart" %}',
+								data:{
+									Vsmart:$('#Vsmart').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Xiaomi',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_xiaomi" %}',
+								data:{
+									Xiaomi:$('#Xiaomi').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Realme',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_realme" %}',
+								data:{
+									Realme:$('#Realme').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Masstel',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_masstel" %}',
+								data:{
+									Masstel:$('#Masstel').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Huawei',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_huawei" %}',
+								data:{
+									Huawei:$('#Huawei').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#Nokia',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_nokia" %}',
+								data:{
+									Nokia:$('#Nokia').val(),
+									alltotal:$('#alltotal').val(),                              
+									total2:$('#total2').val(),                              
+									total4:$('#total4').val(),                              
+									total7:$('#total7').val(),                              
+									total13:$('#total13').val(),                              
+									big13:$('#big13').val(),                               
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<tbody class="text-left">
+					<tr>
+						{% if filter_product_title == 'AllProduct'%}
+							<td><input type="checkbox" name="brand" id="AllProduct" value="AllProduct" onclick="selectOnlyThis(this)" checked> Tất cả</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="AllProduct" value="AllProduct" onclick="selectOnlyThis(this)"> Tất cả</td>
+						{% endif %}
+						{% if filter_product_title == "Apple" %}
+							<td><input type="checkbox" name="brand" id="Apple" value="Apple" onclick="selectOnlyThis(this)" checked> Apple</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Apple" value="Apple" onclick="selectOnlyThis(this)"> Apple</td>
+						{% endif %}
+					</tr> 
+					<tr>
+						{% if filter_product_title == 'Samsung'%}
+							<td><input type="checkbox" name="brand" id="Samsung" value="Samsung" onclick="selectOnlyThis(this)" checked> Samsung</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Samsung" value="Samsung" onclick="selectOnlyThis(this)"> Samsung</td>
+						{% endif %}
+						{% if filter_product_title == 'Oppo'%}
+							<td><input type="checkbox" name="brand" id="Oppo" value="Oppo" onclick="selectOnlyThis(this)" checked> Oppo</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Oppo" value="Oppo" onclick="selectOnlyThis(this)"> Oppo</td>
+						{% endif %}												
+					</tr>
+					<tr>
+						{% if filter_product_title == 'ViVo'%}
+							<td><input type="checkbox" name="brand" id="Vivo" value="Vivo" onclick="selectOnlyThis(this)" checked> Vivo</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Vivo" value="Vivo" onclick="selectOnlyThis(this)"> Vivo</td>
+						{% endif %}
+						{% if filter_product_title == 'Vsmart'%}
+							<td><input type="checkbox" name="brand" id="Vsmart" value="Vsmart" onclick="selectOnlyThis(this)" checked> Vsmart</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Vsmart" value="Vsmart" onclick="selectOnlyThis(this)"> Vsmart</td>
+						{% endif %}						
+					</tr>
+					<tr>
+						{% if filter_product_title == 'Xiaomi'%}
+							<td><input type="checkbox" name="brand" id="Xiaomi" value="Xiaomi" onclick="selectOnlyThis(this)" checked> Xiaomi</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Xiaomi" value="Xiaomi" onclick="selectOnlyThis(this)"> Xiaomi</td>
+						{% endif %}
+						{% if filter_product_title == 'Realme'%}
+							<td><input type="checkbox" name="brand" id="Realme" value="Realme" onclick="selectOnlyThis(this)" checked> Realme</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Realme" value="Realme" onclick="selectOnlyThis(this)"> Realme</td>
+						{% endif %}
+					</tr>
+					<tr>
+						{% if filter_product_title == 'Masstel'%}
+							<td><input type="checkbox" name="brand" id="Masstel" value="Masstel" onclick="selectOnlyThis(this)" checked> Masstel</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Masstel" value="Masstel" onclick="selectOnlyThis(this)"> Masstel</td>
+						{% endif %}
+						{% if filter_product_title == 'Huawei'%}
+							<td><input type="checkbox" name="brand" id="Huawei" value="Huawei" onclick="selectOnlyThis(this)" checked> Huawei</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Huawei" value="Huawei" onclick="selectOnlyThis(this)"> Huawei</td>
+						{% endif %}
+					</tr>
+					<tr>
+						{% if filter_product_title == 'Nokia'%}
+							<td><input type="checkbox" name="brand" id="Nokia" value="Nokia" onclick="selectOnlyThis(this)" checked> Nokia</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Nokia" value="Nokia" onclick="selectOnlyThis(this)"> Nokia</td>
+						{% endif %}
+						<!-- <td><input type="checkbox" name="brand"></td> -->
+					</tr>
+				</tbody>
 				</table>
 				</font>
 				<!-- aside widget -->
+				<script>
+					$(document).on('change', '#totalall',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_totalall" %}',
+								data:{
+									AllProduct:$('#AllProduct').val(),
+									Apple:$('#Apple').val(),
+									Samsung:$('#Samsung').val(),
+									Oppo:$('#Oppo').val(),
+									Vivo:$('#Vivo').val(),
+									Vsmart:$('#Vsmart').val(),
+									Xiaomi:$('#Xiaomi').val(),
+									Realme:$('#Realme').val(),
+									Masstel:$('#Masstel').val(),
+									Huawei:$('#Huawei').val(),
+									Nokia:$('#Nokia').val(),
+									totalall:$('#totalall').val(),
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
+				<script>
+					$(document).on('change', '#total2',function(e){
+						e.preventDefault();
+							$.ajax({
+								type:'POST',
+								url:'{% url "ajax_manufacturer_total2" %}',
+								data:{
+									AllProduct:$('#AllProduct').val(),
+									Apple:$('#Apple').val(),
+									Samsung:$('#Samsung').val(),
+									Oppo:$('#Oppo').val(),
+									Vivo:$('#Vivo').val(),
+									Vsmart:$('#Vsmart').val(),
+									Xiaomi:$('#Xiaomi').val(),
+									Realme:$('#Realme').val(),
+									Masstel:$('#Masstel').val(),
+									Huawei:$('#Huawei').val(),
+									Nokia:$('#Nokia').val(),
+									total2:$('#total2').val(),
+									csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+									action: 'post'
+								},                                   
+								data_type : 'html',
+								success: function (data) {
+									console.log("success");                                       
+									//console.log(e);
+									$('#advanced-searchs').html(data.rendered_table);
+								},
+								error: function (data) {
+									alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+								}
+							});
+						});
+				</script>
 				<font face="roboto,arial,helvetica,sans-serif">
 				<h4 class="aside-title">MỨC GIÁ</h4>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+					<input class="form-check-input" name="totalID" type="checkbox" value="alltotal" id="totalall" onclick="selectOnlyThisTotal(this)" checked>
 					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="totalID" type="checkbox" value="2000000" id="total2" onclick="selectOnlyThisTotal(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Dưới 2 triệu</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="totalID" type="checkbox" value="4000000" id="total4" onclick="selectOnlyThisTotal(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 2 - 4 triệu</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="totalID" type="checkbox" value="7000000" id="total7" onclick="selectOnlyThisTotal(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 4 - 7 triệu</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="totalID" type="checkbox" value="13000000" id="total13" onclick="selectOnlyThisTotal(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 7 - 13 triệu</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="totalID" type="checkbox" value="13001000" id="total14" onclick="selectOnlyThisTotal(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Trên 13 triệu</label>
 				</div>
 				<br>
 				<!-- aside widget -->
-				<h4 class="aside-title">TÍNH NĂNG ĐẶC BIỆT</h4> 
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Bảo mật vân tay</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Nhận diện khuôn mặt</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Chống bụi & nước</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Sạc nhanh</label>
-				</div>
-				</font>
-				<!-- aside widget -->
-				<br>
-				<font face="roboto,arial,helvetica,sans-serif">
-				<h4 class="aside-title">CAMERA</h4> 
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Quay phim slow motion</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">AI camera</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Chụp 3D</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Hiệu ứng làm đẹp</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Zoom quang học</label>
-				</div>
-				</font>
-				<!-- /aside widget -->
-				<!-- aside widget -->
-				<br>
-				<font face="roboto,arial,helvetica,sans-serif">
-				<h4 class="aside-title">DUNG LƯỢNG PIN</h4> 
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Dưới 3000 mah</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 3000 - 4000 mah</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Trên 4000 mah</label>
-				</div>
+				
 				</font>
 				<!-- /aside widget -->
 			</div>
@@ -228,7 +607,7 @@
 						<div class="section-title">
 							<h3 class="title">Danh sách</h3>
 						</div>
-						<table class="shopping-cart-table table">
+						<table class="shopping-cart-table table" id="advanced-searchs">
 							<thead>
 								<tr>
 									<th></th>
@@ -249,14 +628,8 @@
 									</a></td>
 									<td class="details">
 										<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
-										<!-- <ul>
-											<li><span>Size: XL</span></li>
-											<li><span>Color: Camelot</span></li>
-										</ul> -->
 									</td>
 									<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br></td>
-									<!-- <td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br><del class="font-weak"><small>$40.00</small></del></td> -->
-									<!-- <td class="text-right"><a href="/addtocart/{{ rs.id }}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</a></td> -->
 									</tr>
 								{% endfor %}
 							</tbody>

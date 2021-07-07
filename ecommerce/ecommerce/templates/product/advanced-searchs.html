@@ -1,0 +1,28 @@
+<table class="shopping-cart-table table" id="advanced-searchs">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Tên sản phẩm</th>
+			
+			<th class="text-center">Giá</th>
+			<!-- <th class="text-center">Quantity</th>
+			<th class="text-center">Total</th>
+			<th class="text-right"></th> -->
+		</tr>
+	</thead>
+	
+	<tbody>
+		{% for rs in products %}
+		<tr>
+			<td class="thumb"> <a href="/product/{{ rs.id }}/{{ rs.slug }}">
+				<img src="{{ rs.image.url }}" alt="" style="height: 70px;">
+			</a></td>
+			<td class="details">
+				<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
+			</td>
+			<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br></td>
+			</tr>
+		{% endfor %}
+	</tbody>
+	
+</table>
