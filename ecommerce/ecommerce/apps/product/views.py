@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants
+from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants, ProductAdvancedSearch
 from django.http.response import HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -98,8 +98,8 @@ def ajaxcolor(request):
 	if request.POST.get('action') == 'post':
 		size_id = request.POST.get('size')
 		productid = request.POST.get('productid')
-		print(size_id)
-		print(productid)
+		#print(size_id)
+		#print(productid)
 		colors = Variants.objects.filter(product_id=productid, size_id=size_id)
 		context = {
 			'size_id': size_id,
@@ -124,8 +124,8 @@ def category_products_pro_code(request, id, title):
 	for rs in shopcart:
 		quantity += rs.quantity
 	filter_product_title = title
-	print(filter_product_title)
-	print(type(filter_product_title))
+	#print(filter_product_title)
+	#print(type(filter_product_title))
 	context = {
 		'category':category,
 		'products': products,
@@ -137,231 +137,180 @@ def category_products_pro_code(request, id, title):
 	return render(request, 'product/category_products_pro_code.html',context)
 
 
-def ajax_manufacturer_allproduct(request):
+def ajax_manufacturer(request):
 	data = {}
 	if request.POST.get('action') == 'post':
 		print(1)
-		AllProduct = request.POST.get('AllProduct')
-		print(AllProduct)
-		products = Product.objects.all()
-		# # alltotal = request.POST.get('alltotal')                      
-		total2 = request.POST.get('totalID')   
-		print(total2)                           
-		# # total4 = request.POST.get('total4')                            
-		# # total7 = request.POST.get('total7')                             
-		# # total13 = request.POST.get('total13')                              
-		# # big13 = request.POST.get('big13')
-		# # total = request.POST.get('total')
-		# # print(total)
-		# totalID = request.POST.get('totalID')
-		# if totalID == "alltotal":
-		# 	print(1)
-		# elif totalID == "2000000":
-		# 	print(2)
-		# elif totalID == 4000000:
-		# 	print(4)
-		# #print(alltotal, total2, total4, total7, total13, big13)
-		# #print(products[1])
-		# product = []
-		# for i in range(len(products)):
-		# 	product.append(products[i])
-		# print(product)
+		productName = request.POST.get('_productName')
+		typeNamePrice = request.POST.get('_typeNamePrice')
+		typeNameCamera = request.POST.get('_typeNameCamera')
+		typeNamePin = request.POST.get('_typeNamePin')
+		print(productName, typeNamePrice, typeNameCamera, typeNamePin)
+		# products = Product.objects.all()
+		products_result = []
+		temp_products_result = []
+		#loại điện thoại
+		if productName == 'AllProduct':
+			products_result = Product.objects.all()
+		else:
+			products_result = Product.objects.filter(pro_code = productName)
+
+		# giá điện thoại
+		if typeNamePrice == 'totalID1':	# tất cả
+			if productName == 'AllProduct':
+				products_result = Product.objects.all()
+			else:
+				products_result = Product.objects.filter(pro_code = productName)
+		elif typeNamePrice == 'totalID2': # 0 - 2000000
+			for rs in products_result:
+				price = int((rs.price)*1000000)
+				if  price > 0 and price <= 2000000:
+					temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result = []
+		elif typeNamePrice == 'totalID3': # 2000000 - 4000000
+			for rs in products_result:
+				price = int((rs.price)*1000000)
+				if  price >= 2000000 and price <= 4000000:
+					temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result = []
+		elif typeNamePrice == 'totalID4': # 4000000 - 7000000
+			for rs in products_result:
+				price = int((rs.price)*1000000)
+				if  price >= 4000000 and price <= 7000000:
+					temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result = []
+		elif typeNamePrice == 'totalID5': # 7000000 - 13000000
+			for rs in products_result:
+				price = int((rs.price)*1000000)
+				if  price >= 7000000 and price <= 13000000:
+					temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result = []
+		elif typeNamePrice == 'totalID6': # lớn hơn 13000000
+			for rs in products_result:
+				price = int((rs.price)*1000000)
+				if  price > 13000000:
+					temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result = []
+		#print(products_result)
+		# hoàn thành lấy price
+		# filter camera
+		productAdvancedSearch = ProductAdvancedSearch.objects.all()
+		temp_products_result_camera = []
+		if typeNameCamera == 'cameraID1':	#tất cả
+			products_result
+		elif typeNameCamera == 'cameraID2':	#Quay phim slow motion
+			for rs in productAdvancedSearch:
+				if rs.camera_slow_motion == 'Có':
+					temp_products_result_camera.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_camera in temp_products_result_camera:
+					if rs == rs_camera:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_camera = []
+			temp_products_result = []
+		elif typeNameCamera == 'cameraID3':			# AI
+			for rs in productAdvancedSearch:
+				if rs.camera_ai == 'Có':
+					temp_products_result_camera.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_camera in temp_products_result_camera:
+					if rs == rs_camera:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_camera = []
+			temp_products_result = []
+		elif typeNameCamera == 'cameraID4':			# 3d
+			for rs in productAdvancedSearch:
+				if rs.camera_3d == 'Có':
+					temp_products_result_camera.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_camera in temp_products_result_camera:
+					if rs == rs_camera:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_camera = []
+			temp_products_result = []
+		elif typeNameCamera == 'cameraID5':	#Hiệu ứng làm đẹp
+			for rs in productAdvancedSearch:
+				if rs.camera_beauty_effect == 'Có':
+					temp_products_result_camera.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_camera in temp_products_result_camera:
+					if rs == rs_camera:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_camera = []
+			temp_products_result = []
+		elif typeNameCamera == 'cameraID6':	#Zoom quang học
+			for rs in productAdvancedSearch:
+				if rs.camera_optical_zoom == 'Có':
+					temp_products_result_camera.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_camera in temp_products_result_camera:
+					if rs == rs_camera:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_camera = []
+			temp_products_result = []
+		# đã done camera
+		# tính dung lượng pin
+		temp_products_result_pin = []
+		if typeNamePin == 'PinID1':
+			temp_products_result
+		elif typeNamePin == 'PinID2':			# dưới 3000
+			for rs in productAdvancedSearch:
+				if rs.battery_capacity < 3000:
+					temp_products_result_pin.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_pin in temp_products_result_pin:
+					if rs == rs_pin:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_pin = []
+			temp_products_result = []
+		elif typeNamePin == 'PinID3':	# 3000 - 4000
+			for rs in productAdvancedSearch:
+				if rs.battery_capacity >= 3000 and rs.battery_capacity <= 4000:
+					temp_products_result_pin.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_pin in temp_products_result_pin:
+					if rs == rs_pin:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_pin = []
+			temp_products_result = []
+		elif typeNamePin == 'PinID4':	# > 4000
+			for rs in productAdvancedSearch:
+				if rs.battery_capacity > 4000:
+					temp_products_result_pin.append(rs.product)
+			# có temp
+			for rs in products_result:
+				for rs_pin in temp_products_result_pin:
+					if rs == rs_pin:
+						temp_products_result.append(rs)
+			products_result = temp_products_result
+			temp_products_result_pin = []
+			temp_products_result = []
 		context = {
-			'products': products,
+			'products_result': products_result,
 		}
 		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
 		return JsonResponse(data)
 	return JsonResponse(data)
 
 
-def ajax_manufacturer_apple(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Apple = request.POST.get('Apple')
-		print(Apple)
-		products = Product.objects.filter(pro_code = Apple)	
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_samsung(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Samsung = request.POST.get('Samsung')	
-		products = Product.objects.filter(pro_code = Samsung)	
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_oppo(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Oppo = request.POST.get('Oppo')		
-		products = Product.objects.filter(pro_code = Oppo)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_vivo(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Vivo = request.POST.get('Vivo')		
-		products = Product.objects.filter(pro_code = Vivo)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_vsmart(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Vsmart = request.POST.get('Vsmart')		
-		products = Product.objects.filter(pro_code = Vsmart)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_xiaomi(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Xiaomi = request.POST.get('Xiaomi')		
-		products = Product.objects.filter(pro_code = Xiaomi)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_realme(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Realme = request.POST.get('Realme')
-		products = Product.objects.filter(pro_code = Realme)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_masstel(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Masstel = request.POST.get('Masstel')		
-		products = Product.objects.filter(pro_code = Masstel)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_huawei(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Huawei = request.POST.get('Huawei')	
-		products = Product.objects.filter(pro_code = Huawei)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_nokia(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		Nokia = request.POST.get('Nokia')		
-		products = Product.objects.filter(pro_code = Nokia)
-		context = {
-			'products': products,
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_totalall(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		AllProduct = request.POST.get('AllProduct')
-		Apple = request.POST.get('Apple')
-		Samsung = request.POST.get('Samsung')
-		Oppo = request.POST.get('Oppo')
-		Vivo = request.POST.get('Vivo')
-		Vsmart = request.POST.get('Vsmart')
-		Xiaomi = request.POST.get('Xiaomi')
-		Realme = request.POST.get('Realme')
-		Masstel = request.POST.get('Masstel')
-		Huawei = request.POST.get('Huawei')
-		Nokia = request.POST.get('Nokia')
-		totalall = request.POST.get('totalall')
-		print(AllProduct, Apple,Samsung, Oppo, Vivo, Vsmart, Xiaomi, Realme, Masstel, Huawei, Nokia)
-		print(totalall)
-		context = {
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
-
-
-def ajax_manufacturer_total2(request):
-	data = {}
-	if request.POST.get('action') == 'post':
-		print(1)
-		AllProduct = request.POST.get('AllProduct')
-		Apple = request.POST.get('Apple')
-		Samsung = request.POST.get('Samsung')
-		Oppo = request.POST.get('Oppo')
-		Vivo = request.POST.get('Vivo')
-		Vsmart = request.POST.get('Vsmart')
-		Xiaomi = request.POST.get('Xiaomi')
-		Realme = request.POST.get('Realme')
-		Masstel = request.POST.get('Masstel')
-		Huawei = request.POST.get('Huawei')
-		Nokia = request.POST.get('Nokia')
-		total2 = request.POST.get('total2')
-		print(AllProduct, Apple,Samsung, Oppo, Vivo, Vsmart, Xiaomi, Realme, Masstel, Huawei, Nokia)
-		print(total2)
-		context = {
-		}
-		data = {'rendered_table': render_to_string('product/advanced-searchs.html', context=context)}
-		return JsonResponse(data)
-	return JsonResponse(data)
 
 

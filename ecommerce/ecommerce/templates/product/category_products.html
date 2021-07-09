@@ -22,6 +22,150 @@
 <link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
 <script src="{% static "" %}myapp/js/jquery.min.js"></script>
 <script src="{% static "" %}myapp/js/jquery-ui.min.js"></script>
+<script>
+	let _productName = '{{filter_product_title}}';
+	let _typeNamePrice = 'totalID1';
+	let _typeNameCamera = 'cameraID1';
+	let _typeNamePin = 'PinID1';
+	console.log('Điện thoại: ' + 'Loại giá: ', _productName, _typeNamePrice);
+	function selectOnlyThis(id){
+		var myCheckbox = document.getElementsByName("brand");
+		Array.prototype.forEach.call(myCheckbox,function(el){
+			el.checked = false;
+		});
+		id.checked = true;
+
+		const productName = id.value
+		_productName = productName 
+		console.log("Loại sản phẩm: ", productName)
+		console.log("Giá: ", _typeNamePrice)
+		console.log("Camera: ", _typeNameCamera)
+		console.log("Pin: ", _typeNamePin)
+		$.ajax({
+			type:'POST',
+			url:'{% url "ajax_manufacturer" %}',
+			data:{
+				_productName,
+				_typeNameCamera,
+				_typeNamePrice,
+				_typeNamePin,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: 'post'
+			},                                   
+			data_type : 'html',
+			success: function (data) {
+				console.log("success");                                       
+				//console.log(e);
+				$('#advanced-searchs').html(data.rendered_table);
+			},
+			error: function (data) {
+				alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+			}
+		});
+	}
+	function selectOnlyThisTotal(id){
+		const typeNamePrice = id.id
+		_typeNamePrice = typeNamePrice
+		console.log("Loại sản phẩm: ", _productName)
+		console.log("Giá: ", _typeNamePrice)
+		console.log("Camera: ", _typeNameCamera)
+		console.log("Pin: ", _typeNamePin)
+		$.ajax({
+			type:'POST',
+			url:'{% url "ajax_manufacturer" %}',
+			data:{
+				_productName,
+				_typeNamePrice,
+				_typeNameCamera,
+				_typeNamePin,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: 'post'
+			},                                   
+			data_type : 'html',
+			success: function (data) {
+				console.log("success");                                       
+				//console.log(e);
+				$('#advanced-searchs').html(data.rendered_table);
+			},
+			error: function (data) {
+				alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+			}
+		});
+		var myCheckboxTotal = document.getElementsByName("totalID");
+		Array.prototype.forEach.call(myCheckboxTotal,function(el){
+			el.checked = false;
+		});
+		id.checked = true;
+	}
+	function selectOnlyThisCamera(id){
+		const typeNameCamera = id.id
+		_typeNameCamera = typeNameCamera
+		console.log("Loại sản phẩm: ", _productName)
+		console.log("Giá: ", _typeNamePrice)
+		console.log("Camera: ", _typeNameCamera)
+		console.log("Pin: ", _typeNamePin)
+		$.ajax({
+			type:'POST',
+			url:'{% url "ajax_manufacturer" %}',
+			data:{
+				_productName,
+				_typeNamePrice,
+				_typeNameCamera,
+				_typeNamePin,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: 'post'
+			},                                   
+			data_type : 'html',
+			success: function (data) {
+				console.log("success");                                       
+				//console.log(e);
+				$('#advanced-searchs').html(data.rendered_table);
+			},
+			error: function (data) {
+				alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+			}
+		});
+		var myCheckboxTotal = document.getElementsByName("cameraID");
+		Array.prototype.forEach.call(myCheckboxTotal,function(el){
+			el.checked = false;
+		});
+		id.checked = true;
+	}
+	function selectOnlyThisPin(id){
+		const typeNamePin = id.id
+		_typeNamePin = typeNamePin
+		console.log("Loại sản phẩm: ", _productName)
+		console.log("Giá: ", _typeNamePrice)
+		console.log("Camera: ", _typeNameCamera)
+		console.log("Pin: ", _typeNamePin)
+		$.ajax({
+			type:'POST',
+			url:'{% url "ajax_manufacturer" %}',
+			data:{
+				_productName,
+				_typeNamePrice,
+				_typeNameCamera,
+				_typeNamePin,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+				action: 'post'
+			},                                   
+			data_type : 'html',
+			success: function (data) {
+				console.log("success");                                       
+				//console.log(e);
+				$('#advanced-searchs').html(data.rendered_table);
+			},
+			error: function (data) {
+				alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+			}
+		});
+		var myCheckboxTotal = document.getElementsByName("PinID");
+		Array.prototype.forEach.call(myCheckboxTotal,function(el){
+			el.checked = false;
+		});
+		id.checked = true;
+	}
+</script>
 {% endblock %}
 
 {% block header %} {% include "home/header.html" %} {% endblock %}
@@ -35,10 +179,17 @@
 		<!-- row -->
 		<div class="row">
 			<!-- ASIDE -->
-			
 			<div id="aside" class="col-md-3">
 				<!-- aside widget -->
 				<br><br><br>
+					<!--<div class="aside">
+						<h3 class="aside-title">HÃNG SẢN XUẤT:</h3>
+						<ul class="size-option">
+							<li class="active"><a href="#">S</a></li>
+							<li class="active"><a href="#">XL</a></li>
+							<li><a href="#">SL</a></li>
+						</ul>
+					</div>-->
 				<font face="roboto,arial,helvetica,sans-serif">
 				<h4 class="aside-title">HÃNG SẢN XUẤT</h4>	
 				<table class="table noborder text-center">
@@ -47,115 +198,143 @@
 					border: none !important;
 					}
 				</style>
-				
-				<form method="POST" id="post-product">
-					
-					<tbody class="text-left">
-						<tr>
-							<td><input type="checkbox" name="brand" value="all-product" checked> Tất cả</td> 
-							<td><input type="checkbox" name="brand" value="Apple"> Apple</td>
-						</tr> 
-						<tr>
-							<td><input type="checkbox" name="brand" value="Samsung"> Samsung</td>
-							<td><input type="checkbox" name="brand" value="Oppo"> Oppo</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand" value="Vivo"> Vivo</td>
-							<td><input type="checkbox" name="brand" value="Vsmart"> Vsmart</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand" value="Xiaomi"> Xiaomi</td>
-							<td><input type="checkbox" name="brand" value="Realme"> Realme</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand" value="Masstel"> Masstel</td>
-							<td><input type="checkbox" name="brand" value="Huawei"> Huawei</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name="brand" value="Nokia"> Nokia</td>
-							<!-- <td><input type="checkbox" name="brand"></td> -->
-						</tr>
-					</tbody>
-				</form>
+				<!-- {{filter_product_title}} -->
+				<tbody class="text-left">
+					<tr>
+						{% csrf_token %}   
+						{% if filter_product_title == 'AllProduct'%}
+							<td><input type="checkbox" name="brand" id="AllProduct" value="AllProduct" onclick="selectOnlyThis(this)" checked> Tất cả</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="AllProduct" value="AllProduct" onclick="selectOnlyThis(this)"> Tất cả</td>
+						{% endif %}
+						{% if filter_product_title == "Apple" %}
+							<td><input type="checkbox" name="brand" id="Apple" value="Apple" onclick="selectOnlyThis(this)" checked> Apple</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Apple" value="Apple" onclick="selectOnlyThis(this)"> Apple</td>
+						{% endif %}
+					</tr> 
+					<tr>
+						{% if filter_product_title == 'Samsung'%}
+							<td><input type="checkbox" name="brand" id="Samsung" value="Samsung" onclick="selectOnlyThis(this)" checked> Samsung</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Samsung" value="Samsung" onclick="selectOnlyThis(this)"> Samsung</td>
+						{% endif %}
+						{% if filter_product_title == 'Oppo'%}
+							<td><input type="checkbox" name="brand" id="Oppo" value="Oppo" onclick="selectOnlyThis(this)" checked> Oppo</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Oppo" value="Oppo" onclick="selectOnlyThis(this)"> Oppo</td>
+						{% endif %}												
+					</tr>
+					<tr>
+						{% if filter_product_title == 'ViVo'%}
+							<td><input type="checkbox" name="brand" id="Vivo" value="Vivo" onclick="selectOnlyThis(this)" checked> Vivo</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Vivo" value="Vivo" onclick="selectOnlyThis(this)"> Vivo</td>
+						{% endif %}
+						{% if filter_product_title == 'Vsmart'%}
+							<td><input type="checkbox" name="brand" id="Vsmart" value="Vsmart" onclick="selectOnlyThis(this)" checked> Vsmart</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Vsmart" value="Vsmart" onclick="selectOnlyThis(this)"> Vsmart</td>
+						{% endif %}						
+					</tr>
+					<tr>
+						{% if filter_product_title == 'Xiaomi'%}
+							<td><input type="checkbox" name="brand" id="Xiaomi" value="Xiaomi" onclick="selectOnlyThis(this)" checked> Xiaomi</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Xiaomi" value="Xiaomi" onclick="selectOnlyThis(this)"> Xiaomi</td>
+						{% endif %}
+						{% if filter_product_title == 'Realme'%}
+							<td><input type="checkbox" name="brand" id="Realme" value="Realme" onclick="selectOnlyThis(this)" checked> Realme</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Realme" value="Realme" onclick="selectOnlyThis(this)"> Realme</td>
+						{% endif %}
+					</tr>
+					<tr>
+						{% if filter_product_title == 'Masstel'%}
+							<td><input type="checkbox" name="brand" id="Masstel" value="Masstel" onclick="selectOnlyThis(this)" checked> Masstel</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Masstel" value="Masstel" onclick="selectOnlyThis(this)"> Masstel</td>
+						{% endif %}
+						{% if filter_product_title == 'Huawei'%}
+							<td><input type="checkbox" name="brand" id="Huawei" value="Huawei" onclick="selectOnlyThis(this)" checked> Huawei</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Huawei" value="Huawei" onclick="selectOnlyThis(this)"> Huawei</td>
+						{% endif %}
+					</tr>
+					<tr>
+						{% if filter_product_title == 'Nokia'%}
+							<td><input type="checkbox" name="brand" id="Nokia" value="Nokia" onclick="selectOnlyThis(this)" checked> Nokia</td>
+						{% else %}
+							<td><input type="checkbox" name="brand" id="Nokia" value="Nokia" onclick="selectOnlyThis(this)"> Nokia</td>
+						{% endif %}
+						<!-- <td><input type="checkbox" name="brand"></td> -->
+					</tr>
+				</tbody>
 				</table>
 				</font>
 				<!-- aside widget -->
+
+				<!-- aside widget -->
 				<font face="roboto,arial,helvetica,sans-serif">
-				<h4 class="aside-title">MỨC GIÁ</h4>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Dưới 2 triệu</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 2 - 4 triệu</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 4 - 7 triệu</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 7 - 13 triệu</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Trên 13 triệu</label>
-				</div>
-				<br>
-				<!-- aside widget -->
-				<h4 class="aside-title">TÍNH NĂNG ĐẶC BIỆT</h4> 
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Bảo mật vân tay</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Nhận diện khuôn mặt</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Chống bụi & nước</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Sạc nhanh</label>
-				</div>
+					<h4 class="aside-title">MỨC GIÁ</h4>
+					{% csrf_token %}   
+					<div class="form-check">
+						<input class="form-check-input" name="totalID" id="totalID1" type="checkbox" value="alltotal" onclick="selectOnlyThisTotal(this)" checked>
+						<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" name="totalID" id="totalID2" type="checkbox" value="2000000" onclick="selectOnlyThisTotal(this)">
+						<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Dưới 2 triệu</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" name="totalID" id="totalID3" type="checkbox" value="4000000" onclick="selectOnlyThisTotal(this)">
+						<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 2 - 4 triệu</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" name="totalID" id="totalID4" type="checkbox" value="7000000" onclick="selectOnlyThisTotal(this)">
+						<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 4 - 7 triệu</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" name="totalID" id="totalID5" type="checkbox" value="13000000" onclick="selectOnlyThisTotal(this)">
+						<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 7 - 13 triệu</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" name="totalID" id="totalID6" type="checkbox" value="13001000" onclick="selectOnlyThisTotal(this)">
+						<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Trên 13 triệu</label>
+					</div>
+					<br>
+					<!-- aside widget -->
+				
 				</font>
+				<!-- /aside widget -->
 				<!-- aside widget -->
+
 				<br>
 				<font face="roboto,arial,helvetica,sans-serif">
 				<h4 class="aside-title">CAMERA</h4> 
+				{% csrf_token %}   
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+					<input class="form-check-input" name="cameraID" id="cameraID1" type="checkbox" value="Tất cả" onclick="selectOnlyThisCamera(this)" checked>
 					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="cameraID" id="cameraID2" type="checkbox" onclick="selectOnlyThisCamera(this)" value="">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Quay phim slow motion</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="cameraID" id="cameraID3" type="checkbox" onclick="selectOnlyThisCamera(this)" value="">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">AI camera</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="cameraID" id="cameraID4" type="checkbox" onclick="selectOnlyThisCamera(this)" value="">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Chụp 3D</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="cameraID" id="cameraID5" type="checkbox" onclick="selectOnlyThisCamera(this)" value="">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Hiệu ứng làm đẹp</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="cameraID" id="cameraID6" type="checkbox" onclick="selectOnlyThisCamera(this)" value="">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Zoom quang học</label>
 				</div>
 				</font>
@@ -164,20 +343,21 @@
 				<br>
 				<font face="roboto,arial,helvetica,sans-serif">
 				<h4 class="aside-title">DUNG LƯỢNG PIN</h4> 
+				{% csrf_token %}   
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+					<input class="form-check-input" name="PinID" id="PinID1" type="checkbox" value="" onclick="selectOnlyThisPin(this)" checked>
 					<label class="form-check-label" for="flexCheckChecked" style="font-weight:normal">Tất cả</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="PinID" id="PinID2" type="checkbox" value="" onclick="selectOnlyThisPin(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Dưới 3000 mah</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="PinID" id="PinID3" type="checkbox" value="" onclick="selectOnlyThisPin(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Từ 3000 - 4000 mah</label>
 				</div>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<input class="form-check-input" name="PinID" id="PinID4" type="checkbox" value="" onclick="selectOnlyThisPin(this)">
 					<label class="form-check-label" for="flexCheckDefault" style="font-weight:normal">Trên 4000 mah</label>
 				</div>
 				</font>
@@ -229,7 +409,7 @@
 						<div class="section-title">
 							<h3 class="title">Danh sách</h3>
 						</div>
-						<table class="shopping-cart-table table">
+						<table class="shopping-cart-table table" id="advanced-searchs">
 							<thead>
 								<tr>
 									<th></th>
@@ -250,14 +430,8 @@
 									</a></td>
 									<td class="details">
 										<a href="/product/{{ rs.id }}/{{ rs.slug }}">{{ rs.title }}</a>
-										<!-- <ul>
-											<li><span>Size: XL</span></li>
-											<li><span>Color: Camelot</span></li>
-										</ul> -->
 									</td>
 									<td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br></td>
-									<!-- <td class="price text-center"><strong>{{ rs.price }}.000 VND </strong><br><del class="font-weak"><small>$40.00</small></del></td> -->
-									<!-- <td class="text-right"><a href="/addtocart/{{ rs.id }}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</a></td> -->
 									</tr>
 								{% endfor %}
 							</tbody>

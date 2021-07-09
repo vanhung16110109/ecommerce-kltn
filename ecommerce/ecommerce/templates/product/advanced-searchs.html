@@ -12,7 +12,7 @@
 	</thead>
 	
 	<tbody>
-		{% for rs in products %}
+		{% for rs in products_result %}
 		<tr>
 			<td class="thumb"> <a href="/product/{{ rs.id }}/{{ rs.slug }}">
 				<img src="{{ rs.image.url }}" alt="" style="height: 70px;">
