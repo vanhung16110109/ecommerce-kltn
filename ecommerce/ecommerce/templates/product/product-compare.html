@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{ product.title }} {% endblock %}
+{% block description %} {{ product.description }}{% endblock %}
+{% block keywords %} {{ product.keywords }} {% endblock %}
+{% url 'home' as home_url %}
+{% url '/category/{{ product.category.id }}/{{ product.category.slug }}' as product_category_slug_url %}
+{% block head %}
+    <!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
+	<!-- jQuery UI !-->
+	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
+
+	<script src="{% static "" %}home/js/jquery.min.js"></script>
+	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+	<style>
+		.tab-content img {
+			width: 100%;
+			height: 80%;
+		}
+		.center {
+			margin: auto;
+			width: 80%;
+			padding: 40px;
+		}
+        .product-main-view img {
+            width: 100%;
+			height: 0%;
+        }
+	</style>
+{% endblock %}
+
+
+
+{% block header %} {% include "home/header.html" %} {% endblock %}
+{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
+
+
+{% block product_detail %}
+
+    {% if messages %}
+    {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Trang chủ</a></li>
+                <li><a href="{{ product_category_slug_url }}">{{ product.category.title }}</a></li>
+                <li class="active">{{ product.title }}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB --> 
+    </div>
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+				<div class="product product-details clearfix">
+					<div class="col-md-12">
+						<div class="product-tab">
+							<ul class="tab-nav">
+								<h2>So sánh sản phẩm</h2>
+							</ul>
+							{% comment %} <div class="tab-content">
+								<div id="tab1" class="tab-pane fade in active">
+									<div class="row">
+										<!--<div class="col-md-7">
+											<p> {{ product.detail | safe }} </p>
+										</div>-->
+                                        <div class="col-md-6">
+                                        <h2 class="product-name">{{ variant.title }}</h2>
+                                            <h3>Thông số kỹ thuật</h3>
+                                            <!--<p> {{ product.tespproduct | safe }} </p>-->
+                                            <p> {{ product.detailsproduct | safe }} </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                        <h2 class="product-name">{{ variant.title }}</h2>
+                                            <h3>Thông số kỹ thuật</h3>
+                                            <p> {{ product.detailsproduct | safe }} </p>
+                                        </div>
+								</div>
+								</div>
+							</div> {% endcomment %}
+                          
+                            <table class="table table-striped" style="font-size: 18px; weight: 40%; border-right:1px;">
+                            {% comment %} <style>
+						        .noborder td, .noborder th {
+    					        border: none !important;
+						        }
+					        </style> {% endcomment %}
+                                <thead>
+                                    <tr class="table-active">
+                                        <th scope="col" style="font-size: 30px">       </th>
+                                        <th scope="col" style="font-size: 30px; text-align: center">{{ variant.title }}</th>
+                                        <th scope="col" style="font-size: 30px; text-align: center">{{ variant.title }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table table-bordered table-striped">
+                                        <th scope="col" style="font-size: 18px; weight: 40%; border-right:1px;">Màn hình</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10px; height: 10%;">
+                                        <td style="border-right:1px solid #ddd; width: 40%">
+                                        {{ product.detailsproduct_screen | safe }}</td>
+                                       
+                                        <td style="width:20%; padding-left: 50px; ">
+                                        {{ product.detailsproduct_screen | safe }}</td>
+                                    </tr>
+                                       
+		                            {% comment %} </tr>
+                                    <tr class="table table-bordered table-striped" style="font-size: 18px; weight: 40%; border-left:1px;">
+                                        <td>
+                                        
+                                        
+                                    </tr> {% endcomment %}
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px; width: 5%;">Camera sau</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 5%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_backcam | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_backcam | safe }}</td>
+                                    </tr>
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px; width: 13%;">Camera trước</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                 
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_frontcam | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_frontcam | safe }}</td>
+                                    </tr>
+                                   
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px; width: 13%;">Chip & CPU</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_cpu | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_cpu | safe }}</td>
+                                    </tr>
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px; width: 16%;">Lưu trữ & thẻ nhớ</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_memory | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_memory | safe }}</td>
+                                    </tr>
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px">Kết nối</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_connection | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_connection | safe }}</td>
+                                    </tr>
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px">Pin & sạc</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_battery | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_battery | safe }}</td>
+                                    </tr>
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px">Tiện ích</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproductc_utils | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproductc_utils | safe }}</td>
+                                    </tr>
+                                    <tr class="table-bordered">
+                                        <th scope="col" style="font-size: 18px; width: 15%;">Thông tin chung</th>
+                                        <th>
+                                        <th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10%">
+                                        <td style="border-right:1px solid #ddd">
+                                        {{ product.detailsproduct_general | safe }}</td>
+                                        <td style="width:50%; padding-left: 50px">
+                                        {{ product.detailsproduct_general | safe }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+						</div>
+					</div>
+
+				</div>
+                <!-- /Product Details -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+          
+
+
+{% endblock product_detail %}
+
+{% block section %} {% include "home/section.html" %} {% endblock %}
+{% block footer %} {% include "home/footer.html" %} {% endblock %}
+
+
+{% block script_body %}
+    <!-- jQuery Plugins -->
+    <script src="{% static "" %}home/js/bootstrap.min.js"></script>
+    <script src="{% static "" %}home/js/slick.min.js"></script>
+    <script src="{% static "" %}home/js/nouislider.min.js"></script>
+    <script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
+    <script src="{% static "" %}home/js/main.js"></script>
+{% endblock %}

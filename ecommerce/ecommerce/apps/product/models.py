@@ -197,8 +197,6 @@ def productpresavereceiver(sender, instance, *args, **kwargs):
 
 pre_save.connect(productpresavereceiver, sender=Banner)
 
-
-
 class Color(models.Model):
 	name = models.CharField(max_length=20)
 	code = models.CharField(max_length=10, blank=True, null = True)
@@ -362,3 +360,16 @@ class CompareProduct(models.Model):
 	
 	def __str__(self):
 		return self.title
+
+class Compare(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    screen = RichTextUploadingField()	
+    backcam = RichTextUploadingField()
+    frontcam = RichTextUploadingField()	
+    cpu = RichTextUploadingField()	
+    memory = RichTextUploadingField()	
+    connection = RichTextUploadingField()	
+    battery = RichTextUploadingField()	
+    utils = RichTextUploadingField()	
+    general = RichTextUploadingField()	
+

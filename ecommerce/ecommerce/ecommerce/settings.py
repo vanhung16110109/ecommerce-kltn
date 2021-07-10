@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 ]
 
 # Middleware framework
@@ -222,4 +223,9 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     # Authorization:Token xxx
     'JWT_AUTH_HEADER_PREFIX': 'Token',
+}
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
 }

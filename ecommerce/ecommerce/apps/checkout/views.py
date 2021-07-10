@@ -333,6 +333,7 @@ def checkout_offline(request):
 		width = i.width
 		height = i.height
 		weight = i.weight
+		city_id = int(i.city)
 	
 	if request.method == 'POST':  # if there is a post
 		form = OrderForm(request.POST)
