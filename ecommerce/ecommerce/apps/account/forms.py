@@ -75,10 +75,9 @@ CITY = [
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('image', 'email', 'first_name', 'last_name', 'phone', 'address', 'city', 'country', )
+        fields = ('image', 'first_name', 'last_name', 'phone', 'address', 'city', )
         labels = {
-			'image': 'Ảnh',
-			'email': 'Địa chỉ email', 
+			'image': 'Ảnh', 
 			'first_name': 'Tên', 
 			'last_name': 'Họ', 
 			'phone': 'Điện thoại', 
@@ -88,11 +87,9 @@ class ProfileUpdateForm(forms.ModelForm):
 		}
         widgets = {
             'image': FileInput(attrs={'class':'input','placeholder':'Ảnh','title':'Ảnh'}),
-            'email': TextInput(attrs={'class':'input','placeholder':'Email'}),
             'first_name': TextInput(attrs={'class':'input','placeholder':'Tên'}),
             'last_name': TextInput(attrs={'class':'input','placeholder':'Họ'}),
             'phone': TextInput(attrs={'class':'input','placeholder':'Điện thoại'}),
             'address': TextInput(attrs={'class':'input','placeholder':'Địa chỉ'}),
             'city': Select(attrs={'class':'input','placeholder':'Thành phố/Tỉnh thành'}, choices=CITY),
-            'country': TextInput(attrs={'class':'input','placeholder':'Quốc gia'}),
         }
