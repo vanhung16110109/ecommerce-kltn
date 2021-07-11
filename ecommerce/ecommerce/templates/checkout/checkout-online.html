@@ -140,7 +140,7 @@
                                 $('#total').html(data.rendered_table);
                             },
                             error: function (data) {
-                                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                                alert("Xảy ra lỗi, vui lòng kiểm tra lại" + data);
                             }
                         });
                     });
@@ -167,7 +167,7 @@
                                 $('#total').html(data.rendered_table);
                             },
                             error: function (data) {
-                                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                                alert("Xảy ra lỗi, vui lòng kiểm tra lại" + data);
                             }
                         });
                     });
@@ -182,15 +182,15 @@
                                 <h4 class="title">THÔNG TIN CHI TIẾT NHẬN HÀNG</h4>
                             </div>
                             <p><label for="id_first_name">Tên:</label><br>
-                                <input type="text" name="first_name" class="input" maxlength="10" required id="id_first_name" placeholder="Vui lòng nhập tên"></p>
+                                <input type="text" name="first_name" class="input" maxlength="10" required id="id_first_name" value="{{ profile.first_name }}" placeholder="Vui lòng nhập tên"></p>
                             <p><label for="id_last_name">Họ:</label><br>
-                                <input type="text" name="last_name" class="input" maxlength="10" required id="id_last_name" placeholder="Vui lòng nhập họ"></p>  
+                                <input type="text" name="last_name" class="input" maxlength="10" required id="id_last_name" value="{{ profile.last_name }}" placeholder="Vui lòng nhập họ"></p>  
                             
                             {% include "vnlocation/transportfeeAPI.html" %}
                             <p><label for="id_address">Địa chỉ:</label><br>                               
                                 <input type="text" name="address" class="input" maxlength="150" id="id_address" placeholder="Nhập địa chỉ nhận hàng"></p>
                             <p><label for="id_phone">Số điện thoại:</label><br>
-                                <input type="text" name="phone" class="input" maxlength="20" id="id_phone" placeholder="Vui lòng nhập số điện thoại"></p>
+                                <input type="text" name="phone" class="input" maxlength="20" id="id_phone" value="{{ profile.phone }}" placeholder="Vui lòng nhập số điện thoại"></p>
 
                             <label>Vui lòng chọn hình thức giao hàng:</label>
                               <input type="radio" id="ghtk" name="delivery" value="Giao hàng tiết kiệm">
@@ -226,7 +226,9 @@
                                 <div class="form-group">
                                     <label for="amount">Số tiền đơn hàng (chưa tính phí ship)</label>
                                     <input class="form-control" id="amount"
-                                           name="amount" type="text" value="{{ price }}" readonly/>
+                                           name="amount" type="hidden" value="{{ price }}" readonly/>
+									<input class="form-control" id=""
+                                           name="" type="text" value="{{ price_ui }}" readonly/>
                                 </div>
                                 <div class="form-group">
                                     <label for="order_desc">Nội dung thanh toán</label>

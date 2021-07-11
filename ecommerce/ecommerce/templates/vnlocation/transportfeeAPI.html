@@ -31,7 +31,7 @@ $(document).on('change', '#ProvinceName',function(e){
                 $('#WardName').html(data.rendered_table1);
             },
             error: function (data) {
-                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                alert("Xảy ra lỗi, vui lòng kiểm tra lại" + data);
             }
         });
     });
@@ -54,7 +54,7 @@ $(document).on('change', '#DistrictName',function(e){
                 $('#WardName').html(data.rendered_table);
             },
             error: function (data) {
-                alert("Xảy ra lỗi lấy dữ liệu từ API" + data);
+                alert("Xảy ra lỗi, vui lòng kiểm tra lại" + data);
             }
         });
     });

@@ -9,6 +9,7 @@ import requests
 from django.template.loader import render_to_string
 from apps.home.models import StoreAddress
 from apps.order.models import ShopCart
+from babel.numbers import format_number
 
 
 mytoken = "62045ed5-d43f-11eb-81f5-a267211ac77c"		#giao hàng nhanh
@@ -183,6 +184,9 @@ def ajaxGHTK(request):
 		ghtk = request.POST.get('ghtk')
 		#print(ghtk)
 		total = total_order + transport_fee
+		total_order = format_number(total_order, locale='de_DE')
+		transport_fee = format_number(transport_fee, locale='de_DE')
+		total = format_number(total, locale='de_DE')
 		context = {
 			'ghtk': ghtk,
 			'total_order': total_order,			# tổng tiền order
@@ -280,6 +284,9 @@ def ajaxGHN(request):
 		ghtk = request.POST.get('ghn')
 		#print(ghtk)
 		total = total_order + transport_fee
+		total_order = format_number(total_order, locale='de_DE')
+		transport_fee = format_number(transport_fee, locale='de_DE')
+		total = format_number(total, locale='de_DE')
 		context = {
 			'ghtk': ghtk,
 			'total_order': total_order,			# tổng tiền order
@@ -394,6 +401,9 @@ def ajaxGHTK_online(request):
 		ghtk = request.POST.get('ghtk')
 		#print(ghtk)
 		total_new = total_order + transport_fee
+		total_order = format_number(total_order, locale='de_DE')
+		transport_fee = format_number(transport_fee, locale='de_DE')
+		total_new = format_number(total_new, locale='de_DE')
 		context = {
 			'ghtk': ghtk,
 			'total_order': total_order,			# tổng tiền order
@@ -492,6 +502,9 @@ def ajaxGHN_online(request):
 		ghtk = request.POST.get('ghn')
 		#print(ghtk)
 		total_new = total_order + transport_fee
+		total_order = format_number(total_order, locale='de_DE')
+		transport_fee = format_number(transport_fee, locale='de_DE')
+		total_new = format_number(total_new, locale='de_DE')
 		context = {
 			'ghtk': ghtk,
 			'total_order': total_order,			# tổng tiền order

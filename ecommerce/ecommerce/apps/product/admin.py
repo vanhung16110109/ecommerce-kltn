@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, ProductAdvancedSearch, PhoneType, InternaMemory, AmountRAM, BatteryPerformance, ScreenSize, PhoneDesign, CameraFeature, SpecialFeatures, CompareProduct, Compare
+from apps.product.models import Category, Product, Images, Comment, Banner, Size, Color, Variants, Category_Product_Detail, ProductAdvancedSearch, Compare
 from mptt.admin import DraggableMPTTAdmin
 import admin_thumbnails
 
@@ -127,44 +127,9 @@ class VariantsAdmin(admin.ModelAdmin):
     list_display = ['title','product', 'color', 'size', 'price', 'quantity', 'image_tag']
 
 
-class PhoneTypeAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class InternaMemoryAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class AmountRAMAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class BatteryPerformanceAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class ScreenSizeAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class PhoneDesignAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class CameraFeatureAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-class SpecialFeaturesAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
 class ProductAdvancedSearchAdmin(admin.ModelAdmin):
 	list_display = ['product']
 
-
-class CompareProductAdmin(admin.ModelAdmin):
-    list_display = ['ip', 'title']
 
 class CompareAdmin(admin.ModelAdmin):
     list_display = ['product']
@@ -178,16 +143,8 @@ admin.site.register(Banner, BannerAdmin)
 admin.site.register(Variants, VariantsAdmin)
 admin.site.register(ProductAdvancedSearch, ProductAdvancedSearchAdmin)
 admin.site.register(Compare, CompareAdmin)
-# admin.site.register(Images)
-# admin.site.register(Color, ColorAdmin)
-# admin.site.register(Size, SizeAdmin)
-# admin.site.register(PhoneType, PhoneTypeAdmin)
-# admin.site.register(InternaMemory, InternaMemoryAdmin)
-# admin.site.register(AmountRAM, AmountRAMAdmin)
-# admin.site.register(BatteryPerformance, BatteryPerformanceAdmin)
-# admin.site.register(ScreenSize, ScreenSizeAdmin)
-# admin.site.register(PhoneDesign, PhoneDesignAdmin)
-# admin.site.register(CameraFeature, CameraFeatureAdmin)
-# admin.site.register(SpecialFeatures, SpecialFeaturesAdmin)
-# admin.site.register(CompareProduct, CompareProductAdmin)
+admin.site.register(Images)
+admin.site.register(Color, ColorAdmin)
+admin.site.register(Size, SizeAdmin)
+
 

@@ -12,7 +12,7 @@ from apps.home.models import StoreAddress
 from django.core.serializers import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
-
+from babel.numbers import format_number
 from apps.vnpay_python.forms import PaymentForm
 from apps.vnpay_python.vnpay import vnpay
 from django.conf import settings
@@ -291,6 +291,8 @@ def checkout_online(request):
 	profile = UserProfile.objects.get(user_id=current_user.id)
 	#print(total)
 	price = int(total * 1000)*1000
+	#price = format_number(price, locale='de_DE')
+	price_ui = format_number(price, locale='de_DE')
 	#print(price)
 	context = {
 		'shopcart': shopcart,
@@ -302,6 +304,7 @@ def checkout_online(request):
 		'profile': profile,
 		'ordercode': ordercode,
 		'dataAPI_province': dataAPI_province,
+		'price_ui': price_ui,
 	}
 	return render(request, 'checkout/checkout-online.html', context)
 
