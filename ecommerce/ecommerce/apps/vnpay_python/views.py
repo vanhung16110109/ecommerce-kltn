@@ -21,6 +21,11 @@ from apps.home.models import StoreAddress
 from django.core.serializers import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
+import os
+from twilio.rest import Client
+from ecommerce.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+from babel.numbers import format_number
 
 
 def index(request):
@@ -202,6 +207,30 @@ def payment_return(request):
 							#************ <> *****************
 						ShopCart.objects.filter(user_id=current_user.id).delete()
 						print("Luu thong tin thanh cong")
+						# sent thông báo tin nhắn đơn hàng thành công
+						total_mess = data.total
+						total_mess = format_number(total_mess, locale='de_DE')
+						code_mess = order_temp.code
+						mavung = "+84"
+						phone_numbers = data.phone
+						if phone_numbers[0] == "0":
+							phone_numbers = phone_numbers[1:]
+						phone_numbers = mavung + phone_numbers
+						print(phone_numbers)
+						account_sid = 'ACcb58ad5da0e2f728c3e266c332ae1c28'
+						auth_token = '2899a90018949ab81fa7ac7903eb552b'
+						client = Client(account_sid, auth_token)
+						message = client.messages \
+										.create(
+											body = f"Cảm ơn bạn đã tin tưởng đặt hàng của Shop Ecommerce chúng tôi. Tổng giá trị đơn hàng { total_mess } VND, mã đơn hàng {code_mess}.",
+											from_='+14846042061',
+											to = phone_numbers
+										)
+						#sent email
+						email_mess = current_user.email
+						subject_mess = f"Cảm ơn quý khách đã đặt hàng ở Shop Ecommerce-KLTN"
+						message_mess = f"Cảm ơn bạn đã tin tưởng đặt hàng của Shop Ecommerce chúng tôi. Tổng giá trị đơn hàng { total_mess } VND, mã đơn hàng {code_mess}."
+						send_mail(subject_mess, message_mess, EMAIL_HOST_USER, [email_mess], fail_silently = False)
 				return render(request, "vnpay_python/payment_return.html", {"title": "Kết quả thanh toán",
 																"result": "Thành công", "order_id": order_id,
 																"amount": amount,
