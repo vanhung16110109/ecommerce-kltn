@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants, ProductAdvancedSearch
+from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants, ProductAdvancedSearch, Compare
 from django.http.response import HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -66,6 +66,32 @@ def product_detail(request, id, slug):
 	images = Images.objects.filter(product_id=id)
 	comments = Comment.objects.filter(product_id=id)
 	# details = DetailsProduct.objects.filter(product_id=id)
+	# print(product)
+	# compare_result_product = []
+	# compare_result_screen = []
+	# compare_result_backcam = []
+	# compare_result_frontcam = []
+	# compare_result_cpu = []
+	# compare_result_memory = []
+	# compare_result_connection = []
+	# compare_result_battery = []
+	# compare_result_utils = []
+	# compare_result_general = []
+	# compare = Compare.objects.all()
+	# for pr_cp in compare:
+	# 	if pr_cp.product == product:
+	# 		compare_result_product.append(pr_cp.product)
+	# 		compare_result_screen.append(pr_cp.screen)
+	# 		compare_result_backcam.append(pr_cp.backcam)
+	# 		compare_result_frontcam.append(pr_cp.frontcam)
+	# 		compare_result_cpu.append(pr_cp.cpu)
+	# 		compare_result_memory.append(pr_cp.memory)
+	# 		compare_result_connection.append(pr_cp.connection)
+	# 		compare_result_battery.append(pr_cp.battery)
+	# 		compare_result_utils.append(pr_cp.utils)
+	# 		compare_result_general.append(pr_cp.general)
+	compare_result = Compare.objects.get(product=product)
+	(compare_result.screen)
 	context = {
 		'comments': comments,
 		'product': product,
@@ -74,6 +100,7 @@ def product_detail(request, id, slug):
 		'total': total,
 		'quantity': quantity,
 		# 'deta': details,
+		'compare_result': compare_result,
 	}
 	if product.variant !="None": # Product have variants
 		if request.method == 'POST': #if we select color
@@ -312,5 +339,21 @@ def ajax_manufacturer(request):
 	return JsonResponse(data)
 
 
-
-
+def CompareProduct(request):
+	category = Category.objects.all()
+	product_list = Compare.objects.all()
+	current_user = request.user
+	shopcart = ShopCart.objects.filter(user_id=current_user.id)
+	total = 0
+	for rs in shopcart:
+		total += rs.variant.price * rs.quantity
+	quantity = 0
+	for rs in shopcart:
+		quantity += rs.quantity
+	context = {
+		'product_list':product_list,
+		'category': category,
+  		'total': total,
+		'quantity': quantity
+	}
+	return render(request, 'product/product-compare.html', context)	
