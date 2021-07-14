@@ -1,240 +1,83 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %} {{ product.title }} {% endblock %}
-{% block description %} {{ product.description }}{% endblock %}
-{% block keywords %} {{ product.keywords }} {% endblock %}
-{% url 'home' as home_url %}
-{% url '/category/{{ product.category.id }}/{{ product.category.slug }}' as product_category_slug_url %}
-{% block head %}
-    <!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
-	<!-- Bootstrap -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/bootstrap.min.css" />
-	<!-- Slick -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick.css" />
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/slick-theme.css" />
-	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/nouislider.min.css" />
-	<!-- Font Awesome Icon -->
-	<link rel="stylesheet" href="{% static "" %}home/css/font-awesome.min.css">
-	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/style.css" />
-	<!-- jQuery UI !-->
-	<link type="text/css" rel="stylesheet" href="{% static "" %}home/css/jquery-ui.css" />
-    <!-- jQuery !-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
-    <!-- jQuery UI !-->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-	<script src="{% static "" %}home/js/jquery.min.js"></script>
-	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
-	<style>
-		.tab-content img {
-			width: 100%;
-			height: 80%;
-		}
-		.center {
-			margin: auto;
-			width: 80%;
-			padding: 40px;
-		}
-        .product-main-view img {
-            width: 100%;
-			height: 0%;
-        }
-	</style>
-{% endblock %}
+<table class="table table-bordered table-striped" style="border-collapse: collapse;" id="SmartphoneCompare">
+                                             
+    <tbody>
+        <tr class="table table-bordered table-striped">
+            <th scope="col">Màn hình</th>
+            
+        </tr>
+        <tr>
+  
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.screen | safe }}</td>
 
-
-
-{% block header %} {% include "home/header.html" %} {% endblock %}
-{% block navigation %} {% include "home/navigation.html" %} {% endblock %}
-
-
-{% block product_detail %}
-
-    {% if messages %}
-    {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <!-- BREADCRUMB -->
-    <div id="breadcrumb">
-        <div class="container">
-            <ul class="breadcrumb">
-                <li><a href="{% url 'home' %}">Trang chủ</a></li>
-                <li class="active">So sánh</li>
-            </ul>
-        </div>
-    </div>
-    <!-- /BREADCRUMB --> 
-    </div>
-    <!-- section -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-				<div class="product product-details clearfix">
-					<div class="col-md-12">
-                        <!-- {% if product_list %}
-                            {% for pr in product_list %}
-                                <h6>{{pr.product}}</h6>
-                            {% endfor %}
-                        {% endif %} -->
-						<div class="product-tab">
-							<ul class="tab-nav">
-								<h2>So sánh sản phẩm</h2>
-							</ul>
-                        
-                            <table class="table table-striped" style="font-size: 18px; weight: 40%; border-right:1px;">
-                                
-                                <tbody>
-                                    <tr class="table table-bordered table-striped">
-                                        <th scope="col" style="font-size: 18px; weight: 40%; border-right:1px;">Màn hình</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10px; height: 10%;">
-                                        <td style="border-right:1px solid #ddd; width: 40%">
-                                        {{ product.detailsproduct_screen | safe }}</td>
-                                       
-                                        <td style="width:20%; padding-left: 50px; ">
-                                        {{ product.detailsproduct_screen | safe }}</td>
-                                    </tr>
-                                       
-		                            {% comment %} </tr>
-                                    <tr class="table table-bordered table-striped" style="font-size: 18px; weight: 40%; border-left:1px;">
-                                        <td>
-                                        
-                                        
-                                    </tr> {% endcomment %}
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px; width: 5%;">Camera sau</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_backcam | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_backcam | safe }}</td>
-                                    </tr>
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px; width: 13%;">Camera trước</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                 
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_frontcam | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_frontcam | safe }}</td>
-                                    </tr>
-                                   
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px; width: 13%;">Chip & CPU</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_cpu | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_cpu | safe }}</td>
-                                    </tr>
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px; width: 16%;">Lưu trữ & thẻ nhớ</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_memory | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_memory | safe }}</td>
-                                    </tr>
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px">Kết nối</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_connection | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_connection | safe }}</td>
-                                    </tr>
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px">Pin & sạc</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_battery | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_battery | safe }}</td>
-                                    </tr>
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px">Tiện ích</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproductc_utils | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproductc_utils | safe }}</td>
-                                    </tr>
-                                    <tr class="table-bordered">
-                                        <th scope="col" style="font-size: 18px; width: 15%;">Thông tin chung</th>
-                                        <th>
-                                        <th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 10%">
-                                        <td style="border-right:1px solid #ddd">
-                                        {{ product.detailsproduct_general | safe }}</td>
-                                        <td style="width:50%; padding-left: 50px">
-                                        {{ product.detailsproduct_general | safe }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-						</div>
-					</div>
-
-				</div>
-                <!-- /Product Details -->
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /section -->
-
+        </tr>
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px; width: 5%;">Camera sau</th>                                              
+        </tr>
+        <tr>
+         
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.backcam | safe }}</td>                                               
+        </tr>
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px; width: 13%;">Camera trước</th>
+        </tr>
+     
+        <tr>
+   
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.frontcam | safe }}</td>                                               
+        </tr>
+       
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px; width: 13%;">Chip & CPU</th>
+        </tr>
+        <tr>
           
-
-
-{% endblock product_detail %}
-
-{% block script_body %}
-    <!-- jQuery Plugins -->
-    <script src="{% static "" %}home/js/bootstrap.min.js"></script>
-    <script src="{% static "" %}home/js/slick.min.js"></script>
-    <script src="{% static "" %}home/js/nouislider.min.js"></script>
-    <script src="{% static "" %}home/js/jquery.zoom.min.js"></script>
-    <script src="{% static "" %}home/js/main.js"></script>
-{% endblock %}
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.cpu | safe }}</td>                                               
+        </tr>
+        <tr class="table-bordered">
+           <th scope="col" style="font-size: 16px; width: 16%;">Lưu trữ & thẻ nhớ</th>                                               
+        </tr>
+        <tr>
+        
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.memory | safe }}</td>                                               
+        </tr>
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px">Kết nối</th>         
+        </tr>
+        <tr>
+      
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.connection | safe }}</td>                                    
+        </tr>
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px">Pin & sạc</th>                                               
+        </tr>
+        <tr>
+       
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.battery | safe }}</td>                                               
+        </tr>
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px">Tiện ích</th>                                                
+        </tr>
+        <tr>
+          
+            <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
+            {{ compare_result.utils | safe }}</td>
+            
+        </tr>
+        <tr class="table-bordered">
+            <th scope="col" style="font-size: 16px; width: 15%;">Thông tin chung</th>                                                
+        </tr>
+        <tr>
+      
+            <td style="border-left:1px solid #ddd; border-right:1px; solid #ddd; width: 100%">
+            {{ compare_result.general | safe }}</td>
+        </tr>
+    </tbody>
+    
+</table>

@@ -67,47 +67,6 @@ def category_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(category_pre_save_receiver, sender=Category)
 
 
-
-class Category_Product_Detail(MPTTModel):
-	STATUS = (('TRUE', 'TRUE'),
-				('FALSE', 'FALSE'))
-	parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-	title = models.CharField(max_length=50)
-	keywords = models.CharField(max_length=255)
-	#description = models.CharField(max_length=255)
-	#image = models.ImageField(blank=True, null=True, upload_to=upload_image_path)
-	status = models.CharField(max_length=10, choices=STATUS)
-	slug = models.SlugField(blank=True, null=True)
-	create_at = models.DateTimeField(auto_now_add=True)
-	update_at = models.DateTimeField(auto_now_add=True)
-
-	def __str__(self):
-		return self.title
-
-	def __unicode__(self):
-		return self.title
-
-	class MPTTMeta:
-		order_insertion_by = ['title']
-
-	def __str__(self):
-		full_path = [self.title]
-		k = self.parent
-		while k is not None:
-			full_path.append(k.title)
-			k = k.parent
-		return ' / '.join(full_path[::-1])
-
-	def get_absolute_url(self):
-		return reverse('category_detail', kwargs={'slug': self.slug})
-
-def category_pre_save_receiver(sender, instance, *args, **kwargs):
-	if not instance.slug:
-		instance.slug = unique_slug_generator(instance)
-
-pre_save.connect(category_pre_save_receiver, sender=Category_Product_Detail)
-
-
 # Create your models here.
 class Product(models.Model):
 	STATUS = (('TRUE', 'TRUE'),

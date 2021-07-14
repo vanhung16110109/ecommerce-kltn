@@ -24,6 +24,9 @@
 
 	<script src="{% static "" %}home/js/jquery.min.js"></script>
 	<script src="{% static "" %}home/js/jquery-ui.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <script rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 	<style>
 		.tab-content img {
 			width: 100%;
@@ -39,6 +42,28 @@
 			height: 0%;
         }
 	</style>
+    <script>
+        $(document).on('change', '#SmartphoneName',function(e){
+            e.preventDefault();
+                $.ajax({
+                    type:'POST',
+                    url:'{% url "compare" %}',
+                    data:{
+                        SmartphoneName:$('#SmartphoneName').val(),                                  
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                        action: 'post'
+                    },
+                    data_type : 'html',
+                    success: function (data) {
+                        console.log("success");
+                        $('#SmartphoneCompare').html(data.rendered_table);
+                    },
+                    error: function (data) {
+                        alert("Xảy ra lỗi, vui lòng kiểm tra lại" + data);
+                    }
+                });
+            });
+        </script>
 {% endblock %}
 
 
@@ -448,22 +473,19 @@
 								</div>
 								<div id="tab3" class="tab-pane fade in">
 									<div class="row">
-                                        <div class="col-md-6">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr class="table-active">
-                                                        <th scope="col" style="font-size: 30px">       </th>
-                                                        <th scope="col" style="font-size: 16px;">{{ variant.title }}</th>
-                                                    </tr>
-                                                </thead>
+                                        <div class="col-md-6" id="productcompare1">
+                                            <h3 style="font-size: 25px; text-align: center;height: 5px;">{{ variant.title }}</h3>
+                                            <br>
+                                            <br>
+                                            <table class="table  table-bordered table-striped">
+    
                                                 <tbody>
                                                     <tr class="table table-bordered table-striped">
                                                         <th scope="col">Màn hình</th>
-                                                        
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10px; height: 10%;">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 40%">
+                                                        
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.screen | safe }}</td>
            
                                                     </tr>
@@ -471,8 +493,8 @@
                                                         <th scope="col" style="font-size: 16px; width: 5%;">Camera sau</th>                                              
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 5%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                        
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.backcam | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
@@ -480,8 +502,8 @@
                                                     </tr>
                                                  
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                        
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.frontcam | safe }}</td>                                               
                                                     </tr>
                                                    
@@ -489,40 +511,40 @@
                                                         <th scope="col" style="font-size: 16px; width: 13%;">Chip & CPU</th>
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                       
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.cpu | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
                                                        <th scope="col" style="font-size: 16px; width: 16%;">Lưu trữ & thẻ nhớ</th>                                               
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                    
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.memory | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
                                                         <th scope="col" style="font-size: 16px">Kết nối</th>         
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                      
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.connection | safe }}</td>                                    
                                                     </tr>
                                                     <tr class="table-bordered">
                                                         <th scope="col" style="font-size: 16px">Pin & sạc</th>                                               
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                       
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.battery | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
                                                         <th scope="col" style="font-size: 16px">Tiện ích</th>                                                
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                              
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.utils | safe }}</td>
                                                         
                                                     </tr>
@@ -530,29 +552,40 @@
                                                         <th scope="col" style="font-size: 16px; width: 15%;">Thông tin chung</th>                                                
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                              
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.general | safe }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="col-md-6">
-                                            <table class="table table-striped" style="border-collapse: collapse;">
-                                                <thead>
-                                                    <tr class="table-active">
-                                                        <th scope="col" style="font-size: 30px">       </th>
-                                                        <th scope="col" style="font-size: 16px;">{{ variant.title }}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                        <div class="col-md-6" id="productcompare2">
+                                        
+                                            <!-- lay danh sach so sanh -->
+                                            <select class="selectpicker" data-live-search="true" data-size="15" data-style="btn-light" data-width="100%" title="Vui lòng click vào đây chọn điện thoại cần so sánh" id="SmartphoneName" name="SmartphoneName">
+                                                {% if product_list %}
+                                                <ul>
+                                                    {% for rs in product_list %}
+                                                    <option class="select-option" value="{{ rs.product }}">
+                                                        {{ rs.product}}
+                                                    </option>
+                                                    {% endfor %}
+                                                </ul>
+                                                {% endif %}
+                                            </select>
+                                            <br><br>
+                                            <!-- end -->
+
+                                            <table class="table table-bordered table-striped" style="border-collapse: collapse;" id="SmartphoneCompare">
+                                             
+                                                <!-- <tbody>
                                                     <tr class="table table-bordered table-striped">
                                                         <th scope="col">Màn hình</th>
                                                         
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10px; height: 10%;">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 40%">
+                                              
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.screen | safe }}</td>
            
                                                     </tr>
@@ -560,8 +593,8 @@
                                                         <th scope="col" style="font-size: 16px; width: 5%;">Camera sau</th>                                              
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 5%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                     
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.backcam | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
@@ -569,8 +602,8 @@
                                                     </tr>
                                                  
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                               
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.frontcam | safe }}</td>                                               
                                                     </tr>
                                                    
@@ -578,40 +611,40 @@
                                                         <th scope="col" style="font-size: 16px; width: 13%;">Chip & CPU</th>
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                      
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.cpu | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
                                                        <th scope="col" style="font-size: 16px; width: 16%;">Lưu trữ & thẻ nhớ</th>                                               
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                    
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.memory | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
                                                         <th scope="col" style="font-size: 16px">Kết nối</th>         
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                  
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.connection | safe }}</td>                                    
                                                     </tr>
                                                     <tr class="table-bordered">
                                                         <th scope="col" style="font-size: 16px">Pin & sạc</th>                                               
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                   
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.battery | safe }}</td>                                               
                                                     </tr>
                                                     <tr class="table-bordered">
                                                         <th scope="col" style="font-size: 16px">Tiện ích</th>                                                
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                      
+                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd; width: 100%">
                                                         {{ compare_result.utils | safe }}</td>
                                                         
                                                     </tr>
@@ -619,11 +652,11 @@
                                                         <th scope="col" style="font-size: 16px; width: 15%;">Thông tin chung</th>                                                
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 10%">
-                                                        <td style="border-left:1px solid #ddd; border-right:1px solid #ddd">
+                                                  
+                                                        <td style="border-left:1px solid #ddd; border-right:1px; solid #ddd; width: 100%">
                                                         {{ compare_result.general | safe }}</td>
                                                     </tr>
-                                                </tbody>
+                                                </tbody> -->
                                             </table>
                                         </div>
                                     </div>
