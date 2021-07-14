@@ -27,7 +27,7 @@
 	let _typeNamePrice = 'totalID1';
 	let _typeNameCamera = 'cameraID1';
 	let _typeNamePin = 'PinID1';
-	console.log('Điện thoại: ' + 'Loại giá: ', _productName, _typeNamePrice);
+	let _typeNameSortProduct = '0';
 	function selectOnlyThis(id){
 		var myCheckbox = document.getElementsByName("brand");
 		Array.prototype.forEach.call(myCheckbox,function(el){
@@ -37,10 +37,6 @@
 
 		const productName = id.value
 		_productName = productName 
-		console.log("Loại sản phẩm: ", productName)
-		console.log("Giá: ", _typeNamePrice)
-		console.log("Camera: ", _typeNameCamera)
-		console.log("Pin: ", _typeNamePin)
 		$.ajax({
 			type:'POST',
 			url:'{% url "ajax_manufacturer" %}',
@@ -49,6 +45,7 @@
 				_typeNameCamera,
 				_typeNamePrice,
 				_typeNamePin,
+				_typeNameSortProduct,
 				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
 				action: 'post'
 			},                                   
@@ -66,10 +63,6 @@
 	function selectOnlyThisTotal(id){
 		const typeNamePrice = id.id
 		_typeNamePrice = typeNamePrice
-		console.log("Loại sản phẩm: ", _productName)
-		console.log("Giá: ", _typeNamePrice)
-		console.log("Camera: ", _typeNameCamera)
-		console.log("Pin: ", _typeNamePin)
 		$.ajax({
 			type:'POST',
 			url:'{% url "ajax_manufacturer" %}',
@@ -78,6 +71,7 @@
 				_typeNamePrice,
 				_typeNameCamera,
 				_typeNamePin,
+				_typeNameSortProduct,
 				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
 				action: 'post'
 			},                                   
@@ -100,10 +94,6 @@
 	function selectOnlyThisCamera(id){
 		const typeNameCamera = id.id
 		_typeNameCamera = typeNameCamera
-		console.log("Loại sản phẩm: ", _productName)
-		console.log("Giá: ", _typeNamePrice)
-		console.log("Camera: ", _typeNameCamera)
-		console.log("Pin: ", _typeNamePin)
 		$.ajax({
 			type:'POST',
 			url:'{% url "ajax_manufacturer" %}',
@@ -112,6 +102,7 @@
 				_typeNamePrice,
 				_typeNameCamera,
 				_typeNamePin,
+				_typeNameSortProduct,
 				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
 				action: 'post'
 			},                                   
@@ -134,10 +125,6 @@
 	function selectOnlyThisPin(id){
 		const typeNamePin = id.id
 		_typeNamePin = typeNamePin
-		console.log("Loại sản phẩm: ", _productName)
-		console.log("Giá: ", _typeNamePrice)
-		console.log("Camera: ", _typeNameCamera)
-		console.log("Pin: ", _typeNamePin)
 		$.ajax({
 			type:'POST',
 			url:'{% url "ajax_manufacturer" %}',
@@ -146,6 +133,7 @@
 				_typeNamePrice,
 				_typeNameCamera,
 				_typeNamePin,
+				_typeNameSortProduct,
 				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
 				action: 'post'
 			},                                   
@@ -165,6 +153,32 @@
 		});
 		id.checked = true;
 	}
+	$(document).on('change', '#SortProduct',function(e){
+		e.preventDefault();
+		var sortproduct = $('#sortproduct').val();
+		_typeNameSortProduct = sortproduct
+			$.ajax({
+				type:'POST',
+				url:'{% url "ajax_manufacturer" %}',
+				data:{
+					_productName,
+					_typeNamePrice,
+					_typeNameCamera,
+					_typeNamePin,
+					_typeNameSortProduct,                       
+					csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+					action: 'post'
+				},
+				data_type : 'html',
+				success: function (data) {
+					console.log("success");
+					$('#advanced-searchs').html(data.rendered_table);
+				},
+				error: function (data) {
+					alert("Xảy ra lỗi, vui lòng kiểm tra lại" + data);
+				}
+			});
+		});
 </script>
 {% endblock %}
 
@@ -370,37 +384,19 @@
 				<!-- store top filter -->
 				<div class="store-filter clearfix">
 					<div class="pull-right">
-						<div class="row-filter">
+						<!-- <div class="row-filter">
 							<a href="#" ><i class="fa fa-th-large"></i></a>
 							<a href="#" class="active"><i class="fa fa-bars"></i></a>
-						</div>
-						<div class="sort-filter">
+						</div> -->
+						<div class="sort-filter" id="SortProduct">
 							<span class="text-uppercase">Sắp xếp theo:</span>
-							<select class="input">
-									<option value="0">Bán chạy</option>
-									<option value="0">Giá giảm dần</option>
-									<option value="0">Giá tăng dần</option>
-								</select>
-							<a href="#" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></a>
+							<select class="input" style="width: 150px;" id="sortproduct" name="sortproduct">
+									<option value="0">Phổ biến</option>
+									<option value="1">Giá giảm dần</option>
+									<option value="2">Giá tăng dần</option>
+							</select>
 						</div>
 					</div>
-					<!-- <div class="pull-right">
-						<div class="page-filter">
-							<span class="text-uppercase">Hiển thị:</span>
-							<select class="input">
-									<option value="0">10</option>
-									<option value="1">20</option>
-									<option value="2">30</option>
-								</select>
-						</div>
-						<ul class="store-pages">
-							<li><span class="text-uppercase">Page:</span></li>
-							<li class="active">1</li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
-						</ul>
-					</div> -->
 				</div>
 				<!-- /store top filter -->
 				<!-- store -->
@@ -455,8 +451,6 @@
 									</li>
 									<li class="page-item"><a class="page-link" href="#">1</a></li>
 									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">4</a></li>
 									<li class="page-item">
 									<a class="page-link" href="#" aria-label="Next">
 										<span aria-hidden="true">&raquo;</span>
