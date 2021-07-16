@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.shortcuts import render
 from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants, ProductAdvancedSearch, Compare
 from django.http.response import HttpResponseRedirect
@@ -138,6 +139,10 @@ def category_products_pro_code(request, id, title):
         'filter_product_title': filter_product_title
     }
     return render(request, 'product/category_products_pro_code.html',context)
+
+
+def my_product(i):
+    return i[0].price
 
 
 def ajax_manufacturer(request):
@@ -311,9 +316,9 @@ def ajax_manufacturer(request):
 
         #sap xep tang giam
         typeNameSortProduct = int(typeNameSortProduct)
-        for rs in products_result:
-            print(rs.price)
-        print(type(products_result))
+
+        
+        
         if typeNameSortProduct == 0:
                 products_result
         elif typeNameSortProduct == 1:
@@ -322,6 +327,9 @@ def ajax_manufacturer(request):
             elif len(products_result) == 0:
                 products_result
             else:
+                # if isinstance(products_result, list) == True:
+                #     products_result = products_result.sort(key = my_product)
+                #     print(products_result)
                 products_result = products_result.order_by('-price')
         elif typeNameSortProduct == 2:
             if len(products_result) == 1:
@@ -343,6 +351,7 @@ def CompareProduct(request):
     if request.POST.get('action') == 'post':
         product_list = Compare.objects.all()
         smartphoneName = request.POST.get('SmartphoneName')
+        
         product = Product.objects.all()
         # return về id product và slug
         for rs in product:
@@ -354,7 +363,7 @@ def CompareProduct(request):
         for rs in product_list:
             if str(rs.product) == smartphoneName:
                 compare_result = rs
-
+        
         context = {
             'smartphoneName':smartphoneName,
             'product_list': product_list,

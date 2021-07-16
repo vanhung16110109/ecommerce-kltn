@@ -59,7 +59,7 @@ def addtoshopcart(request,id):
             data.user_id = current_user.id
             data.product_id = id
             data.quantity = 1
-            data.variant_id =None
+            data.variant_id = None
             data.save()  
         messages.success(request, "Thêm sản phẩm thành công")
         return HttpResponseRedirect(url)
