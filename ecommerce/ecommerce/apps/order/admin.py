@@ -37,6 +37,6 @@ class OrderWaitingPaymentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Order, OrderAdmin)
-admin.site.register(OrderProduct, OrderProductAdmin)
+#admin.site.register(OrderProduct, OrderProductAdmin)
 admin.site.register(ShopCart, ShopCartAdmin)
-admin.site.register(OrderWaitingPayment, OrderWaitingPaymentAdmin)
+#admin.site.register(OrderWaitingPayment, OrderWaitingPaymentAdmin)
