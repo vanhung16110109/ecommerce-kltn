@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from apps.order.models import ShopCart, Order, OrderProduct
+from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants, ProductAdvancedSearch, Compare
+
 
 # login
 def account_login(request):
