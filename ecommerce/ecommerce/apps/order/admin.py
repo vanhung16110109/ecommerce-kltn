@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 from .models import ShopCart, Order, OrderProduct, OrderWaitingPayment
 
@@ -16,7 +16,7 @@ class OrderProductLine(admin.TabularInline):
 	extra = 0
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ImportExportModelAdmin):
 	list_display = ['first_name', 'last_name', 'phone', 'total', 'status', 'status_pay']
 	list_filter = ['status', 'status_pay']
 	readonly_fields	= ('user','first_name', 'last_name','province','district', 'ward', 'address', 'phone', 'delivery', 'transport_fee', 'ip', 'total', 'code')
