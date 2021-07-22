@@ -65,7 +65,7 @@ def product_detail(request, id, slug):
     category = Category.objects.all()
     product = Product.objects.get(pk=id)
     images = Images.objects.filter(product_id=id)
-    comments = Comment.objects.filter(product_id=id)
+    comments = Comment.objects.filter(product_id=id,status='True')
     product_list = Compare.objects.all()
     compare_result = Compare.objects.get(product=product)
     context = {

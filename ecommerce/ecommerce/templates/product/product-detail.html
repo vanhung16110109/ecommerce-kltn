@@ -164,9 +164,9 @@
                                     <i class="fa fa-star{% if product.avaregereview < 3%}-o empty{% endif%}"></i>
                                     <i class="fa fa-star{% if product.avaregereview < 4%}-o empty{% endif%}"></i>
                                     <i class="fa fa-star{% if product.avaregereview < 5%}-o empty{% endif%}"></i>
-                                    <!-- {{ product.avaregereview |stringformat:".2f"}} -->
+                                    {{ product.avaregereview |stringformat:".2f"}}
                                 </div>
-                                <a href="#">10 đánh giá</a>
+                                <a href="#">{{ product.countreview}} Đánh giá</a>
                             </div>
                             <!-- <p><strong>Availability:</strong> In Stock</p>
                             <p><strong>Brand:</strong> E-SHOP</p>

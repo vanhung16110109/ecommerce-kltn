@@ -12,6 +12,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from mptt.models import MPTTModel, TreeForeignKey
 from django import forms
 from django.forms import ModelForm
+from django.db.models import Avg, Count
 
 
 def get_filename_ext(filepath):
@@ -110,6 +111,20 @@ class Product(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('category_detail', kwargs={'slug': self.slug})
+
+	def avaregereview(self):
+		reviews = Comment.objects.filter(product=self, status='True').aggregate(avarage=Avg('rate'))
+		avg=0
+		if reviews["avarage"] is not None:
+			avg=float(reviews["avarage"])
+		return avg
+
+	def countreview(self):
+		reviews = Comment.objects.filter(product=self, status='True').aggregate(count=Count('id'))
+		cnt=0
+		if reviews["count"] is not None:
+			cnt = int(reviews["count"])
+		return cnt
 
 	def image_tag(self):
 		return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
@@ -247,14 +262,14 @@ class ProductAdvancedSearch(models.Model):
 
 
 class Compare(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    screen = RichTextUploadingField()	
-    backcam = RichTextUploadingField()
-    frontcam = RichTextUploadingField()	
-    cpu = RichTextUploadingField()	
-    memory = RichTextUploadingField()	
-    connection = RichTextUploadingField()	
-    battery = RichTextUploadingField()	
-    utils = RichTextUploadingField()	
-    general = RichTextUploadingField()	
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	screen = RichTextUploadingField()	
+	backcam = RichTextUploadingField()
+	frontcam = RichTextUploadingField()	
+	cpu = RichTextUploadingField()	
+	memory = RichTextUploadingField()	
+	connection = RichTextUploadingField()	
+	battery = RichTextUploadingField()	
+	utils = RichTextUploadingField()	
+	general = RichTextUploadingField()	
 

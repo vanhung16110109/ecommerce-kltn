@@ -71,9 +71,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['subject', 'comment', 'status', 'create_at']
+    list_display = [ 'comment', 'status', 'create_at']
     list_filter = ['status']
-    readonly_fields =('subject','comment','ip','user','product', 'rate')
+    readonly_fields =('comment','ip','user','product', 'rate')
 
 
 class BannerAdmin(admin.ModelAdmin):
