@@ -80,7 +80,7 @@
 								
 								{% if request.user.is_authenticated %}
 									<li><a href="{{ info_view }}"><i class="fa fa-user-o"></i>Tài khoản của tôi </a></li>
-									<li><a href="#"><i class="fa fa-heart-o"></i>Sản phẩm yêu thích </a></li>
+									<!-- <li><a href="#"><i class="fa fa-heart-o"></i>Sản phẩm yêu thích </a></li> -->
 									<!-- <li><a href="#"><i class="fa fa-check"></i>Thủ tục thanh toán</a></li> -->
 									<li class="nav-item {% if request.path == login_url %} active {% endif %}">
 										<a href="{{ logout_url }}"><i class="fa fa-unlock-alt"></i>Đăng xuất</a>

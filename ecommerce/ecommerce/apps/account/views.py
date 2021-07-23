@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from apps.order.models import ShopCart, Order, OrderProduct
 from apps.product.models import Category, Product, Images, CommentForm, Comment, Variants, ProductAdvancedSearch, Compare
+from babel.numbers import format_number
 
 
 # login
@@ -184,6 +185,8 @@ def user_orders(request):
 	quantity = 0
 	for rs in shopcart:
 		quantity += rs.quantity
+	for rs in orders:
+		rs.total = format_number(rs.total, locale='de_DE')
 	context={
 		'category':category,
 		'total': total,
@@ -210,6 +213,10 @@ def user_order_product_detail(request,id):
 	quantity = 0
 	for rs in shopcart:
 		quantity += rs.quantity
+	shipping_fee = order.transport_fee
+	total_payment = order.total
+	shipping_fee = format_number(shipping_fee, locale='de_DE')
+	total_payment = format_number(total_payment, locale='de_DE')
 	context = {
 		'category': category,
 		'order': order,
@@ -219,8 +226,11 @@ def user_order_product_detail(request,id):
 		'total': total,
 		'quantity': quantity,
 		'order_product': order_product,
+		'shipping_fee': shipping_fee,
+		'total_payment': total_payment,
 	}
 	return render(request, 'account/user_order_detail.html', context)
+
 
 
 @login_required(login_url='/account/login')
