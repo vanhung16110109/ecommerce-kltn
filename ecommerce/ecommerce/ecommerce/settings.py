@@ -26,6 +26,7 @@ SECRET_KEY = '6c773705-9979-46c3-ac59-bc72081792f3'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','ecommerce-kltn.herokuapp.com']
+#ALLOWED_HOSTS = ['ecommerce-kltn.herokuapp.com']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
